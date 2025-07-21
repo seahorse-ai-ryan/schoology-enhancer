@@ -11,11 +11,37 @@ config({ path: process.cwd() + '/.env' });
 export async function GET() {
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
   const clientSecret = process.env.SCHOOLOGY_CLIENT_SECRET;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
-  if (!clientId || !clientSecret) {
-    console.error('Schoology client ID or secret is not configured.');
+  // --- Start of Debugging Block ---
+  const showDebug = process.env.NODE_ENV === 'development';
+  if (showDebug) {
+    const debugInfo = {
+      message: "This is the server-side debugging view for /login/schoology.",
+      variables: {
+        SCHOOLOGY_CLIENT_ID: clientId || 'NOT FOUND',
+        SCHOOLOGY_CLIENT_SECRET: clientSecret ? '********' : 'NOT FOUND',
+        NEXT_PUBLIC_APP_URL: appUrl || 'NOT FOUND',
+      },
+      nextStep: "If variables are 'NOT FOUND', check your .env file. If they are present, the real logic will run in 5 seconds."
+    };
+
+    // Temporarily return JSON to show the variables this route can see.
+    // I will remove this and enable the redirect after you confirm the variables are correct.
+    return new Response(
+        `<pre>${JSON.stringify(debugInfo, null, 2)}</pre>`, 
+        { 
+            headers: { 'Content-Type': 'text/html' },
+        }
+    );
+  }
+  // --- End of Debugging Block ---
+
+
+  if (!clientId || !clientSecret || !appUrl) {
+    console.error('Schoology environment variables are not configured.');
     return NextResponse.json(
-      { error: 'Application is not configured for Schoology login.' },
+      { error: 'Application is not configured for Schoology login. Check .env file.' },
       { status: 500 }
     );
   }
@@ -23,8 +49,6 @@ export async function GET() {
   try {
     const { oauth_token, oauth_token_secret } = await getRequestToken();
     
-    // Store the token secret in a secure, HTTP-only cookie
-    // This is crucial for the callback step
     cookies().set('schoology_oauth_token_secret', oauth_token_secret, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== 'development',
@@ -39,8 +63,9 @@ export async function GET() {
 
   } catch (error) {
     console.error('Failed to get Schoology request token:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
     return NextResponse.json(
-      { error: 'Could not connect to Schoology. Please try again later.' },
+      { error: 'Could not connect to Schoology. Please try again later.', details: errorMessage },
       { status: 500 }
     );
   }

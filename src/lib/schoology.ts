@@ -4,21 +4,36 @@ import OAuth from 'oauth-1.0a';
 
 const SCHOOLOGY_API_URL = 'https://api.schoology.com/v1';
 
-const oauth = new OAuth({
-  consumer: {
-    key: process.env.SCHOOLOGY_CLIENT_ID!,
-    secret: process.env.SCHOOLOGY_CLIENT_SECRET!,
-  },
-  signature_method: 'HMAC-SHA1',
-  hash_function(base_string, key) {
-    return crypto.createHmac('sha1', key).update(base_string).digest('base64');
-  },
-});
+const getOauthClient = () => {
+  const clientId = process.env.SCHOOLOGY_CLIENT_ID;
+  const clientSecret = process.env.SCHOOLOGY_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
+    throw new Error('Schoology Client ID or Secret is not configured in environment variables.');
+  }
+
+  return new OAuth({
+    consumer: {
+      key: clientId,
+      secret: clientSecret,
+    },
+    signature_method: 'HMAC-SHA1',
+    hash_function(base_string, key) {
+      return crypto.createHmac('sha1', key).update(base_string).digest('base64');
+    },
+  });
+}
+
 
 export async function getRequestToken() {
+  const oauth = getOauthClient();
   const requestData = {
     url: `${SCHOOLOGY_API_URL}/oauth/request_token`,
     method: 'GET',
+    data: {
+        // Schoology requires oauth_callback to be part of the signed request
+        oauth_callback: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/schoology`,
+    }
   };
 
   const response = await fetch(requestData.url, {
@@ -45,8 +60,7 @@ export async function getAccessToken(
   oauth_token_secret: string,
   oauth_verifier: string
 ) {
-    // Note: The verifier isn't used in Schoology's flow but might be needed for other OAuth 1.0a providers
-    // We include it here for completeness but Schoology ignores it. The key is using the authorized request token.
+    const oauth = getOauthClient();
     const requestData = {
         url: `${SCHOOLOGY_API_URL}/oauth/access_token`,
         method: 'GET',

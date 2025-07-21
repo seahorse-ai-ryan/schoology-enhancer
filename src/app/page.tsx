@@ -18,12 +18,15 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [formattedBuildTime, setFormattedBuildTime] = useState('');
   const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME;
-  
+
   useEffect(() => {
     if (buildTime) {
       setFormattedBuildTime(new Date(buildTime).toLocaleTimeString());
     }
   }, [buildTime]);
+
+  const clientId = process.env.NEXT_PUBLIC_SCHOOLOGY_CLIENT_ID;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
@@ -57,6 +60,25 @@ export default function LoginPage() {
             </p>
           )}
         </CardFooter>
+      </Card>
+      <Card className="w-full max-w-sm mt-4">
+        <CardHeader>
+          <CardTitle>Client-Side Debugging</CardTitle>
+        </CardHeader>
+        <CardContent className="text-xs space-y-2">
+          <p>
+            <strong>NEXT_PUBLIC_SCHOOLOGY_CLIENT_ID:</strong>
+            <span className="ml-2 font-mono bg-muted p-1 rounded">
+              {clientId || 'NOT FOUND'}
+            </span>
+          </p>
+           <p>
+            <strong>NEXT_PUBLIC_APP_URL:</strong>
+            <span className="ml-2 font-mono bg-muted p-1 rounded">
+              {appUrl || 'NOT FOUND'}
+            </span>
+          </p>
+        </CardContent>
       </Card>
     </main>
   );
