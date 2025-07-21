@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -12,18 +11,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { BookOpenCheck } from 'lucide-react';
+import Link from 'next/link';
 
 export default function LoginPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = () => {
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      router.push('/dashboard');
-    }, 1000);
+    // We no longer use the router directly.
+    // The Link component will handle navigation.
   };
 
   return (
@@ -34,7 +30,6 @@ export default function LoginPage() {
           GradeWise
         </h1>
       </div>
-      <form onSubmit={handleLogin}>
         <Card className="w-full max-w-sm">
           <CardHeader className="text-center">
             <CardTitle className="font-headline text-2xl">Connect to Schoology</CardTitle>
@@ -43,9 +38,13 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-             <Button className="w-full" size="lg" type="submit" disabled={loading}>
-                {loading ? 'Connecting...' : 'Login with Schoology'}
-             </Button>
+            <Link href="/login/schoology" legacyBehavior>
+                <a onClick={handleLogin}>
+                    <Button className="w-full" size="lg" disabled={loading}>
+                        {loading ? 'Connecting...' : 'Login with Schoology'}
+                    </Button>
+                </a>
+            </Link>
           </CardContent>
            <CardFooter className="text-center justify-center">
               <p className="text-xs text-muted-foreground">
@@ -53,7 +52,6 @@ export default function LoginPage() {
               </p>
           </CardFooter>
         </Card>
-      </form>
     </main>
   );
 }
