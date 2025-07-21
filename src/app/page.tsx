@@ -38,8 +38,8 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Link href="/login/schoology" onClick={handleLogin}>
-              <Button className="w-full" size="lg" disabled={loading}>
+            <Link href="/login/schoology">
+              <Button className="w-full" size="lg" disabled={loading} onClick={handleLogin}>
                 {loading ? 'Connecting...' : 'Login with Schoology'}
               </Button>
             </Link>
