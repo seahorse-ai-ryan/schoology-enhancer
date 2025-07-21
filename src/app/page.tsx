@@ -18,11 +18,9 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [formattedBuildTime, setFormattedBuildTime] = useState('');
 
-  // These are read from the environment variables exposed by next.config.js
+  // This is read from the environment variables exposed by next.config.js
   const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME;
-  const clientId = process.env.NEXT_PUBLIC_SCHOOLOGY_CLIENT_ID;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-
+  
   useEffect(() => {
     if (buildTime) {
       // This formatting is done client-side to avoid hydration errors
@@ -62,25 +60,6 @@ export default function LoginPage() {
             </p>
           )}
         </CardFooter>
-      </Card>
-      <Card className="w-full max-w-sm mt-4">
-        <CardHeader>
-          <CardTitle>Client-Side Debugging</CardTitle>
-        </CardHeader>
-        <CardContent className="text-xs space-y-2">
-          <p>
-            <strong>NEXT_PUBLIC_SCHOOLOGY_CLIENT_ID:</strong>
-            <span className="ml-2 font-mono bg-muted p-1 rounded">
-              {clientId || 'NOT FOUND'}
-            </span>
-          </p>
-           <p>
-            <strong>NEXT_PUBLIC_APP_URL:</strong>
-            <span className="ml-2 font-mono bg-muted p-1 rounded">
-              {appUrl || 'NOT FOUND'}
-            </span>
-          </p>
-        </CardContent>
       </Card>
     </main>
   );

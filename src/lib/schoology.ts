@@ -27,27 +27,31 @@ const getOauthClient = () => {
 
 export async function getRequestToken() {
   const oauth = getOauthClient();
+  const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/schoology`;
+  console.log(`[STEP 3a] Callback URL for request token: ${callbackUrl}`);
+
   const requestData = {
     url: `${SCHOOLOGY_API_URL}/oauth/request_token`,
     method: 'GET',
     data: {
-        // Schoology requires oauth_callback to be part of the signed request
-        oauth_callback: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/schoology`,
+        oauth_callback: callbackUrl,
     }
   };
 
+  console.log('[STEP 3b] Making fetch request to Schoology for request token...');
   const response = await fetch(requestData.url, {
     method: requestData.method,
     headers: oauth.toHeader(oauth.authorize(requestData)),
   });
 
+  const responseText = await response.text();
+  console.log(`[STEP 4] Received response from Schoology. Status: ${response.status}. Body: ${responseText}`);
+
   if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`Failed to get request token: ${response.status} ${text}`);
+    throw new Error(`Failed to get request token: ${response.status} ${responseText}`);
   }
 
-  const responseData = await response.text();
-  const params = new URLSearchParams(responseData);
+  const params = new URLSearchParams(responseText);
 
   return {
     oauth_token: params.get('oauth_token')!,
