@@ -1,3 +1,4 @@
+
 import { NextResponse } from 'next/server';
 import { getRequestToken } from '@/lib/schoology';
 import { cookies } from 'next/headers';

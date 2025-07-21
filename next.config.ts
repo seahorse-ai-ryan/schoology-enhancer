@@ -1,3 +1,4 @@
+
 import type {NextConfig} from 'next';
 
 // This loads the .env file and sets the environment variables.
