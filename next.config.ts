@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_BUILD_TIME: new Date().toISOString(),
     // For server-side use
     SCHOOLOGY_CLIENT_ID: process.env.SCHOOLOGY_CLIENT_ID,
+    SCHOOLOGY_CLIENT_SECRET: process.env.SCHOOLOGY_CLIENT_SECRET,
     // For client-side use
     NEXT_PUBLIC_GREETING: process.env.NEXT_PUBLIC_GREETING,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
