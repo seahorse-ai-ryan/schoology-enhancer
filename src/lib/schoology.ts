@@ -10,22 +10,26 @@ const SCHOOLOGY_API_URL = 'https://api.schoology.com/v1';
 let oauthClient: OAuth | null = null;
 
 const getOauthClient = () => {
+  // Only initialize the client if it hasn't been already.
   if (oauthClient) {
     return oauthClient;
   }
 
   // Explicitly load .env file from the project root just-in-time.
-  config({ path: resolve(process.cwd(), '.env') });
+  // This ensures that no matter how the server is started, we find the file.
+  const envPath = resolve(process.cwd(), '.env');
+  config({ path: envPath });
 
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
   const clientSecret = process.env.SCHOOLOGY_CLIENT_SECRET;
   
   if (!clientId || !clientSecret) {
     // This log will now correctly fire if the variables are missing after attempting to load them.
-    console.error('[schoology.ts] Schoology Client ID or Secret is not configured.');
+    console.error(`[schoology.ts] Schoology Client ID or Secret is not configured. Attempted to load from: ${envPath}`);
     throw new Error('Schoology Client ID or Secret is not configured in environment variables.');
   }
 
+  // Create the singleton instance.
   oauthClient = new OAuth({
     consumer: {
       key: clientId,
