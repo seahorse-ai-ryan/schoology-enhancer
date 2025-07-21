@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -12,10 +11,27 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { BookOpenCheck } from 'lucide-react';
-import Link from 'next/link';
+import { loginWithSchoology } from './actions';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const redirectUrl = await loginWithSchoology();
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else {
+        setError('Could not get redirect URL from server.');
+      }
+    } catch (e: any) {
+      setError(e.message || 'An unexpected error occurred.');
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
@@ -33,11 +49,10 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Link href="/login/schoology" passHref>
-            <Button as="a" className="w-full" size="lg" onClick={() => setLoading(true)}>
-              {loading ? 'Connecting...' : 'Login with Schoology'}
-            </Button>
-          </Link>
+          <Button className="w-full" size="lg" onClick={handleLogin} disabled={loading}>
+            {loading ? 'Connecting...' : 'Login with Schoology'}
+          </Button>
+          {error && <p className="text-sm text-destructive text-center">{error}</p>}
         </CardContent>
         <CardFooter className="flex-col text-center justify-center gap-2">
           <p className="text-xs text-muted-foreground">

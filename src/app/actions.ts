@@ -1,10 +1,10 @@
+'use server';
 
-import { NextResponse } from 'next/server';
 import { getRequestToken } from '@/lib/schoology';
 import { cookies } from 'next/headers';
 
-export async function GET() {
-  console.log("--- [STEP 1] /login/schoology route hit ---");
+export async function loginWithSchoology(): Promise<string | null> {
+  console.log("--- [STEP 1] loginWithSchoology Server Action hit ---");
   
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
   const clientSecret = process.env.SCHOOLOGY_CLIENT_SECRET;
@@ -16,14 +16,8 @@ export async function GET() {
   console.log(` > NEXT_PUBLIC_APP_URL: ${appUrl || 'NOT FOUND'}`);
 
   if (!clientId || !clientSecret || !appUrl) {
-    console.error('[ERROR] Schoology environment variables are not configured.');
-    return NextResponse.json(
-      { 
-        error: 'Application is not configured for Schoology login.',
-        details: 'Server is missing one or more required environment variables (SCHOOLOGY_CLIENT_ID, SCHOOLOGY_CLIENT_SECRET, NEXT_PUBLIC_APP_URL). Check the .env file and server logs.'
-      },
-      { status: 500 }
-    );
+    console.error('[ERROR] Schoology environment variables are not configured in Server Action.');
+    throw new Error('Application is not configured for Schoology login.');
   }
 
   try {
@@ -41,16 +35,13 @@ export async function GET() {
 
     const authUrl = new URL('https://app.schoology.com/oauth/authorize');
     authUrl.searchParams.append('oauth_token', oauth_token);
-    console.log(`[STEP 7] Generated auth URL. Redirecting user to: ${authUrl.toString()}`);
+    console.log(`[STEP 7] Generated auth URL. Returning to client: ${authUrl.toString()}`);
 
-    return NextResponse.redirect(authUrl.toString());
+    return authUrl.toString();
 
   } catch (error) {
     console.error('[FATAL ERROR] Failed during Schoology login initiation:', error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
-    return NextResponse.json(
-      { error: 'Could not connect to Schoology.', details: errorMessage },
-      { status: 500 }
-    );
+    throw new Error(`Could not connect to Schoology: ${errorMessage}`);
   }
 }
