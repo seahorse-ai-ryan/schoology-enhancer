@@ -1,36 +1,41 @@
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import { getRequestToken } from '@/lib/schoology';
+import { cookies } from 'next/headers';
 
-export function GET(request: NextRequest) {
+export async function GET() {
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
+  const clientSecret = process.env.SCHOOLOGY_CLIENT_SECRET;
 
-  if (!clientId) {
-    console.error('Schoology client ID is not configured.');
-    // This response is for debugging in the dev environment.
-    // In production, you'd want a more user-friendly error page.
+  if (!clientId || !clientSecret) {
+    console.error('Schoology client ID or secret is not configured.');
     return NextResponse.json(
       { error: 'Application is not configured for Schoology login.' },
       { status: 500 }
     );
   }
 
-  // Dynamically determine the app's URL from the request headers.
-  // This makes it work in any environment (dev, prod, etc.)
-  const protocol = request.headers.get('x-forwarded-proto') || 'http';
-  const host = request.headers.get('host');
-  const appUrl = `${protocol}://${host}`;
+  try {
+    const { oauth_token, oauth_token_secret } = await getRequestToken();
+    
+    // Store the token secret in a secure, HTTP-only cookie
+    // This is crucial for the callback step
+    cookies().set('schoology_oauth_token_secret', oauth_token_secret, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'development',
+      maxAge: 60 * 15, // 15 minutes
+      path: '/',
+    });
 
-  // This is the callback URL that Schoology will redirect to after the user authorizes.
-  const redirectUri = `${appUrl}/api/auth/callback/schoology`;
+    const authUrl = new URL('https://app.schoology.com/oauth/authorize');
+    authUrl.searchParams.append('oauth_token', oauth_token);
 
-  const authUrl = new URL('https://app.schoology.com/oauth/authorize');
-  authUrl.searchParams.append('oauth_callback', redirectUri);
-  // Note: For Schoology's OAuth 1.0a-based flow, the client_id is often part of the request token step,
-  // but for the initial user authorization redirect, they just require the callback.
-  // Let's also add client_id just in case their flow requires it for identification.
-  authUrl.searchParams.append('client_id', clientId);
-  authUrl.searchParams.append('response_type', 'code'); // Requesting an authorization code
-  authUrl.searchParams.append('state', 'dummy_state_for_now'); // Should be a random, secure value per request
+    return NextResponse.redirect(authUrl.toString());
 
-  // Redirect the user to Schoology's authorization page
-  return NextResponse.redirect(authUrl.toString());
+  } catch (error) {
+    console.error('Failed to get Schoology request token:', error);
+    return NextResponse.json(
+      { error: 'Could not connect to Schoology. Please try again later.' },
+      { status: 500 }
+    );
+  }
 }
