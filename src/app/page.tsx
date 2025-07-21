@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -16,17 +16,6 @@ import Link from 'next/link';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
-  const [formattedBuildTime, setFormattedBuildTime] = useState('');
-
-  // This is read from the environment variables exposed by next.config.js
-  const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME;
-  
-  useEffect(() => {
-    if (buildTime) {
-      // This formatting is done client-side to avoid hydration errors
-      setFormattedBuildTime(new Date(buildTime).toLocaleTimeString());
-    }
-  }, [buildTime]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
@@ -54,11 +43,6 @@ export default function LoginPage() {
           <p className="text-xs text-muted-foreground">
             You will be redirected to Schoology to authorize this app.
           </p>
-          {formattedBuildTime && (
-            <p className="text-xs text-muted-foreground/50">
-              Build: {formattedBuildTime}
-            </p>
-          )}
         </CardFooter>
       </Card>
     </main>
