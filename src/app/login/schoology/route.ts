@@ -2,10 +2,6 @@
 import { NextResponse } from 'next/server';
 import { getRequestToken } from '@/lib/schoology';
 import { cookies } from 'next/headers';
-import { config } from 'dotenv';
-
-// Force load environment variables from .env file
-config();
 
 export async function GET() {
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
