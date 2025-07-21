@@ -1,18 +1,32 @@
 
 import crypto from 'crypto';
 import OAuth from 'oauth-1.0a';
+import { config } from 'dotenv';
+import { resolve } from 'path';
 
 const SCHOOLOGY_API_URL = 'https://api.schoology.com/v1';
 
+// Lazy Initializer for the OAuth client
+let oauthClient: OAuth | null = null;
+
 const getOauthClient = () => {
+  if (oauthClient) {
+    return oauthClient;
+  }
+
+  // Explicitly load .env file from the project root just-in-time.
+  config({ path: resolve(process.cwd(), '.env') });
+
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
   const clientSecret = process.env.SCHOOLOGY_CLIENT_SECRET;
-
+  
   if (!clientId || !clientSecret) {
+    // This log will now correctly fire if the variables are missing after attempting to load them.
+    console.error('[schoology.ts] Schoology Client ID or Secret is not configured.');
     throw new Error('Schoology Client ID or Secret is not configured in environment variables.');
   }
 
-  return new OAuth({
+  oauthClient = new OAuth({
     consumer: {
       key: clientId,
       secret: clientSecret,
@@ -22,6 +36,8 @@ const getOauthClient = () => {
       return crypto.createHmac('sha1', key).update(base_string).digest('base64');
     },
   });
+
+  return oauthClient;
 }
 
 

@@ -6,7 +6,7 @@ import { config } from 'dotenv';
 import { resolve } from 'path';
 
 export async function loginWithSchoology(): Promise<string | null> {
-  // Explicitly load .env file from the project root
+  // This top-level config call ensures variables are loaded before anything else.
   config({ path: resolve(process.cwd(), '.env') });
   
   console.log("--- [STEP 1] loginWithSchoology Server Action hit ---");
