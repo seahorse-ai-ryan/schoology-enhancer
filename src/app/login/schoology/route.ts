@@ -1,20 +1,21 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 
-export function GET() {
+export function GET(request: NextRequest) {
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
-  if (!clientId || !appUrl) {
-    console.error('Schoology client ID or App URL is not configured.');
-    const debugInfo = {
-        error: 'Application is not configured for Schoology login.',
-        clientIdLoaded: !!clientId,
-        clientIdLast4: clientId?.slice(-4) || 'Not Found',
-        appUrlLoaded: !!appUrl,
-        appUrlValue: appUrl || 'Not Found'
-    };
-    return NextResponse.json(debugInfo, { status: 500 });
+  if (!clientId) {
+    console.error('Schoology client ID is not configured.');
+    return NextResponse.json(
+      { error: 'Application is not configured for Schoology login.' },
+      { status: 500 }
+    );
   }
+
+  // Dynamically determine the app's URL from the request headers.
+  // This makes it work in any environment (dev, prod, etc.)
+  const protocol = request.headers.get('x-forwarded-proto') || 'http';
+  const host = request.headers.get('host');
+  const appUrl = `${protocol}://${host}`;
 
   // This is the callback URL that Schoology will redirect to after the user authorizes.
   const redirectUri = `${appUrl}/api/auth/callback/schoology`;
