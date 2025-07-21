@@ -4,7 +4,7 @@ import { getRequestToken } from '@/lib/schoology';
 import { cookies } from 'next/headers';
 import { config } from 'dotenv';
 
-// Load environment variables directly from .env file
+// Load environment variables directly from .env file for this server-side route
 config({ path: process.cwd() + '/.env' });
 
 
