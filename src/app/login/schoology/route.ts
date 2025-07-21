@@ -2,11 +2,26 @@
 import { NextResponse } from 'next/server';
 import { getRequestToken } from '@/lib/schoology';
 import { cookies } from 'next/headers';
+import { config } from 'dotenv';
+
+config({ path: process.cwd() + '/.env' });
+
 
 export async function GET() {
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
   const clientSecret = process.env.SCHOOLOGY_CLIENT_SECRET;
 
+  // Temporarily return the variables for debugging
+  return NextResponse.json({
+    message: "Debugging environment variables from /login/schoology route.",
+    clientIdLoaded: !!clientId,
+    clientIdLast4: clientId?.slice(-4) ?? "Not Found",
+    clientSecretLoaded: !!clientSecret,
+    clientSecretFirst4: clientSecret?.slice(0, 4) ?? "Not Found",
+  });
+
+  /*
+  // Original Logic
   if (!clientId || !clientSecret) {
     console.error('Schoology client ID or secret is not configured.');
     return NextResponse.json(
@@ -39,4 +54,5 @@ export async function GET() {
       { status: 500 }
     );
   }
+  */
 }
