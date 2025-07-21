@@ -16,12 +16,6 @@ import Link from 'next/link';
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    setLoading(true);
-    // Navigation is handled by the Link component.
-    // This function can be used for other pre-navigation logic if needed.
-  };
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
        <div className="flex items-center gap-2 mb-6">
@@ -38,8 +32,8 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Link href="/login/schoology">
-              <Button className="w-full" size="lg" disabled={loading} onClick={handleLogin}>
+            <Link href="/login/schoology" passHref>
+              <Button as="a" className="w-full" size="lg" onClick={() => setLoading(true)}>
                 {loading ? 'Connecting...' : 'Login with Schoology'}
               </Button>
             </Link>
