@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import 'dotenv/config';
 
 export function GET() {
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
@@ -6,10 +7,14 @@ export function GET() {
 
   if (!clientId || !appUrl) {
     console.error('Schoology client ID or App URL is not configured.');
-    return NextResponse.json(
-        { error: 'Application is not configured for Schoology login.'},
-        { status: 500 }
-    );
+    const debugInfo = {
+        error: 'Application is not configured for Schoology login.',
+        clientIdLoaded: !!clientId,
+        clientIdLast4: clientId?.slice(-4) || 'Not Found',
+        appUrlLoaded: !!appUrl,
+        appUrlValue: appUrl || 'Not Found'
+    };
+    return NextResponse.json(debugInfo, { status: 500 });
   }
 
   // This is the callback URL that Schoology will redirect to after the user authorizes.
