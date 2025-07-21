@@ -19,9 +19,6 @@ export default function LoginPage() {
   const [formattedBuildTime, setFormattedBuildTime] = useState('');
   const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME;
   
-  const clientId = process.env.NEXT_PUBLIC_SCHOOLOGY_CLIENT_ID;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-
   useEffect(() => {
     if (buildTime) {
       setFormattedBuildTime(new Date(buildTime).toLocaleTimeString());
@@ -49,13 +46,6 @@ export default function LoginPage() {
               {loading ? 'Connecting...' : 'Login with Schoology'}
             </Button>
           </Link>
-           <div className="text-xs text-muted-foreground bg-muted p-2 rounded-md">
-            <p><strong>Debug Info (from Client):</strong></p>
-            <p>Client ID Loaded: {clientId ? 'Yes' : 'No'}</p>
-            <p>Client ID Last 4: {clientId?.slice(-4) ?? 'N/A'}</p>
-            <p>App URL Loaded: {appUrl ? 'Yes' : 'No'}</p>
-            <p>App URL: {appUrl ?? 'N/A'}</p>
-          </div>
         </CardContent>
         <CardFooter className="flex-col text-center justify-center gap-2">
           <p className="text-xs text-muted-foreground">
