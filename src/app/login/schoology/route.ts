@@ -13,7 +13,6 @@ export function GET() {
   }
 
   // This is the callback URL that Schoology will redirect to after the user authorizes.
-  // We will need to create this page next.
   const redirectUri = `${appUrl}/api/auth/callback/schoology`;
 
   const authUrl = new URL('https://app.schoology.com/oauth/authorize');
