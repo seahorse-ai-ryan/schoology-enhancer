@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export function GET() {
+  console.log('Attempting to log in with Schoology...');
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
   const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
