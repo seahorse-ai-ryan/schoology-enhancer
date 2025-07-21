@@ -5,8 +5,6 @@ import { cookies } from 'next/headers';
 import { config } from 'dotenv';
 
 export async function loginWithSchoology(): Promise<string | null> {
-  config({ path: '.env' });
-  
   console.log("--- [STEP 1] loginWithSchoology Server Action hit ---");
   
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
