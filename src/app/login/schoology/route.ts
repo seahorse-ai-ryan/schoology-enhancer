@@ -14,14 +14,12 @@ export async function GET() {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
   // --- Start of Debugging Block ---
-  const showDebug = process.env.NODE_ENV === 'development';
-  if (showDebug) {
-    console.log("--- Server-side /login/schoology Debug ---");
-    console.log("SCHOOLOGY_CLIENT_ID:", clientId ? 'FOUND' : 'NOT FOUND');
-    console.log("SCHOOLOGY_CLIENT_SECRET:", clientSecret ? 'FOUND' : 'NOT FOUND');
-    console.log("NEXT_PUBLIC_APP_URL:", appUrl || 'NOT FOUND');
-    console.log("-----------------------------------------");
-  }
+  // This console.log will appear in your server terminal, not the browser.
+  console.log("--- Server-side /login/schoology Debug ---");
+  console.log("SCHOOLOGY_CLIENT_ID:", clientId ? 'FOUND' : 'NOT FOUND');
+  console.log("SCHOOLOGY_CLIENT_SECRET:", clientSecret ? 'FOUND' : 'NOT FOUND');
+  console.log("NEXT_PUBLIC_APP_URL:", appUrl || 'NOT FOUND');
+  console.log("-----------------------------------------");
   // --- End of Debugging Block ---
 
 
