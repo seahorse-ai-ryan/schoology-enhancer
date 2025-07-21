@@ -3,8 +3,12 @@
 import { getRequestToken } from '@/lib/schoology';
 import { cookies } from 'next/headers';
 import { config } from 'dotenv';
+import { resolve } from 'path';
 
 export async function loginWithSchoology(): Promise<string | null> {
+  // Explicitly load .env file from the project root
+  config({ path: resolve(process.cwd(), '.env') });
+  
   console.log("--- [STEP 1] loginWithSchoology Server Action hit ---");
   
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
