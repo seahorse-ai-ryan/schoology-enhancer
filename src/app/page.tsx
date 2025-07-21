@@ -18,8 +18,8 @@ export default function LoginPage() {
 
   const handleLogin = () => {
     setLoading(true);
-    // We no longer use the router directly.
-    // The Link component will handle navigation.
+    // Navigation is handled by the Link component.
+    // This function can be used for other pre-navigation logic if needed.
   };
 
   return (
@@ -38,12 +38,10 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Link href="/login/schoology" legacyBehavior>
-                <a onClick={handleLogin}>
-                    <Button className="w-full" size="lg" disabled={loading}>
-                        {loading ? 'Connecting...' : 'Login with Schoology'}
-                    </Button>
-                </a>
+            <Link href="/login/schoology" onClick={handleLogin}>
+              <Button className="w-full" size="lg" disabled={loading}>
+                {loading ? 'Connecting...' : 'Login with Schoology'}
+              </Button>
             </Link>
           </CardContent>
            <CardFooter className="text-center justify-center">
