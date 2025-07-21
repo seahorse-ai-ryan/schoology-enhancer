@@ -2,11 +2,6 @@
 import { NextResponse } from 'next/server';
 import { getRequestToken } from '@/lib/schoology';
 import { cookies } from 'next/headers';
-import { config } from 'dotenv';
-
-// Load environment variables directly from .env file for this server-side route
-config({ path: process.cwd() + '/.env' });
-
 
 export async function GET() {
   console.log("--- [STEP 1] /login/schoology route hit ---");
