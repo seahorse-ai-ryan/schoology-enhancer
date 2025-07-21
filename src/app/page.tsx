@@ -50,7 +50,7 @@ export default function LoginPage() {
             </Button>
           </Link>
            <div className="text-xs text-muted-foreground bg-muted p-2 rounded-md">
-            <p><strong>Debug Info:</strong></p>
+            <p><strong>Debug Info (from Client):</strong></p>
             <p>Client ID Loaded: {clientId ? 'Yes' : 'No'}</p>
             <p>Client ID Last 4: {clientId?.slice(-4) ?? 'N/A'}</p>
             <p>App URL Loaded: {appUrl ? 'Yes' : 'No'}</p>
