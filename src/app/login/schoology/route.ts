@@ -16,24 +16,11 @@ export async function GET() {
   // --- Start of Debugging Block ---
   const showDebug = process.env.NODE_ENV === 'development';
   if (showDebug) {
-    const debugInfo = {
-      message: "This is the server-side debugging view for /login/schoology.",
-      variables: {
-        SCHOOLOGY_CLIENT_ID: clientId || 'NOT FOUND',
-        SCHOOLOGY_CLIENT_SECRET: clientSecret ? '********' : 'NOT FOUND',
-        NEXT_PUBLIC_APP_URL: appUrl || 'NOT FOUND',
-      },
-      nextStep: "If variables are 'NOT FOUND', check your .env file. If they are present, the real logic will run in 5 seconds."
-    };
-
-    // Temporarily return JSON to show the variables this route can see.
-    // I will remove this and enable the redirect after you confirm the variables are correct.
-    return new Response(
-        `<pre>${JSON.stringify(debugInfo, null, 2)}</pre>`, 
-        { 
-            headers: { 'Content-Type': 'text/html' },
-        }
-    );
+    console.log("--- Server-side /login/schoology Debug ---");
+    console.log("SCHOOLOGY_CLIENT_ID:", clientId ? 'FOUND' : 'NOT FOUND');
+    console.log("SCHOOLOGY_CLIENT_SECRET:", clientSecret ? 'FOUND' : 'NOT FOUND');
+    console.log("NEXT_PUBLIC_APP_URL:", appUrl || 'NOT FOUND');
+    console.log("-----------------------------------------");
   }
   // --- End of Debugging Block ---
 
