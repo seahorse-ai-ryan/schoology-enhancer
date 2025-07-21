@@ -11,6 +11,11 @@ export async function loginWithSchoology(): Promise<string | null> {
   
   console.log("--- [STEP 1] loginWithSchoology Server Action hit ---");
   
+  // --- Start Enhanced Debugging ---
+  console.log(`[DEBUG] Current working directory (process.cwd()): ${process.cwd()}`);
+  console.log("[DEBUG] All available process.env keys:", Object.keys(process.env));
+  // --- End Enhanced Debugging ---
+
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
   const clientSecret = process.env.SCHOOLOGY_CLIENT_SECRET;
   const appUrl = process.env.NEXT_PUBLIC_APP_URL;
