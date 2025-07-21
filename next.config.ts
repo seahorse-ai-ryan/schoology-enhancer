@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   env: {
     SCHOOLOGY_CLIENT_ID: process.env.SCHOOLOGY_CLIENT_ID,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_BUILD_TIME: new Date().toISOString(),
   },
   typescript: {
     ignoreBuildErrors: true,
