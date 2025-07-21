@@ -48,11 +48,12 @@ export default function LoginPage() {
           </Link>
         </CardContent>
         <CardFooter className="flex-col text-center justify-center gap-2">
-           {greeting && (
-            <p className="text-xs text-green-600 font-bold bg-green-100 p-2 rounded-md">
-              {greeting}
-            </p>
-          )}
+           <div className="text-xs p-2 rounded-md bg-muted border w-full text-left">
+              <p className="font-bold">Debugging Info:</p>
+              <p>Greeting: <span className="font-mono">{process.env.NEXT_PUBLIC_GREETING || 'Not Found'}</span></p>
+              <p>Client ID (last 4): <span className="font-mono">{process.env.NEXT_PUBLIC_SCHOOLOGY_CLIENT_ID?.slice(-4) || 'Not Found'}</span></p>
+              <p>App URL: <span className="font-mono">{process.env.NEXT_PUBLIC_APP_URL || 'Not Found'}</span></p>
+           </div>
           <p className="text-xs text-muted-foreground">
             You will be redirected to Schoology to authorize this app.
           </p>
