@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -15,7 +15,14 @@ import Link from 'next/link';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
+  const [formattedBuildTime, setFormattedBuildTime] = useState('');
   const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME;
+
+  useEffect(() => {
+    if (buildTime) {
+      setFormattedBuildTime(new Date(buildTime).toLocaleTimeString());
+    }
+  }, [buildTime]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
@@ -43,9 +50,9 @@ export default function LoginPage() {
           <p className="text-xs text-muted-foreground">
             You will be redirected to Schoology to authorize this app.
           </p>
-          {buildTime && (
+          {formattedBuildTime && (
             <p className="text-xs text-muted-foreground/50">
-              Build: {new Date(buildTime).toLocaleTimeString()}
+              Build: {formattedBuildTime}
             </p>
           )}
         </CardFooter>
