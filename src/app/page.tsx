@@ -17,16 +17,18 @@ import Link from 'next/link';
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [formattedBuildTime, setFormattedBuildTime] = useState('');
+
+  // These are read from the environment variables exposed by next.config.js
   const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME;
+  const clientId = process.env.NEXT_PUBLIC_SCHOOLOGY_CLIENT_ID;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
   useEffect(() => {
     if (buildTime) {
+      // This formatting is done client-side to avoid hydration errors
       setFormattedBuildTime(new Date(buildTime).toLocaleTimeString());
     }
   }, [buildTime]);
-
-  const clientId = process.env.NEXT_PUBLIC_SCHOOLOGY_CLIENT_ID;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
