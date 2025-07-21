@@ -17,6 +17,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [formattedBuildTime, setFormattedBuildTime] = useState('');
   const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME;
+  const greeting = process.env.NEXT_PUBLIC_GREETING;
 
   useEffect(() => {
     if (buildTime) {
@@ -47,6 +48,11 @@ export default function LoginPage() {
           </Link>
         </CardContent>
         <CardFooter className="flex-col text-center justify-center gap-2">
+           {greeting && (
+            <p className="text-xs text-green-600 font-bold bg-green-100 p-2 rounded-md">
+              {greeting}
+            </p>
+          )}
           <p className="text-xs text-muted-foreground">
             You will be redirected to Schoology to authorize this app.
           </p>

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import 'dotenv/config';
 
 export function GET() {
   const clientId = process.env.SCHOOLOGY_CLIENT_ID;
