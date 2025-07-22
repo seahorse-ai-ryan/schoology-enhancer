@@ -1,65 +1,84 @@
-'use client';
+// src/app/page.tsx
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { BookOpenCheck } from 'lucide-react';
-import { loginWithSchoology } from './actions';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import Link from 'next/link'; // Import Link
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
-export default function LoginPage() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+async function isAuthenticated() {
+  const schoologyUserId = cookies().get('schoology_user_id')?.value;
 
-  const handleLogin = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const redirectUrl = await loginWithSchoology();
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-      } else {
-        setError('Could not get redirect URL from server.');
-      }
-    } catch (e: any) {
-      setError(e.message || 'An unexpected error occurred.');
-      setLoading(false);
+  if (!schoologyUserId) {
+    return false;
+  }
+
+  // Optional: Verify the user exists in Firestore and has an access token
+  try {
+    const userDocRef = doc(db, 'users', schoologyUserId);
+    const userDoc = await getDoc(userDocRef);
+
+    if (userDoc.exists() && userDoc.data().accessToken) {
+      return true;
+    } else {
+      // If cookie exists but user data is missing/invalid in Firestore
+      console.warn('Authentication cookie present, but user data missing or invalid in Firestore.');
+      // You might want to clear the invalid cookie here
+      // cookies().delete('schoology_user_id');
+      return false;
     }
-  };
+  } catch (error) {
+    console.error('Error checking authentication status from Firestore:', error);
+    return false;
+  }
+}
+
+export default async function HomePage() {
+  const authenticated = await isAuthenticated();
+
+  if (!authenticated) {
+    redirect('/login');
+  }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-background">
-      <div className="flex items-center gap-2 mb-6">
-        <BookOpenCheck className="h-8 w-8 text-primary" />
-        <h1 className="text-3xl font-headline font-bold text-primary">
-          GradeWise
-        </h1>
-      </div>
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <CardTitle className="font-headline text-2xl">Connect to Schoology</CardTitle>
-          <CardDescription>
-            Link your Schoology account to get started.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Button className="w-full" size="lg" onClick={handleLogin} disabled={loading}>
-            {loading ? 'Connecting...' : 'Login with Schoology'}
-          </Button>
-          {error && <p className="text-sm text-destructive text-center">{error}</p>}
-        </CardContent>
-        <CardFooter className="flex-col text-center justify-center gap-2">
-          <p className="text-xs text-muted-foreground">
-            You will be redirected to Schoology to authorize this app.
-          </p>
-        </CardFooter>
-      </Card>
-    </main>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh',
+      gap: '20px'
+    }}>
+      <h1>Schoology Enhancer</h1>
+      <p>You are authenticated!</p>
+      {/* Add links to authenticated parts of your app here */}
+      <Link href="/dashboard" style={{
+          padding: '10px 20px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          borderRadius: '5px',
+          textDecoration: 'none',
+          fontSize: '1.1em'
+      }}>
+          Go to Dashboard
+      </Link>
+
+      {/* Logout Button */}
+      <form action="/api/auth/logout" method="post">
+        <button type="submit" style={{
+           padding: '10px 20px',
+           backgroundColor: '#f44336',
+           color: 'white',
+           borderRadius: '5px',
+           border: 'none',
+           fontSize: '1.1em',
+           cursor: 'pointer',
+           marginTop: '20px'
+        }}>
+          Logout
+        </button>
+      </form>
+
+    </div>
   );
 }

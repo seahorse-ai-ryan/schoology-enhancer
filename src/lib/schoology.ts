@@ -97,7 +97,7 @@ export async function getAccessToken(
 
     const response = await fetch(requestData.url, {
         method: requestData.method,
-        headers: oauth.toHeader(oauth.authorize(requestData, token)),
+        headers: oauth.toHeader(oauth.authorize(requestData, token, { oauth_verifier })), // Include oauth_verifier here
     });
 
     if (!response.ok) {
@@ -112,4 +112,33 @@ export async function getAccessToken(
         oauth_token: params.get('oauth_token')!,
         oauth_token_secret: params.get('oauth_token_secret')!,
     };
+}
+
+export async function getSchoologyUser(accessToken: { key: string; secret: string }) {
+    const oauth = getOauthClient();
+    const requestData = {
+        url: `${SCHOOLOGY_API_URL}/users/me`,
+        method: 'GET',
+    };
+
+    const authHeader = oauth.toHeader(oauth.authorize(requestData, accessToken));
+
+    const response = await fetch(requestData.url, {
+        method: requestData.method,
+        headers: {
+            ...authHeader,
+            'Content-Type': 'application/json', // Schoology API often expects JSON
+            'Accept': 'application/json', // Request JSON response
+        },
+    });
+
+    if (!response.ok) {
+        const text = await response.text();
+        console.error(`Failed to fetch Schoology user: ${response.status} ${text}`);
+        throw new Error(`Failed to fetch Schoology user: ${response.status} ${text}`);
+    }
+
+    const userData = await response.json();
+    console.log('Fetched Schoology user data:', userData);
+    return userData; // Return the user data object
 }
