@@ -41,8 +41,21 @@ The goal of Phase 2 is to introduce write-capabilities that help with planning a
 *   **Secondary:** Reduced instances of "Missing" assignments for users who actively use the planning features.
 *   **Qualitative:** Users report feeling more organized and less stressed about their schoolwork.
 
-## 4. Technical Considerations (Based on Architectural Plan)
+## 4. Technical Considerations
 
-This application will be built using Firebase Studio, integrated with GitHub, and hosted on Google Cloud Platform. Key services include Firebase Functions for backend logic, Firestore for data storage, and Google Secret Manager for secure key management.
+This application will be developed within Firebase Studio, leveraging a modern JavaScript ecosystem to achieve our goals.
 
-The development workflow will emphasize automated testing (Unit, Integration, E2E with Playwright) and CI/CD using GitHub Actions. We will implement strategies for managing development and production environments and mocking third-party APIs for efficient testing.
+*   **Frontend:** A responsive single-page application built with **Next.js** and styled with **Tailwind CSS**.
+*   **Backend:** Server-side logic will be handled by **Firebase Functions** (Node.js) to manage the Schoology OAuth 1.0a handshake and all subsequent secure API calls.
+*   **Database:** **Firestore** will be our primary database for storing user profiles, encrypted Schoology API tokens, and cached Schoology data (courses, assignments, etc.) to ensure fast load times and a seamless user experience.
+*   **Authentication:** The primary authentication method will be Schoology's OAuth 1.0a flow. We will manage the complexities of this, including the secure storage of user-specific access tokens.
+*   **Development & Testing:**
+    *   **IDE:** Firebase Studio will be the primary development environment.
+    *   **Version Control:** Git, with a central repository on GitHub.
+    *   **Testing:** We will maintain a comprehensive testing suite, including:
+        *   **Unit/Integration Tests** using Vitest.
+        *   **End-to-End (E2E) Tests** using Playwright to validate full user flows.
+        *   **Firebase Emulators** will be used for local development and testing to simulate a live environment without affecting production data.
+    *   **API Mocking:** We will mock Schoology API responses during testing to ensure reliable and fast test runs without depending on the external service.
+*   **Deployment:** We will utilize Firebase Hosting for the frontend and Firebase Functions for the backend. A CI/CD pipeline using **GitHub Actions** will be set up to automate testing and deployments, with distinct workflows for development (preview channels) and production environments.
+*   **Security:** Sensitive credentials, such as the Schoology application Consumer Key and Secret, will be stored securely in **Google Secret Manager** and accessed by Firebase Functions at runtime, never exposed on the client-side.
