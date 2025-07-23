@@ -6,6 +6,7 @@
 import { requestToken, callback } from './schoology-auth';
 import { helloWorld } from './hello-world';
 import { ssrschoologytesting } from "./next-ssr";
+import { simpletest } from './simple-test';
 
 
-export { requestToken, callback, helloWorld, ssrschoologytesting };
+export { requestToken, callback, helloWorld, ssrschoologytesting, simpletest };

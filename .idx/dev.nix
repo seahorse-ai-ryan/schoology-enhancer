@@ -10,24 +10,19 @@
   ];
   # Sets environment variables in the workspace
   env = {};
-  # This adds a file watcher to startup the firebase emulators. The emulators will only start if
-  # a firebase.json file is written into the user's directory
-  services.firebase.emulators = {
-    detect = true;
-    projectId = "demo-app";
-    services = ["auth" "firestore" "hosting"];
-  };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
       # "vscodevim.vim"
     ];
     workspace = {
+      # Run this command whenever the workspace is (re)started.
+      # This ensures the functions are built before the emulators start.
+      onStart = {
+        build = "npm run build";
+      };
+      # We also keep it here to ensure it runs on the initial creation.
       onCreate = {
-        default.openFiles = [
-          "src/app/page.tsx"
-        ];
-        # Build the Next.js app and the Firebase Functions
         build = "npm run build";
       };
     };
@@ -41,5 +36,14 @@
         };
       };
     };
+  };
+  # This section MUST come AFTER the idx.workspace.onStart hook.
+  # It adds a file watcher to startup the firebase emulators. The emulators will only start if
+  # a firebase.json file is written into the user's directory.
+  # Nix processes these sections sequentially, so onStart runs, then services start.
+  services.firebase.emulators = {
+    detect = true;
+    projectId = "demo-app";
+    services = ["auth" "firestore" "hosting" "functions"];
   };
 }
