@@ -27,6 +27,8 @@
         default.openFiles = [
           "src/app/page.tsx"
         ];
+        # Build the Next.js app and the Firebase Functions
+        build = "npm run build";
       };
     };
     # Enable previews and customize configuration

@@ -6,4 +6,16 @@ module.exports = {
   clearMocks: true,
   // The path to a module that runs some code to configure or set up the testing framework before each test.
   setupFilesAfterEnv: ['<rootDir>/src/test/setup.ts'],
+  transformIgnorePatterns: [
+    '/node_modules/(?!node-fetch)/',
+  ],
+  // Add this to handle ES Modules
+  transform: {
+    '^.+\.(ts|tsx|js|jsx)$': [
+      'ts-jest',
+      {
+        useESM: true,
+      },
+    ],
+  },
 };

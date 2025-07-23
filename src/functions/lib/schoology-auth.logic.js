@@ -21,7 +21,12 @@ const SCHOOLOGY_APP_URL = 'https://app.schoology.com';
 const requestTokenLogic = async (db, consumerKey, consumerSecret) => {
     const oauthClient = getOauth(consumerKey, consumerSecret);
     const request_data = { url: `${SCHOOLOGY_API_URL}/oauth/request_token`, method: 'GET' };
-    const headers = oauthClient.toHeader(oauthClient.authorize(request_data));
+    // Correctly construct Headers object
+    const authHeader = oauthClient.toHeader(oauthClient.authorize(request_data));
+    const headers = new Headers();
+    for (const key in authHeader) {
+        headers.append(key, authHeader[key]);
+    }
     const response = await fetch(request_data.url, { headers });
     if (!response.ok)
         throw new Error("Request Token failed");
@@ -41,7 +46,12 @@ const callbackLogic = async (db, consumerKey, consumerSecret, oauth_token) => {
     const request_token_secret = tokenDoc.data().secret;
     const access_token_data = { url: `${SCHOOLOGY_API_URL}/oauth/access_token`, method: 'GET' };
     const request_token = { key: oauth_token, secret: request_token_secret };
-    const accessHeaders = oauthClient.toHeader(oauthClient.authorize(access_token_data, request_token));
+    // Correctly construct Headers object
+    const accessAuthHeader = oauthClient.toHeader(oauthClient.authorize(access_token_data, request_token));
+    const accessHeaders = new Headers();
+    for (const key in accessAuthHeader) {
+        accessHeaders.append(key, accessAuthHeader[key]);
+    }
     const accessResponse = await fetch(access_token_data.url, { headers: accessHeaders });
     if (!accessResponse.ok)
         throw new Error("Access Token failed");
@@ -51,7 +61,12 @@ const callbackLogic = async (db, consumerKey, consumerSecret, oauth_token) => {
     const access_token_secret = accessTokenData.get('oauth_token_secret');
     const user_data = { url: `${SCHOOLOGY_API_URL}/users/me`, method: 'GET' };
     const access_token = { key: access_token_key, secret: access_token_secret };
-    const userHeaders = oauthClient.toHeader(oauthClient.authorize(user_data, access_token));
+    // Correctly construct Headers object
+    const userAuthHeader = oauthClient.toHeader(oauthClient.authorize(user_data, access_token));
+    const userHeaders = new Headers();
+    for (const key in userAuthHeader) {
+        userHeaders.append(key, userAuthHeader[key]);
+    }
     const userResponse = await fetch(user_data.url, { headers: userHeaders });
     if (!userResponse.ok)
         throw new Error("User fetch failed");
