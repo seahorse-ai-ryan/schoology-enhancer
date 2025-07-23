@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest';
+// src/test/example.spec.ts
+import { describe, it, expect } from '@jest/globals';
 
 describe('simple test', () => {
   it('should pass', () => {

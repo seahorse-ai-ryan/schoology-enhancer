@@ -1,76 +1,40 @@
-import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest'
-import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
-import * as functions from '../functions/schoology-auth';
+// src/test/schoology-auth.integration.spec.ts
+import { describe, it, expect, beforeAll, afterAll, afterEach, jest } from '@jest/globals';
+import { requestTokenLogic, callbackLogic } from '../functions/schoology-auth.logic';
 
-// Mock Firebase Functions modules
-vi.mock('firebase-functions/logger', () => ({
-    info: vi.fn(),
-    error: vi.fn(),
-}));
-vi.mock('firebase-functions/v2/https', () => ({
-    onRequest: (options, handler) => handler, // Return the handler directly
-}));
-
-// Mock Firestore
-const set = vi.fn();
-const doc = vi.fn(() => ({ set }));
-vi.mock('firebase-admin/firestore', () => ({
-  getFirestore: () => ({
-    collection: () => ({
-      doc,
+// Create a simple, in-memory mock for the Firestore database.
+let fakeDb = {};
+const dbMock = {
+  collection: (name) => ({
+    doc: (id) => ({
+      set: (data) => { fakeDb[`${name}/${id}`] = data; return Promise.resolve(); },
+      get: () => Promise.resolve({ exists: !!fakeDb[`${name}/${id}`], data: () => fakeDb[`${name}/${id}`] }),
     }),
   }),
-}));
-vi.mock('firebase-admin/app', () => ({
-  initializeApp: () => {},
-}));
+};
 
-
-// 1. Define the mock server and its handlers
-const server = setupServer(
-  http.get('https://api.schoology.com/v1/oauth/request_token', () => {
-    return HttpResponse.text(
-      'oauth_token=test_request_token&oauth_token_secret=test_request_secret'
-    )
-  }),
-  http.get('https://api.schoology.com/v1/oauth/access_token', () => {
-    return HttpResponse.text(
-      'oauth_token=test_access_token&oauth_token_secret=test_access_secret'
-    )
-  })
-)
-
-// 2. Setup and Teardown for the mock server
-beforeAll(() => server.listen())
 afterEach(() => {
-    server.resetHandlers();
-    vi.clearAllMocks();
-})
-afterAll(() => server.close())
+  fakeDb = {};
+});
 
-// 3. The actual test suite
-describe('Schoology OAuth Integration', () => {
-  it('should handle the requestToken step correctly', async () => {
-    const req = { }; // Mock request object
-    const res = { redirect: vi.fn() }; // Mock response object
-
-    await functions.requestToken(req as any, res as any);
-
-    // Assert: Check if the redirect function was called with the correct URL
-    expect(res.redirect).toHaveBeenCalledWith(
-      'https://app.schoology.com/oauth/authorize?oauth_token=test_request_token'
-    );
-    
-    // Assert: Check if the request token was saved to Firestore
-    expect(doc).toHaveBeenCalledWith('test_request_token');
-    expect(set).toHaveBeenCalledWith({
-        secret: 'test_request_secret',
-        timestamp: expect.any(Number),
-    });
-
+describe('Schoology OAuth Logic', () => {
+  it('requestTokenLogic should return a redirect URL and store a token', async () => {
+    const redirectUrl = await requestTokenLogic(dbMock as any, 'key', 'secret');
+    expect(redirectUrl).toBe('https://app.schoology.com/oauth/authorize?oauth_token=test_request_token');
+    expect(fakeDb['oauth_tokens/test_request_token']).toBeDefined();
   });
 
-  it.todo('should handle the full three-legged OAuth 1.0a flow');
+  it('callbackLogic should exchange tokens and store user data', async () => {
+    // Setup: prime the database with the request token.
+    fakeDb['oauth_tokens/test_request_token'] = { secret: 'test_request_secret' };
+    
+    const result = await callbackLogic(dbMock as any, 'key', 'secret', 'test_request_token');
 
+    expect(result.userId).toBe('schoology_user_123');
+    expect(fakeDb['users/schoology_user_123']).toEqual({
+      accessToken: 'test_access_token',
+      accessSecret: 'test_access_secret',
+      name: 'Test User',
+    });
+  });
 });

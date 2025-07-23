@@ -1,4 +1,7 @@
 {
+  "functions": {
+    "source": "src/functions"
+  },
   "hosting": {
     "source": ".",
     "ignore": [
@@ -6,8 +9,45 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "frameworksBackend": {
-      "region": "us-central1"
+    "rewrites": [
+      {
+        "source": "/helloWorld",
+        "function": "helloWorld"
+      },
+      {
+        "source": "/requestToken",
+        "function": "requestToken"
+      },
+      {
+        "source": "/callback",
+        "function": "callback"
+      },
+      {
+        "source": "**",
+        "function": "ssrschoologytesting"
+      }
+    ]
+  },
+  "emulators": {
+    "firestore": {
+      "host": "0.0.0.0",
+      "port": 8080
+    },
+    "functions": {
+      "host": "0.0.0.0",
+      "port": 5001
+    },
+    "hosting": {
+      "host": "0.0.0.0",
+      "port": 5000
+    },
+    "hub": {
+      "host": "0.0.0.0",
+      "port": 4400
+    },
+    "logging": {
+      "host": "0.0.0.0",
+      "port": 4500
     }
   }
 }
