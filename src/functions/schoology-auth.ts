@@ -10,7 +10,7 @@ if (getApps().length === 0) {
 }
 const db = getFirestore();
 
-export const requestToken = onRequest({ secrets: ["SCHOOLOGY_CONSUMER_KEY", "SCHOOLOGY_CONSUMER_SECRET"] }, async (request, response) => {
+exports.requestToken = onRequest({ secrets: ["SCHOOLOGY_CONSUMER_KEY", "SCHOOLOGY_CONSUMER_SECRET"] }, async (request, response) => {
   try {
     const redirectUrl = await requestTokenLogic(db, process.env.SCHOOLOGY_CONSUMER_KEY, process.env.SCHOOLOGY_CONSUMER_SECRET);
     response.redirect(redirectUrl);
@@ -20,7 +20,7 @@ export const requestToken = onRequest({ secrets: ["SCHOOLOGY_CONSUMER_KEY", "SCH
   }
 });
 
-export const callback = onRequest({ secrets: ["SCHOOLOGY_CONSUMER_KEY", "SCHOOLOGY_CONSUMER_SECRET"] }, async (request, response) => {
+exports.callback = onRequest({ secrets: ["SCHOOLOGY_CONSUMER_KEY", "SCHOOLOGY_CONSUMER_SECRET"] }, async (request, response) => {
     try {
         const oauth_token = request.query.oauth_token as string;
         if (!oauth_token) {

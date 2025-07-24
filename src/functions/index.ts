@@ -9,4 +9,10 @@ import { ssrschoologytesting } from "./next-ssr";
 import { simpletest } from './simple-test';
 
 
-export { requestToken, callback, helloWorld, ssrschoologytesting, simpletest };
+// Re-exporting with CommonJS module.exports
+// This is the format the Firebase Functions runtime expects
+exports.requestToken = requestToken;
+exports.callback = callback;
+exports.helloWorld = helloWorld;
+exports.ssrschoologytesting = ssrschoologytesting;
+exports.simpletest = simpletest;

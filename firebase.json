@@ -11,19 +11,19 @@
     ],
     "rewrites": [
       {
-        "source": "/helloWorld",
+        "source": "/helloWorld**",
         "function": "helloWorld"
       },
       {
-        "source": "/requestToken",
+        "source": "/requestToken**",
         "function": "requestToken"
       },
       {
-        "source": "/callback",
+        "source": "/callback**",
         "function": "callback"
       },
       {
-        "source": "/simple-test",
+        "source": "/simple-test**",
         "function": "simpletest"
       },
       {
