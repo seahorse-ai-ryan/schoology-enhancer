@@ -44,6 +44,6 @@
   services.firebase.emulators = {
     detect = true;
     projectId = "demo-app";
-    services = ["auth" "firestore" "hosting" "functions"];
+    # services = ["auth" "firestore" "hosting" "functions"];
   };
 }
