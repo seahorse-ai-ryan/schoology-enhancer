@@ -1,81 +1,206 @@
 # Schoology Enhancer
 
-> **Project Status: Experimental & In-Progress**
->
-> This is an experimental project, currently being developed by a single person. The primary goal is to explore what's possible when combining modern web technologies and AI development partners to improve the Schoology experience.
->
-> While the project is open source, **I am not actively seeking contributions at this time.** Please be aware that the code is in a state of flux, and the direction may change. You are absolutely welcome to fork this repository, explore the code, and build your own versions.
+A modern, intelligent academic planning application that enhances the Schoology learning management system with proactive planning, AI-powered insights, and a beautiful user interface.
 
-**Schoology Enhancer** is an open-source project aimed at providing a modern, clean, and proactive interface for the Schoology Learning Management System. This application is being built with a "vibe-coding" methodology, leveraging AI development partners like Google's Gemini to accelerate development and iteration.
+## 🎯 Project Goals
 
-The goal is to move beyond simply displaying data and to empower students, parents, and teachers with tools for proactive planning and better time management.
+- **Schoology Integration**: Seamless OAuth 1.0a authentication with Schoology's API
+- **Modern Interface**: Beautiful, responsive UI built with Next.js and Shadcn/ui
+- **Proactive Planning**: Intelligent deadline tracking and course management
+- **AI-Ready Architecture**: Data structures optimized for LLM processing, RAG applications, and semantic search
+- **Performance**: Smart caching strategy with Firestore for offline-first experience
 
-## Technology Stack
+## 🚀 Technology Stack
 
-This project uses a modern, robust technology stack:
+- **Frontend**: Next.js 14 with App Router, TypeScript, Tailwind CSS
+- **UI Components**: Shadcn/ui with Radix UI primitives
+- **Backend**: Firebase Functions, Firestore, Authentication
+- **Data Layer**: Modern, semantic data models optimized for AI/ML applications
+- **Testing**: Jest for backend integration, Playwright for E2E testing
+- **Development**: Firebase Emulator Suite for local development
 
-*   **Framework:** [Next.js](https://nextjs.org/) (with App Router)
-*   **Language:** [TypeScript](https://www.typescriptlang.org/)
-*   **Backend:** [Firebase Functions](https://firebase.google.com/docs/functions)
-*   **Database:** [Firestore](https://firebase.google.com/docs/firestore)
-*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-*   **UI Components:** [Shadcn/ui](https://ui.shadcn.com/)
-*   **Testing:** [Vitest](https://vitest.dev/) for unit and integration tests
-*   **API Mocking:** [Mock Service Worker (MSW)](https://mswjs.io/)
+## 🏗️ Architecture Highlights
 
-## Getting Started
+### Modern Data Structure
 
-To get a local copy up and running, please follow these steps.
+Our data models are designed for the future of AI-powered education:
 
-### Prerequisites
+- **Rich Metadata**: Academic information, difficulty levels, learning objectives
+- **LLM Optimization**: Embedding fields, semantic keywords, AI-generated summaries
+- **RAG-Ready**: Structured relationships and searchable content
+- **Protocol Buffer Compatible**: Clean interfaces for serialization
+- **Backward Compatible**: Maintains compatibility with legacy Schoology API
 
-You will need:
-*   [Node.js](https://nodejs.org/) (v18 or later)
-*   A Google Account with a [Firebase project](https://firebase.google.com/)
-*   A [Schoology Developer Account](https://developers.schoology.com/) to register your own application
+### Data Sources & Caching
 
-### Setup Instructions
+- **Live Data**: Real-time Schoology API integration
+- **Cached Data**: Firestore-based performance optimization
+- **Mock Data**: Comprehensive testing and development support
+- **Clear Indicators**: UI shows data source and freshness
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/your-username/schoology-enhancer.git
-    cd schoology-enhancer
-    ```
+## 📋 Prerequisites
 
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+- Node.js 18+ and npm
+- Google/Firebase account
+- Schoology Developer Account
+- Docker (for containerized development)
 
-3.  **Configure your Firebase Project:**
-    *   This project is designed to be developed using [Firebase Studio](https://firebase.google.com/docs/studio) or another connected Google Cloud environment.
-    *   Ensure you have a Firebase project created and are authenticated with the Firebase CLI (`firebase login`).
+## 🚀 Quick Start
 
-4.  **Set up Schoology API Credentials:**
-    *   In the Schoology Developer Portal, create a new application. You will receive a **Consumer Key** and **Consumer Secret**.
-    *   This project uses [Google Secret Manager](https://cloud.google.com/secret-manager) to handle these credentials securely. **Do not commit them to a `.env` file.**
-    *   Add your credentials to your project's Secret Manager with the following names:
-        *   `SCHOOLOGY_CONSUMER_KEY`
-        *   `SCHOOLOGY_CONSUMER_SECRET`
-
-5.  **Run the development server:**
-    *   Because this is a Next.js project integrated with Firebase Functions, the typical `npm run dev` will only run the frontend. To run the full application, you will need to use the [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite).
-    ```bash
-    firebase emulators:start
-    ```
-
-### Running Tests
-
-This project uses Vitest for testing. To run the test suite:
+### 1. Clone and Install
 
 ```bash
-npm test
+git clone <repository-url>
+cd schoology-enhancer
+npm install
 ```
 
-## Contributing
+### 2. Firebase Configuration
 
-As noted in the status section above, this project is not actively seeking contributions at this time. However, if you are passionate about this and have suggestions, you are welcome to fork the repository and explore.
+```bash
+# Login to Firebase
+firebase login
 
-## License
+# Initialize project (use existing project ID)
+firebase use schoology-testing
 
-Distributed under the MIT License. See `LICENSE` for more information.
+# Set up local secrets for development
+cp .secret.local.example .secret.local
+# Edit .secret.local with your Schoology API credentials
+```
+
+### 3. Development Environment
+
+```bash
+# Start development server
+npm run dev
+
+# In another terminal, start Firebase emulators
+firebase emulators:start
+```
+
+### 4. Testing
+
+```bash
+# Backend integration tests (Jest)
+npm run test:emu
+
+# End-to-end tests (Playwright)
+npm run test:simple
+
+# Interactive test runner
+npm run test:runner
+```
+
+## 🔧 Environment Configuration
+
+### Firebase Emulators
+
+The project uses Firebase Emulator Suite for local development:
+
+- **Functions**: Port 5001
+- **Firestore**: Port 8080
+- **Hosting**: Port 5000
+- **Auth**: Port 9099
+
+### Schoology API Setup
+
+1. Create a Schoology Developer App
+2. Set redirect URL to your local development URL
+3. Store credentials in `.secret.local` for development
+4. Use Google Secret Manager for production
+
+## 📊 Current Status
+
+### ✅ Completed
+
+- [x] Modern, LLM-optimized data structures
+- [x] Firebase Functions for OAuth 1.0a flow
+- [x] Comprehensive testing framework
+- [x] MSW integration for API mocking
+- [x] Beautiful UI components and layout
+- [x] Data caching and source tracking
+
+### 🔄 In Progress
+
+- [ ] MSW integration in Playwright test environment
+- [ ] End-to-end OAuth flow testing
+- [ ] Complete dashboard data display
+
+### 📋 Next Steps
+
+1. Fix MSW integration for Playwright tests
+2. Complete OAuth flow end-to-end testing
+3. Implement live Schoology API integration
+4. Add AI-powered insights and recommendations
+
+## 🧪 Testing Strategy
+
+### Backend Tests (Jest)
+
+- **Location**: `src/test/`
+- **Command**: `npm run test:emu`
+- **Coverage**: OAuth logic, data services, Firebase integration
+
+### End-to-End Tests (Playwright)
+
+- **Location**: `tests/e2e/`
+- **Command**: `npm run test:simple`
+- **Coverage**: Complete user flows, UI interactions, data display
+
+### Test Data
+
+- **Mock Data**: Comprehensive test scenarios
+- **MSW Handlers**: API endpoint mocking
+- **Firebase Emulators**: Local database and functions
+
+## 🔐 Security
+
+- **Local Development**: Credentials stored in `.secret.local` (gitignored)
+- **Production**: Credentials managed via Google Secret Manager
+- **OAuth Flow**: Secure token exchange with Schoology
+- **Data Privacy**: User data isolated by Firebase Auth UID
+
+## 🤝 Contributing
+
+This is an open-source project. We welcome contributions!
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
+
+## 📚 Documentation
+
+- **`README.md`**: Project overview and setup instructions
+- **`.cursorrules`**: Cursor IDE rules and AI session guidelines
+- **`docs/LOG.md`**: Session logs and progress tracking
+- **`docs/action-plan.md`**: Development roadmap and milestones
+- **`docs/session-context.md`**: Current session context and debugging notes
+- **`docs/quick-reference.md`**: Quick status and command reference
+- **`.idx/airules.md`**: Firebase Studio-specific AI guidelines
+
+## 🆘 Troubleshooting
+
+### Common Issues
+
+- **404 Errors**: Ensure Firebase emulators are running and functions are built
+- **MSW Not Working**: Check browser console for service worker registration
+- **Test Failures**: Verify Firebase emulator connectivity and mock data setup
+
+### Environment Reset
+
+If you encounter persistent issues:
+
+1. Use "Firebase Studio: Hard Restart" command
+2. Rebuild environment after configuration changes
+3. Check emulator logs for startup errors
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+**Built with ❤️ for modern education technology**

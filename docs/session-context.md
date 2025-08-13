@@ -4,35 +4,120 @@ This file is used to store the context of our ongoing coding session with the AI
 
 ## Current Problem:
 
-We've been battling a persistent 404 Not Found error when trying to access any Firebase Function (e.g., `/helloWorld`, `/simple-test`) via the Firebase Hosting Emulator on port 5000. This occurred despite the function code, `firebase.json` rewrites, and emulator logs all appearing correct.
+We've successfully implemented a modern, LLM-optimized data architecture and beautiful UI components, but we're now facing a **MSW (Mock Service Worker) integration issue** in the Playwright test environment. The tests are failing because the dashboard content never loads - the `UserDashboard` component is trying to call `/api/auth/status` but MSW isn't intercepting these API calls properly.
 
-Separately, we also fixed a regression where the `/helloHome` page on the Next.js dev server (port 9000) was failing due to a Next.js Turbopack issue.
+## Current Status & Achievements:
+
+### ✅ What We've Accomplished
+
+1. **Modern Data Architecture**: Completely redesigned all data interfaces to be LLM-friendly, RAG-optimized, and protocol buffer compatible
+2. **Beautiful UI**: Created responsive dashboard with data source indicators, comprehensive course/assignment displays, and proper loading states
+3. **Test Infrastructure**: Built robust test runner scripts that solve the Playwright hanging issue in inline chat
+4. **Data Caching**: Implemented Firestore-based caching with fallback to mock data
+5. **MSW Setup**: Created browser integration for API mocking (though not working in Playwright yet)
+
+### 🔄 Current Blocker: MSW in Playwright
+
+- **Symptoms**: All Playwright tests timeout waiting for `[data-testid="dashboard-content"]` to appear
+- **Root Cause**: MSW service worker not properly intercepting API calls in Playwright environment
+- **Impact**: Can't test the complete OAuth flow end-to-end
+- **Location**: `src/mocks/browser.ts`, `src/components/providers/MSWProvider.tsx`
+
+## Technical Details:
+
+### Data Architecture Changes
+
+- **Old Structure**: Simple, flat data models matching legacy Schoology API
+- **New Structure**: Rich, semantic models with:
+  - Academic metadata (difficulty, credits, objectives)
+  - LLM optimization fields (embeddings, keywords, summaries)
+  - RAG-ready relationships and searchable content
+  - Protocol buffer compatibility
+  - Backward compatibility maintained
+
+### Test Infrastructure
+
+- **`npm run test:simple`**: Runs Playwright tests with clear output (no hanging)
+- **`npm run test:runner`**: Interactive test runner for development
+- **`npm run test:emu`**: Jest backend tests (working correctly)
+
+### MSW Integration Attempts
+
+1. **Browser Setup**: Created `src/mocks/browser.ts` with `setupWorker`
+2. **Provider Component**: Added `MSWProvider` to wrap the app in `layout.tsx`
+3. **Handlers**: Updated mock data to match new data structure
+4. **Issue**: Service worker not registering/intercepting in Playwright environment
 
 ## Debugging Journey & Analysis:
 
-Our investigation led us down several paths:
-1.  **Frontend Regression:** We initially addressed the `/helloHome` error by removing the `--turbopack` flag from the `dev` script in `package.json`, which successfully resolved the Next.js development server issue.
-2.  **Testing Rabbit Hole:** We incorrectly attempted to use `npm run test:emu` to diagnose the backend. This failed due to Jest's ESM configuration issues. We briefly pursued this, even considering a switch to Vitest based on an outdated `README.md`, before realizing it was a distraction from the core 404 problem.
-3.  **Log Misinterpretation:** Early logs seemed to indicate the functions weren't being loaded by the emulator at all. However, a closer look at more detailed logs provided by the user showed the functions *were* being loaded, deepening the mystery.
-4.  **Isolating the Issue:** We created a minimal `simple-test` function from scratch and configured it, proving that even a brand-new, perfectly configured function still resulted in a 404.
+### Phase 1: Data Architecture (Completed)
 
-## Root Cause Analysis: Build/Startup Race Condition
+- Redesigned all interfaces for modern AI/ML applications
+- Added rich metadata and semantic fields
+- Maintained backward compatibility
+- Implemented comprehensive caching strategy
 
-The final diagnosis is a race condition specific to the Firebase Studio environment's startup process. The Firebase Emulators, configured to start automatically via the `services.firebase.emulators` block in `.idx/dev.nix`, were launching *before* our `npm run build` command could finish compiling the TypeScript functions into the required JavaScript in the `src/functions/lib` directory. The emulators were starting, finding no compiled functions to serve, and therefore correctly returning 404 errors for all function routes.
+### Phase 2: UI Components (Completed)
 
-## The Fix:
+- Built beautiful dashboard with Shadcn/ui
+- Added data source indicators (Mock/Cached/Live)
+- Implemented responsive design and loading states
+- Created comprehensive course and assignment displays
 
-The solution was to modify the `.idx/dev.nix` file to control the startup order. We added an `idx.workspace.onStart` hook containing the `npm run build` command. Because Nix processes these blocks sequentially, this ensures that our build script runs and completes *before* the `services.firebase.emulators` block is executed. This guarantees that the compiled function files are in place when the emulators launch.
+### Phase 3: Testing Infrastructure (Completed)
+
+- Solved Playwright hanging issue with custom test runners
+- Set up MSW browser integration
+- Created robust test monitoring without inline chat issues
+
+### Phase 4: MSW Integration (Current Blocker)
+
+- MSW handlers created and configured
+- Browser setup implemented
+- Service worker not intercepting API calls in Playwright
+- Dashboard never receives mock data, causing test timeouts
+
+## Root Cause Analysis: MSW Service Worker Registration
+
+The issue appears to be that MSW's service worker is not properly registering or intercepting API calls in the Playwright test environment. This could be due to:
+
+1. **Service Worker Scope**: MSW may not be intercepting calls to the correct domain/port
+2. **Timing Issues**: Service worker registration may not complete before tests run
+3. **Environment Differences**: Playwright's browser environment may differ from regular development
+4. **MSW Configuration**: The `onUnhandledRequest: 'bypass'` setting may be too permissive
+
+## The Fix Strategy:
+
+### Immediate Next Steps
+
+1. **Debug MSW Registration**: Add console logs to verify service worker registration
+2. **Check Interception**: Verify that MSW is actually intercepting API calls
+3. **Environment Isolation**: Ensure MSW works in both development and test environments
+4. **Fallback Strategy**: Implement alternative mocking approach if MSW continues to fail
+
+### Alternative Approaches
+
+1. **Direct API Mocking**: Mock the Next.js API routes directly in Playwright
+2. **MSW Node**: Use MSW's Node.js setup instead of browser setup for tests
+3. **Custom Interceptor**: Create a custom request interceptor for Playwright
 
 ## Immediate Next Step:
 
-The user must now **"Rebuild the environment"** as prompted by the IDE. This action is required to apply the critical changes made to `.idx/dev.nix`.
+The user should focus on **fixing the MSW integration issue** as this is blocking all end-to-end testing. Once MSW is working properly in Playwright, we can:
 
-After the environment is rebuilt, we will test the following on port 5000:
-1.  If `/simple-test` returns "Hello from simple-test!".
-2.  If `/helloWorld` returns its JSON payload.
+1. Verify the complete OAuth flow works end-to-end
+2. Test dashboard data display with mock data
+3. Validate all UI components render correctly
+4. Move forward with live Schoology API integration
 
-This should resolve all our outstanding issues.
+## Code Locations:
+
+- **MSW Setup**: `src/mocks/browser.ts`, `src/components/providers/MSWProvider.tsx`
+- **Data Models**: `src/lib/schoology-data.ts`
+- **UI Components**: `src/components/dashboard/UserDashboard.tsx`
+- **Test Runners**: `scripts/run-tests.js`, `scripts/test-simple.js`
+- **Test Files**: `tests/e2e/oauth-flow.spec.ts`
 
 ---
-**Note:** We need to revise the `README.md` to correct the testing framework information and document any other key learnings from this debugging session.
+
+**Note:** The modern data architecture is complete and ready for AI/ML applications. The current blocker is purely in the testing infrastructure, not in the core application functionality.

@@ -1,7 +1,10 @@
 {
-  "functions": {
-    "source": "src/functions"
-  },
+  "functions": [
+    {
+      "source": "src/functions",
+      "codebase": "backend"
+    }
+  ],
   "hosting": {
     "source": ".",
     "ignore": [
@@ -11,20 +14,12 @@
     ],
     "rewrites": [
       {
-        "source": "/helloWorld**",
-        "function": "helloWorld"
-      },
-      {
         "source": "/requestToken**",
         "function": "requestToken"
       },
       {
         "source": "/callback**",
         "function": "callback"
-      },
-      {
-        "source": "/simple-test**",
-        "function": "simpletest"
       },
       {
         "source": "**",
@@ -43,7 +38,7 @@
     },
     "hosting": {
       "host": "0.0.0.0",
-      "port": 5000
+      "port": 5002
     },
     "hub": {
       "host": "0.0.0.0",

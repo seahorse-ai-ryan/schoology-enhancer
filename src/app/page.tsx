@@ -1,38 +1,26 @@
 // src/app/page.tsx
-import Link from 'next/link';
+import { LoginButton } from '@/components/auth/LoginButton';
+import { UserDashboard } from '@/components/dashboard/UserDashboard';
 
 export default function HomePage() {
-  // The URL will point to our new Firebase Function.
-  // We'll replace this with a dynamic value later.
-  const schoologyAuthUrl = '/requestToken'; 
-
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      textAlign: 'center',
-      gap: '20px'
-    }}>
-      <h1>Schoology Enhancer</h1>
-      <p>A better way to manage your school life.</p>
-      
-      <Link 
-        href={schoologyAuthUrl} 
-        style={{
-          padding: '12px 24px',
-          backgroundColor: '#007bff',
-          color: 'white',
-          borderRadius: '5px',
-          textDecoration: 'none',
-          fontSize: '1.2em',
-          fontWeight: 'bold',
-        }}
-      >
-        Login with Schoology
-      </Link>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <h1 className="text-xl font-bold text-gray-900">Schoology Planner</h1>
+            </div>
+            <LoginButton />
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <UserDashboard />
+      </main>
     </div>
   );
 }
