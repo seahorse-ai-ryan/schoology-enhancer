@@ -69,26 +69,25 @@ cp .secret.local.example .secret.local
 # Edit .secret.local with your Schoology API credentials
 ```
 
-### 3. Development Environment
+### 3. Development Environment (Cursor on Mac)
 
 ```bash
 # Start development server
 npm run dev
 
 # In another terminal, start Firebase emulators
-firebase emulators:start
+firebase emulators:start --only hosting,functions,firestore --project schoology-testing
 ```
 
-### 4. Testing
+### 4. Testing (MCP-first)
 
 ```bash
 # Backend integration tests (Jest)
 npm run test:emu
 
-# End-to-end tests (Playwright)
+# MCP-first: Use Chrome DevTools MCP tools to validate journeys in your open Chrome
+# If MCP is unavailable, use Playwright via our scripts only
 npm run test:simple
-
-# Interactive test runner
 npm run test:runner
 ```
 

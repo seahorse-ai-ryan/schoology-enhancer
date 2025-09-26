@@ -1,10 +1,10 @@
 # Quick Reference Guide
 
-## 🚀 Current Status (2025-07-27)
+## 🚀 Current Status (Hello World focus)
 
-**Phase:** End-to-End Testing & OAuth Flow  
-**Status:** MSW Integration Blocker  
-**Next Milestone:** Complete OAuth flow testing
+**Phase:** Hello World flows with MCP-first testing  
+**Status:** Build out demo mode, dashboard, and parent switching; OAuth completion pending real credentials  
+**Next Milestone:** Reliable MCP-driven smoke across landing, demo, dashboard, switch, logout
 
 ## 🎯 Key Commands
 
@@ -17,11 +17,13 @@ npm run typecheck    # TypeScript type checking
 npm run lint         # ESLint code quality check
 ```
 
-### Testing
+### Testing (MCP-first)
 
 ```bash
 npm run test:emu     # Jest backend tests (✅ Working)
-npm run test:simple  # Playwright E2E tests (❌ MSW Issue)
+# Prefer Chrome DevTools MCP to validate flows in your open Chrome.
+# Fallback only:
+npm run test:simple  # Playwright E2E tests
 npm run test:runner  # Interactive test runner
 ```
 
@@ -75,27 +77,10 @@ firebase deploy            # Deploy to production
 - **MSW Handlers**: API endpoint mocking
 - **Firebase Emulators**: Local database and functions
 
-## 🔧 Current Blocker: MSW in Playwright
+## 🔧 E2E Validation Strategy (MCP)
 
-### Problem
-
-- Playwright tests timeout waiting for dashboard content
-- MSW service worker not intercepting API calls
-- Dashboard never receives mock data
-
-### Files Involved
-
-- `src/mocks/browser.ts` - MSW browser setup
-- `src/components/providers/MSWProvider.tsx` - MSW initialization
-- `src/mocks/handlers.ts` - API mock handlers
-- `tests/e2e/oauth-flow.spec.ts` - Failing tests
-
-### Debugging Steps
-
-1. Check MSW service worker registration
-2. Verify API call interception
-3. Test MSW in development vs. test environment
-4. Consider alternative mocking approaches
+- Use Chrome DevTools MCP to assert DOM, console events (see Cursor Rules), and network requests.
+- Avoid curl; avoid launching new browsers. Drive your already-open Chrome.
 
 ## 📱 UI Components
 
@@ -108,7 +93,7 @@ firebase deploy            # Deploy to production
 
 ### Authentication (`src/components/auth/LoginButton.tsx`)
 
-- **OAuth Flow**: Redirects to Schoology for authentication
+- **OAuth Flow**: Redirects to Schoology for authentication (uses `oauth-1.0a` library)
 - **Session Management**: Handles login/logout states
 - **User Display**: Shows authenticated user information
 

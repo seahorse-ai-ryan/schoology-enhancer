@@ -1,100 +1,105 @@
-import { mockCourses } from '@/lib/mock-data';
+'use client';
+
+import { useMemo } from 'react';
+import { useDataMode } from '@/components/providers/DataModeProvider';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { CheckCircle, AlertTriangle, Book, Calendar, ClipboardList } from 'lucide-react';
+  getPersonaAnnouncements,
+  getPersonaCourses,
+  getPersonaDeadlines,
+} from '@/lib/mock-data';
 
 export default function DashboardPage() {
-  const overallGrade =
-    mockCourses.reduce((acc, course) => acc + course.grade, 0) /
-    mockCourses.length;
-  const coursesAtRisk = mockCourses.filter((course) => course.grade < 75);
-  const upcomingAssignments = mockCourses
-    .flatMap((c) => c.assignments)
-    .filter((a) => a.score === null)
-    .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())
-    .slice(0, 3);
+  const { activePersonaId, personas } = useDataMode();
+
+  const currentPersonaId = activePersonaId ?? personas[0]?.id ?? null;
+
+  const courses = useMemo(() => (currentPersonaId ? getPersonaCourses(currentPersonaId) : []), [currentPersonaId]);
+  const announcements = useMemo(
+    () => (currentPersonaId ? getPersonaAnnouncements(currentPersonaId) : []),
+    [currentPersonaId]
+  );
+  const deadlines = useMemo(() => (currentPersonaId ? getPersonaDeadlines(currentPersonaId) : []), [currentPersonaId]);
+
+  const overallGrade = useMemo(() => {
+    if (!courses.length) return null;
+    const total = courses.reduce((sum, course) => sum + course.grade, 0);
+    return Math.round(total / courses.length);
+  }, [courses]);
 
   return (
-    <div className="container py-6 space-y-6">
-      <div className="space-y-1.5">
-        <h1 className="text-3xl font-headline font-bold">Welcome Back, Alex!</h1>
-        <p className="text-muted-foreground">
-          Here&apos;s a summary of your academic progress.
-        </p>
+    <div className="space-y-6" data-testid="dashboard-content">
+      <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg p-6">
+        <h1 className="text-2xl font-bold mb-2">
+          Welcome back, {personas.find((p) => p.id === currentPersonaId)?.displayName ?? 'Student'}!
+        </h1>
+        <p className="text-blue-100">Here&apos;s what&apos;s happening in your Schoology courses</p>
       </div>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="flex flex-col">
-          <CardHeader>
-            <CardTitle className="font-headline flex items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-accent" />
-              Overall Grade
-            </CardTitle>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Overall Grade</CardTitle>
           </CardHeader>
-          <CardContent className="flex-grow flex items-center justify-center">
-            <p className="text-7xl font-bold font-headline text-primary">
-              {Math.round(overallGrade)}
-              <span className="text-4xl text-muted-foreground">%</span>
-            </p>
+          <CardContent>
+            <div className="text-3xl font-bold">{overallGrade ?? '—'}%</div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle className="font-headline flex items-center gap-2">
-              <ClipboardList className="w-6 h-6 text-accent" />
-              Daily View
-            </CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Daily View</CardTitle>
             <CardDescription>What&apos;s on your plate for today.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-             {upcomingAssignments.length > 0 ? (
-              upcomingAssignments.map((assignment) => (
-                <div key={assignment.id} className="flex items-center">
-                  <Calendar className="h-5 w-5 text-muted-foreground mr-3"/>
-                  <div className="flex-1">
-                    <p className="font-medium">{assignment.name}</p>
-                    <p className="text-sm text-muted-foreground">Due: {assignment.dueDate}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-                <p className="text-sm text-muted-foreground text-center pt-4">No upcoming assignments. Great job!</p>
-            )}
+          <CardContent className="space-y-3">
+            {deadlines.slice(0, 3).map((deadline) => (
+              <div key={deadline.id} className="flex flex-col gap-1">
+                <span className="text-sm font-medium">{deadline.title}</span>
+                <span className="text-xs text-muted-foreground">Due: {deadline.dueDate}</span>
+              </div>
+            ))}
+            {!deadlines.length ? <p className="text-sm text-muted-foreground">No upcoming deadlines.</p> : null}
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle className="font-headline flex items-center gap-2">
-              <AlertTriangle className="w-6 h-6 text-destructive" />
-              Courses at Risk
-            </CardTitle>
-             <CardDescription>Courses with grades below 75%.</CardDescription>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Courses at a Glance</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {coursesAtRisk.length > 0 ? (
-              coursesAtRisk.map((course) => (
-                <div key={course.id} className="flex items-center">
-                   <Book className="h-5 w-5 text-muted-foreground mr-3"/>
-                  <div className="flex-1">
-                    <p className="font-medium">{course.name}</p>
+          <CardContent>
+            <div className="space-y-2">
+              {courses.map((course) => (
+                <div key={course.id} className="flex items-center justify-between rounded border px-3 py-2">
+                  <div>
+                    <p className="text-sm font-medium">{course.name}</p>
+                    <p className="text-xs text-muted-foreground">{course.teacher}</p>
                   </div>
-                  <div className="text-lg font-bold text-destructive">
-                    {course.grade}%
-                  </div>
+                  <Badge variant="outline">{course.grade}%</Badge>
                 </div>
-              ))
-            ) : (
-              <p className="text-sm text-muted-foreground text-center pt-4">No courses at risk. Keep it up!</p>
-            )}
+              ))}
+              {!courses.length ? <p className="text-sm text-muted-foreground">No courses available.</p> : null}
+            </div>
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Announcements</CardTitle>
+          <CardDescription>Latest updates from your courses</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {announcements.map((announcement) => (
+            <div key={announcement.id} className="rounded border p-3">
+              <h3 className="text-sm font-semibold">{announcement.title}</h3>
+              <p className="text-xs text-muted-foreground">{announcement.courseName}</p>
+              <p className="text-sm mt-2 text-muted-foreground">{announcement.content}</p>
+            </div>
+          ))}
+          {!announcements.length ? <p className="text-sm text-muted-foreground">No announcements.</p> : null}
+        </CardContent>
+      </Card>
     </div>
   );
 }

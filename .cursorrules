@@ -40,21 +40,16 @@ You are an expert full-stack developer working on a modern, AI-ready educational
 
 ### Test Infrastructure
 
-- **Backend Tests**: Jest + Firebase Emulators + MSW Node
-- **E2E Tests**: Playwright + MSW Browser (currently failing)
+- **Backend Tests**: Jest + Firebase Emulators
+- **E2E Tests**: Prefer Chrome DevTools MCP; Playwright only via `npm run test:simple` when MCP is unavailable
 - **Mock Data**: Comprehensive test scenarios with data source indicators
 
 ## 🔧 Current Technical Issues
 
-### MSW Integration Problem
+### MCP-First Testing
 
-- **Symptoms**: Playwright tests timeout waiting for `[data-testid="dashboard-content"]`
-- **Root Cause**: MSW service worker not intercepting API calls in Playwright environment
-- **Files Involved**:
-  - `src/mocks/browser.ts` - MSW browser setup
-  - `src/components/providers/MSWProvider.tsx` - MSW initialization
-  - `src/mocks/handlers.ts` - API mock handlers
-  - `tests/e2e/oauth-flow.spec.ts` - Failing tests
+- Use the developer’s already-open Chrome session via Chrome DevTools MCP for journey validation. Assert via DOM + console + network; do not use curl.
+- Keep `data-testid` stable and emit required console events.
 
 ### Linter Errors in Data Service
 
@@ -137,10 +132,10 @@ npm run lint         # ESLint code quality check
 
 ## 🚨 Common Pitfalls & Solutions
 
-### Playwright Tests Hanging
+### Playwright Usage
 
 - **❌ Don't**: Run `npx playwright test` directly
-- **✅ Do**: Use `npm run test:simple` or `npm run test:runner`
+- **✅ Do**: Use `npm run test:simple` or `npm run test:runner` only when MCP is unavailable
 
 ### MSW Not Working
 

@@ -1,3 +1,198 @@
+export interface PersonaProfile {
+  id: string;
+  displayName: string;
+  gradeLevel: string;
+  email: string;
+}
+
+export interface SampleParentProfile {
+  id: string;
+  name: string;
+  email: string;
+  children: PersonaProfile[];
+}
+
+export interface PersonaAnnouncement {
+  id: string;
+  courseId: string;
+  courseName: string;
+  title: string;
+  content: string;
+  createdAt: string;
+}
+
+export interface PersonaDeadline {
+  id: string;
+  courseId: string;
+  courseName: string;
+  title: string;
+  dueDate: string;
+  description?: string;
+  type?: 'assignment' | 'quiz' | 'project' | 'exam';
+}
+
+export const PERSONA_PROFILES: PersonaProfile[] = [
+  {
+    id: 'jane-smith',
+    displayName: 'Jane Smith',
+    gradeLevel: '11th Grade',
+    email: 'jane.smith@example.edu',
+  },
+  {
+    id: 'joe-wilson',
+    displayName: 'Joe Wilson',
+    gradeLevel: '9th Grade',
+    email: 'joe.wilson@example.edu',
+  },
+  {
+    id: 'sarah-johnson',
+    displayName: 'Sarah Johnson',
+    gradeLevel: '10th Grade',
+    email: 'sarah.johnson@example.edu',
+  },
+];
+
+const PERSONA_COURSE_OVERRIDES: Record<string, Partial<Course>[]> = {
+  'jane-smith': [
+    { id: 'alg-101', grade: 88 },
+    { id: 'eng-201', grade: 94 },
+    { id: 'bio-101', grade: 71 },
+    { id: 'hist-301', grade: 91 },
+  ],
+  'joe-wilson': [
+    { id: 'alg-101', grade: 82 },
+    { id: 'eng-201', grade: 88 },
+    { id: 'bio-101', grade: 79 },
+    { id: 'hist-301', grade: 85 },
+  ],
+  'sarah-johnson': [
+    { id: 'alg-101', grade: 92 },
+    { id: 'eng-201', grade: 90 },
+    { id: 'bio-101', grade: 87 },
+    { id: 'hist-301', grade: 89 },
+  ],
+};
+
+const PERSONA_ANNOUNCEMENTS: Record<string, PersonaAnnouncement[]> = {
+  'jane-smith': [
+    {
+      id: 'ann-1',
+      courseId: 'alg-101',
+      courseName: 'Algebra II',
+      title: 'Unit 5 Review Session',
+      content: 'Join us Thursday after school for a review ahead of the quiz.',
+      createdAt: '2025-09-21',
+    },
+  ],
+  'joe-wilson': [
+    {
+      id: 'ann-2',
+      courseId: 'bio-101',
+      courseName: 'Biology',
+      title: 'Lab Safety Reminder',
+      content: 'Remember to bring goggles and gloves for next week’s lab.',
+      createdAt: '2025-09-20',
+    },
+  ],
+  'sarah-johnson': [
+    {
+      id: 'ann-3',
+      courseId: 'hist-301',
+      courseName: 'US History',
+      title: 'Field Trip Forms Due',
+      content: 'Please submit permission slips for the museum visit by Friday.',
+      createdAt: '2025-09-19',
+    },
+  ],
+};
+
+const PERSONA_DEADLINES: Record<string, PersonaDeadline[]> = {
+  'jane-smith': [
+    {
+      id: 'dead-1',
+      courseId: 'eng-201',
+      courseName: 'English Literature',
+      title: 'Monthly Research Update',
+      dueDate: '2025-09-29',
+      description: 'Summarize progress on your research topic.',
+      type: 'assignment',
+    },
+    {
+      id: 'dead-2',
+      courseId: 'bio-101',
+      courseName: 'Biology',
+      title: 'Comparative Poetry Analysis',
+      dueDate: '2025-09-30',
+      description: 'Compare two poems using structural analysis.',
+      type: 'assignment',
+    },
+  ],
+  'joe-wilson': [
+    {
+      id: 'dead-3',
+      courseId: 'alg-101',
+      courseName: 'Algebra II',
+      title: 'Quadratics Problem Set',
+      dueDate: '2025-09-27',
+      type: 'assignment',
+    },
+  ],
+  'sarah-johnson': [
+    {
+      id: 'dead-4',
+      courseId: 'hist-301',
+      courseName: 'US History',
+      title: 'Documentary Outline',
+      dueDate: '2025-09-28',
+      description: 'Submit outline for Civil War documentary project.',
+      type: 'project',
+    },
+  ],
+};
+
+export const SAMPLE_PARENT_PROFILE: SampleParentProfile = {
+  id: 'sample-parent',
+  name: 'Sample Parent',
+  email: 'sample.parent@example.edu',
+  children: PERSONA_PROFILES,
+};
+
+const applyOverrides = (personaId: string, baseCourses: Course[]) => {
+  const overrides = PERSONA_COURSE_OVERRIDES[personaId] ?? [];
+  if (!overrides.length) return baseCourses;
+  return baseCourses.map((course) => {
+    const override = overrides.find((item) => item.id === course.id);
+    return override ? { ...course, ...override } : course;
+  });
+};
+
+const ensurePersonaId = (personaId: string) => (PERSONA_PROFILES.some((p) => p.id === personaId) ? personaId : PERSONA_PROFILES[0]?.id ?? '');
+
+export const getPersonaCourses = (personaId: string): Course[] => {
+  const validId = ensurePersonaId(personaId);
+  return applyOverrides(validId, mockCourses);
+};
+
+export const getPersonaAnnouncements = (personaId: string): PersonaAnnouncement[] => {
+  const validId = ensurePersonaId(personaId);
+  return PERSONA_ANNOUNCEMENTS[validId] ?? [];
+};
+
+export const getPersonaDeadlines = (personaId: string): PersonaDeadline[] => {
+  const validId = ensurePersonaId(personaId);
+  return PERSONA_DEADLINES[validId] ?? [];
+};
+
+export const getPersonaIncentives = (personaId: string) => {
+  const validId = ensurePersonaId(personaId);
+  return mockIncentives;
+};
+
+export const getPersonaPlanningTasks = (personaId: string) => {
+  const validId = ensurePersonaId(personaId);
+  return mockPlanningTasks;
+};
+
 export type Assignment = {
   id: string;
   name: string;

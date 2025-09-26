@@ -77,7 +77,7 @@ This document outlines the concrete steps we will take to build the Schoology En
 
 ---
 
-## **Phase 3: End-to-End Testing & OAuth Flow (In Progress)**
+## **Phase 3: Hello World Journeys (MCP-first)**
 
 **Goal:** Complete the OAuth flow with comprehensive testing and real user experience validation.
 
@@ -87,13 +87,13 @@ This document outlines the concrete steps we will take to build the Schoology En
 - [x] Added `npm run test:simple` and `npm run test:runner` commands.
 - [x] Set up MSW browser integration for API mocking.
 
-### **Step 2: MSW Integration in Playwright (In Progress)**
+### **Step 2: MCP-Driven Smoke**
 
-- [ ] Fix MSW service worker registration in Playwright environment.
-- [ ] Ensure API calls are properly intercepted during E2E tests.
-- [ ] Verify mock data flows through the complete application.
+- [ ] Add/verify `data-testid` and console event hooks.
+- [ ] Create MCP scripts or agent prompts to navigate landing → demo → dashboard → switch → logout.
+- [ ] Use DevTools network listing to confirm requests and provenance.
 
-### **Step 3: Complete OAuth Flow Testing (Pending)**
+### **Step 3: OAuth Flow Testing (Pending, uses oauth-1.0a)**
 
 - [ ] Test login button visibility and functionality.
 - [ ] Verify OAuth redirect flow to Schoology.

@@ -1,129 +1,91 @@
 'use client';
 
-import { mockCourses, mockGradeTrend } from '@/lib/mock-data';
 import { notFound } from 'next/navigation';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
-} from '@/components/ui/chart';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { Badge } from '@/components/ui/badge';
-import { Check, Clock } from 'lucide-react';
+import { useMemo } from 'react';
+import { useDataMode } from '@/components/providers/DataModeProvider';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { getPersonaCourses, getPersonaDeadlines } from '@/lib/mock-data';
 
-export default function CourseDetailPage({ params }: { params: { id: string } }) {
-  const course = mockCourses.find((c) => c.id === params.id);
+interface CoursePageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function CourseDetailPage({ params }: CoursePageProps) {
+  const { id } = params;
+  const { activePersonaId, personas } = useDataMode();
+  const personaId = activePersonaId ?? personas[0]?.id ?? null;
+
+  const course = useMemo(() => {
+    if (!personaId) return null;
+    return getPersonaCourses(personaId).find((c) => c.id === id) ?? null;
+  }, [personaId, id]);
+
+  const assignments = useMemo(() => {
+    if (!personaId) return [];
+    return getPersonaDeadlines(personaId).filter((deadline) => deadline.courseId === id);
+  }, [personaId, id]);
 
   if (!course) {
     notFound();
   }
 
-  const chartConfig = {
-    grade: {
-      label: 'Grade',
-      color: 'hsl(var(--primary))',
-    },
-  };
-
   return (
-    <div className="container py-6 space-y-6">
-      <div className="space-y-1.5">
-        <h1 className="text-3xl font-headline font-bold">{course.name}</h1>
-        <p className="text-muted-foreground">
-          Taught by {course.teacher}
-        </p>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">{course?.name}</h1>
+          <p className="text-muted-foreground">Instructor: {course?.teacher}</p>
+        </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-headline">Grade Trend</CardTitle>
-              <CardDescription>Your grade performance over the last few weeks.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ChartContainer config={chartConfig} className="h-[250px] w-full">
-                <ResponsiveContainer>
-                    <LineChart data={mockGradeTrend} margin={{ top: 5, right: 20, left: -10, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis domain={[60, 100]} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <ChartLegend content={<ChartLegendContent />} />
-                    <Line type="monotone" dataKey="grade" stroke="var(--color-grade)" strokeWidth={2} />
-                    </LineChart>
-                </ResponsiveContainer>
-              </ChartContainer>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-headline">Assignments</CardTitle>
-              <CardDescription>A list of all your assignments for this course.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Assignment</TableHead>
-                    <TableHead>Due Date</TableHead>
-                    <TableHead className="text-right">Score</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {course.assignments.map((assignment) => (
-                    <TableRow key={assignment.id}>
-                      <TableCell className="font-medium">{assignment.name}</TableCell>
-                      <TableCell>{assignment.dueDate}</TableCell>
-                      <TableCell className="text-right">
-                        {assignment.score !== null ? (
-                          <Badge variant="secondary">{`${assignment.score} / ${assignment.total}`}</Badge>
-                        ) : (
-                          <Badge variant="outline" className="border-amber-500 text-amber-500">
-                            <Clock className="mr-1 h-3 w-3" />
-                            Upcoming
-                          </Badge>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </div>
-        <div className="lg:col-span-1 space-y-6">
-             <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline">Current Grade</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                    <p className="text-6xl font-bold font-headline text-primary">
-                        {course.grade}
-                        <span className="text-3xl text-muted-foreground">%</span>
-                    </p>
-                    <p className="text-lg text-muted-foreground">B+</p>
-                </CardContent>
-            </Card>
-        </div>
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Current Grade</CardTitle>
+            <CardDescription>Overall performance for this course</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="text-4xl font-bold">{course?.grade ?? '—'}%</div>
+          </CardContent>
+        </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Upcoming Work</CardTitle>
+          <CardDescription>Assignments, tests, and deadlines</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Title</TableHead>
+                <TableHead>Due Date</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {assignments.map((assignment) => (
+                <TableRow key={assignment.id}>
+                  <TableCell>{assignment.title}</TableCell>
+                  <TableCell>{assignment.dueDate}</TableCell>
+                  <TableCell>{assignment.description ?? 'Scheduled'}</TableCell>
+                </TableRow>
+              ))}
+              {!assignments.length ? (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center text-muted-foreground">
+                    No upcoming assignments.
+                  </TableCell>
+                </TableRow>
+              ) : null}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }
