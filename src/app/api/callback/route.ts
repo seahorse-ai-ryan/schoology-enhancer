@@ -36,10 +36,17 @@ async function handleCallback(request: NextRequest) {
     }
 
     console.log('[callback] Exchanging request token for access token.');
-    const userData = await callbackLogic(db, oauthToken, oauthVerifier, consumerKey, consumerSecret);
+    const userData = await callbackLogic(db, consumerKey, consumerSecret, oauthToken, oauthVerifier);
     console.log('[callback] User data received.', { id: userData.userId, name: userData.name });
 
-    const response = NextResponse.redirect(new URL('/', request.url));
+    // Build absolute redirect honoring proxy headers (ngrok) to avoid localhost
+    const forwardedProto = request.headers.get('x-forwarded-proto');
+    const forwardedHost = request.headers.get('x-forwarded-host');
+    const urlFromRequest = new URL(request.url);
+    const proto = forwardedProto || urlFromRequest.protocol.replace(':', '');
+    const host = forwardedHost || request.headers.get('host') || urlFromRequest.host;
+    const origin = `${proto}://${host}`;
+    const response = NextResponse.redirect(`${origin}/dashboard`);
     response.cookies.set('schoology_user_id', userData.userId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

@@ -27,6 +27,7 @@ export function UserDashboard() {
   const [dataSourceSummary, setDataSourceSummary] = useState<DataSourceSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [liveCheck, setLiveCheck] = useState<null | { id: string; name?: string }>(null);
 
   useEffect(() => {
     loadUserData();
@@ -43,6 +44,15 @@ export function UserDashboard() {
         
         // Load Schoology data using the data service
         await loadSchoologyData(userData.id);
+
+        // Hello World: prove we can hit a live Schoology endpoint
+        try {
+          const live = await fetch('/api/schoology/me');
+          if (live.ok) {
+            const j = await live.json();
+            setLiveCheck({ id: j.id, name: j.name });
+          }
+        } catch {}
       } else {
         // If not authenticated, still show mock data for testing
         setError('Not authenticated');
@@ -143,6 +153,7 @@ export function UserDashboard() {
               {getDataSourceBadge(dataSourceSummary.courses)}
               {getDataSourceBadge(dataSourceSummary.announcements)}
               {getDataSourceBadge(dataSourceSummary.deadlines)}
+              {liveCheck && <Badge variant="default">Live Verified</Badge>}
               {dataSourceSummary.lastUpdated && (
                 <span className="text-blue-200 ml-2">
                   Last updated: {formatDate(dataSourceSummary.lastUpdated)}

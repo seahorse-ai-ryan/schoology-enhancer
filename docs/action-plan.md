@@ -93,6 +93,11 @@ This document outlines the concrete steps we will take to build the Schoology En
 - [ ] Create MCP scripts or agent prompts to navigate landing → demo → dashboard → switch → logout.
 - [ ] Use DevTools network listing to confirm requests and provenance.
 
+Terminal Policy
+
+- One persistent terminal per service: “npm run” for Next.js; “firebase emulators:start” for emulators; “ngrok http 9000” for tunneling.
+- To restart Next.js, stop in the existing “npm run” terminal (Ctrl+C) and run `npm run dev` again. Do not spawn new terminals.
+
 ### **Step 3: OAuth Flow Testing (Pending, uses oauth-1.0a)**
 
 - [ ] Test login button visibility and functionality.
@@ -143,7 +148,7 @@ This document outlines the concrete steps we will take to build the Schoology En
 
 ### **Immediate Priority (This Session)**
 
-1. **Fix MSW Integration**: Resolve the service worker registration issue in Playwright tests.
+1. **Restart Next.js in existing terminal** to clear 404’d chunk URLs; avoid new terminals.
 2. **Complete OAuth Testing**: Verify the end-to-end authentication flow works correctly.
 3. **Dashboard Data Display**: Ensure all components render properly with mock data.
 

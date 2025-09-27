@@ -82,10 +82,17 @@ export function DataModeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    exitSampleMode();
-    if (typeof window !== 'undefined') {
-      window.location.href = '/';
-    }
+    (async () => {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+      } catch (_) {
+        // ignore network errors on logout
+      }
+      exitSampleMode();
+      if (typeof window !== 'undefined') {
+        window.location.href = '/';
+      }
+    })();
   };
 
   const value = useMemo<DataModeContextValue>(

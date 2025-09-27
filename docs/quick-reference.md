@@ -82,6 +82,17 @@ firebase deploy            # Deploy to production
 - Use Chrome DevTools MCP to assert DOM, console events (see Cursor Rules), and network requests.
 - Avoid curl; avoid launching new browsers. Drive your already-open Chrome.
 
+OAuth Notes
+
+- Schoology uses hCaptcha on the authorize page.
+- After first approval you may see a green “successfully approved” banner on Schoology; redirect to callback should follow. If you remain on Schoology, verify the `oauth_callback` in the request token step matches your current ngrok URL.
+
+Demo Session Policy
+
+- Clicking “Explore Sample Dashboard” sets an HttpOnly `demo_session=1` cookie and navigates to `/dashboard`.
+- Logout clears both `schoology_user_id` and `demo_session` and removes local demo state.
+- `/dashboard` requires either `demo_session` or `schoology_user_id`; otherwise redirects to landing.
+
 ## 📱 UI Components
 
 ### Dashboard (`src/components/dashboard/UserDashboard.tsx`)

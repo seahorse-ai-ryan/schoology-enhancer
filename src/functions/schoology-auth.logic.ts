@@ -15,44 +15,72 @@ const getOauth = (key, secret) => {
 const SCHOOLOGY_API_URL = 'https://api.schoology.com/v1';
 const SCHOOLOGY_APP_URL = 'https://app.schoology.com';
 
-export const requestTokenLogic = async (db, consumerKey, consumerSecret) => {
+// Firestore (admin) is required in dev/prod; do not fall back when emulators are down.
+
+export const requestTokenLogic = async (db, consumerKey, consumerSecret, callbackUrl: string) => {
+  if (!db) throw new Error('Firestore admin not initialized. Start emulators or configure admin.');
   const oauthClient = getOauth(consumerKey, consumerSecret);
-  const request_data = { url: `${SCHOOLOGY_API_URL}/oauth/request_token`, method: 'GET' };
-  
-  // Correctly construct Headers object
+  // Include oauth_callback in the signed request per OAuth 1.0a spec
+  const request_data: any = {
+    url: `${SCHOOLOGY_API_URL}/oauth/request_token`,
+    method: 'GET',
+    data: { oauth_callback: callbackUrl },
+  };
+
   const authHeader = oauthClient.toHeader(oauthClient.authorize(request_data));
   const headers = new Headers();
-  for (const key in authHeader) {
-    headers.append(key, authHeader[key]);
-  }
+  for (const key in authHeader) headers.append(key, (authHeader as any)[key]);
+  headers.append('Accept', 'application/x-www-form-urlencoded');
 
-  const response = await fetch(request_data.url, { headers });
+  const url = new URL(request_data.url);
+  url.searchParams.set('oauth_callback', callbackUrl);
+
+  const response = await fetch(url.toString(), { headers });
   if(!response.ok) throw new Error("Request Token failed");
   const responseData = await response.text();
   const requestTokenData = new URLSearchParams(responseData);
   const token_key = requestTokenData.get('oauth_token');
   const token_secret = requestTokenData.get('oauth_token_secret');
-  await db.collection('oauth_tokens').doc(token_key).set({ secret: token_secret, timestamp: Date.now() });
-  return `${SCHOOLOGY_APP_URL}/oauth/authorize?oauth_token=${token_key}`;
+  if (token_key && token_secret) {
+    await db.collection('oauth_tokens').doc(token_key).set({ secret: token_secret, timestamp: Date.now() });
+  } else {
+    throw new Error('Missing oauth_token or oauth_token_secret from request token response');
+  }
+  const authorizeUrl = new URL(`${SCHOOLOGY_APP_URL}/oauth/authorize`);
+  authorizeUrl.searchParams.set('oauth_token', token_key!);
+  authorizeUrl.searchParams.set('oauth_callback', callbackUrl);
+  return authorizeUrl.toString();
 };
 
-export const callbackLogic = async (db, consumerKey, consumerSecret, oauth_token) => {
+export const callbackLogic = async (
+  db,
+  consumerKey,
+  consumerSecret,
+  oauth_token: string,
+  oauth_verifier: string | null,
+) => {
+    if (!db) throw new Error('Firestore admin not initialized. Start emulators or configure admin.');
     const oauthClient = getOauth(consumerKey, consumerSecret);
+
+    // Retrieve request token secret from Firestore or in-memory fallback
+    let request_token_secret: string | null = null;
     const tokenDoc = await db.collection('oauth_tokens').doc(oauth_token).get();
-    if (!tokenDoc.exists) throw new Error('Token not found');
-    const request_token_secret = tokenDoc.data().secret;
-    
-    const access_token_data = { url: `${SCHOOLOGY_API_URL}/oauth/access_token`, method: 'GET' };
+    if (tokenDoc.exists) request_token_secret = tokenDoc.data().secret;
+    if (!request_token_secret) throw new Error('Token not found');
+
+    const access_token_data: any = { url: `${SCHOOLOGY_API_URL}/oauth/access_token`, method: 'GET', data: {} };
+    if (oauth_verifier) access_token_data.data.oauth_verifier = oauth_verifier;
     const request_token = { key: oauth_token, secret: request_token_secret };
-    
-    // Correctly construct Headers object
+
     const accessAuthHeader = oauthClient.toHeader(oauthClient.authorize(access_token_data, request_token));
     const accessHeaders = new Headers();
-    for (const key in accessAuthHeader) {
-        accessHeaders.append(key, accessAuthHeader[key]);
-    }
-    
-    const accessResponse = await fetch(access_token_data.url, { headers: accessHeaders });
+    for (const key in accessAuthHeader) accessHeaders.append(key, (accessAuthHeader as any)[key]);
+    accessHeaders.append('Accept', 'application/x-www-form-urlencoded');
+
+    const accessUrl = new URL(access_token_data.url);
+    if (oauth_verifier) accessUrl.searchParams.set('oauth_verifier', oauth_verifier);
+
+    const accessResponse = await fetch(accessUrl.toString(), { headers: accessHeaders });
     if(!accessResponse.ok) throw new Error("Access Token failed");
 
     const responseData = await accessResponse.text();
@@ -60,25 +88,40 @@ export const callbackLogic = async (db, consumerKey, consumerSecret, oauth_token
     const access_token_key = accessTokenData.get('oauth_token');
     const access_token_secret = accessTokenData.get('oauth_token_secret');
 
-    const user_data = { url: `${SCHOOLOGY_API_URL}/users/me`, method: 'GET' };
+    const user_data = { url: `${SCHOOLOGY_API_URL}/users/me?format=json`, method: 'GET' };
     const access_token = { key: access_token_key, secret: access_token_secret };
 
-    // Correctly construct Headers object
-    const userAuthHeader = oauthClient.toHeader(oauthClient.authorize(user_data, access_token));
+    const userAuthHeader = oauthClient.toHeader(oauthClient.authorize(user_data as any, access_token as any));
     const userHeaders = new Headers();
-    for (const key in userAuthHeader) {
-        userHeaders.append(key, userAuthHeader[key]);
+    for (const key in userAuthHeader) userHeaders.append(key, (userAuthHeader as any)[key]);
+    userHeaders.append('Accept', 'application/json');
+    // Some Schoology endpoints redirect (e.g., to a user-specific domain).
+    // We must follow redirects by re-signing the new URL with a fresh nonce/timestamp per docs.
+    let userResponse = await fetch(user_data.url, { headers: userHeaders, redirect: 'manual' as any });
+    if (userResponse.status === 301 || userResponse.status === 302 || userResponse.status === 303) {
+      const location = userResponse.headers.get('location');
+      if (location) {
+        const redirected = { url: location, method: 'GET' } as any;
+        const redirectedHeader = oauthClient.toHeader(oauthClient.authorize(redirected, access_token as any));
+        const redirectedHeaders = new Headers();
+        for (const key in redirectedHeader) redirectedHeaders.append(key, (redirectedHeader as any)[key]);
+        redirectedHeaders.append('Accept', 'application/json');
+        userResponse = await fetch(location, { headers: redirectedHeaders });
+      }
     }
-    
-    const userResponse = await fetch(user_data.url, { headers: userHeaders });
     if(!userResponse.ok) throw new Error("User fetch failed");
     
-    const user = await userResponse.json();
-    await db.collection('users').doc(user.uid).set({
+    const raw = await userResponse.json();
+    const u = raw && typeof raw === 'object' && 'user' in raw ? (raw as any).user : raw;
+    const userIdValue = (u && (u.id ?? u.uid ?? u.user_id)) as string | number | undefined;
+    const userId = userIdValue !== undefined && userIdValue !== null ? String(userIdValue) : '';
+    if (userId) {
+      await db.collection('users').doc(userId).set({
         accessToken: access_token_key,
         accessSecret: access_token_secret,
-        name: user.name_display,
-    });
+        name: u.name_display || u.name || 'Schoology User',
+      });
+    }
 
-    return { userId: user.uid };
+    return { userId };
 };

@@ -91,18 +91,12 @@ export function UserNav() {
 
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {showingSampleData ? (
-            <DropdownMenuItem onSelect={startRealLogin} className="flex items-center justify-between">
-              <span>Connect to Schoology</span>
-              <Badge variant="outline">Live</Badge>
-            </DropdownMenuItem>
-          ) : (
+          {!showingSampleData ? (
             <DropdownMenuItem onSelect={enterSampleMode} className="flex items-center justify-between">
               <span>View Sample Data</span>
               <Badge variant="secondary">Sample</Badge>
             </DropdownMenuItem>
-          )}
-          <DropdownMenuItem onSelect={handleLanding}>Back to Landing</DropdownMenuItem>
+          ) : null}
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />

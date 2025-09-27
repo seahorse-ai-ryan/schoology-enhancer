@@ -31,9 +31,6 @@ export function Header() {
         </button>
 
         <div className="flex flex-1 items-center justify-end space-x-4">
-          {showingSampleData ? (
-            <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Sample Data</span>
-          ) : null}
           <MainNav className="mx-6" />
           <nav className="flex items-center space-x-4">
             <UserNav />

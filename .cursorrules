@@ -44,6 +44,11 @@ You are an expert full-stack developer working on a modern, AI-ready educational
 - **E2E Tests**: Prefer Chrome DevTools MCP; Playwright only via `npm run test:simple` when MCP is unavailable
 - **Mock Data**: Comprehensive test scenarios with data source indicators
 
+### Persistent Named Terminals
+
+- Use one persistent terminal per service: “npm run” for Next.js; “firebase emulators:start” for emulators; “ngrok http 9000” for tunneling.
+- Restart Next.js in-place (Ctrl+C then `npm run dev`) in the existing “npm run” terminal. Agents must not spawn new terminals or use pkill.
+
 ## 🔧 Current Technical Issues
 
 ### MCP-First Testing
