@@ -85,7 +85,9 @@ firebase deploy            # Deploy to production
 OAuth Notes
 
 - Schoology uses hCaptcha on the authorize page.
-- After first approval you may see a green “successfully approved” banner on Schoology; redirect to callback should follow. If you remain on Schoology, verify the `oauth_callback` in the request token step matches your current ngrok URL.
+- After first approval you may see a green “successfully approved” banner on Schoology; redirect to callback should follow. If you remain on Schoology, verify two things:
+  - The Developer App’s domain matches your current ngrok root domain (not necessarily the full callback path). Example: `2144ddbb169d.ngrok-free.app`.
+  - The `oauth_callback` in the request token step matches `https://<ngrok-root>/api/callback`.
 - API reference: Schoology REST v1 [developers.schoology.com/api-documentation/rest-api-v1](https://developers.schoology.com/api-documentation/rest-api-v1/)
 - User management: [uc.powerschool-docs.com/.../user-management](https://uc.powerschool-docs.com/en/schoology/latest/user-management)
 - Managing parent accounts: [uc.powerschool-docs.com/.../managing-parent-accounts](https://uc.powerschool-docs.com/en/schoology/latest/managing-parent-accounts)
@@ -118,6 +120,20 @@ Demo Session Policy
 - **Credentials**: Stored in `.secret.local` (gitignored)
 - **Emulators**: Firebase services running locally
 - **Ports**: Functions(5001), Firestore(8080), Hosting(5000)
+
+Schoology OAuth configuration
+
+- `SCHOOLOGY_CONSUMER_KEY` / `SCHOOLOGY_CONSUMER_SECRET`: Developer App keys (3-legged OAuth).
+- `SCHOOLOGY_ADMIN_KEY` / `SCHOOLOGY_ADMIN_SECRET`: Admin API keys (server-side seeding only).
+- `SCHOOLOGY_CALLBACK_URL`: Must point to your ngrok callback: `https://<ngrok-root>/api/callback`.
+
+Seeding users (Admin API)
+
+- Use bulk JSON POST `/v1/users` with OAuth 1.0a (HMAC-SHA1); sign request without body params and send `application/json` body:
+  ```json
+  { "users": { "user": [ { "school_uid": "carter_mock_20250929", "username": "carter_mock_20250929", "name_first": "Carter", "name_last": "Mock", "role_id": 3, "school_id": 123456 } ] } }
+  ```
+- Conflicts: Prefer omitting `primary_email`. If you must include it, append `?email_conflict_resolution=1` to create username-only when a cross-school email exists.
 
 ### Production
 

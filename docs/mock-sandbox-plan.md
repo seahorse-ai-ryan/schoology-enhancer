@@ -11,9 +11,9 @@ Seed set:
 
 Implementation outline:
 
-1. Admin OAuth credentials (from dev school) are used server-side.
+1. Admin OAuth credentials (from dev school) are used server-side. Developer App keys are used for end-user login only.
 2. Endpoints to call (Schoology API):
-   - POST /users (create teacher/student/parent)
+   - POST /users (bulk JSON recommended) (create teacher/student/parent)
    - POST /courses; POST /sections
    - POST /sections/{section_id}/enrollments
    - POST /sections/{section_id}/assignments
@@ -27,5 +27,12 @@ Data source:
 
 Next steps:
 
-- Create `/api/admin/seed/sandbox` (POST) guarded by key header `x-seed-key`.
-- Implement minimal create-if-missing logic and write created IDs back to Firestore.
+- Use `/api/admin/seed` (POST) guarded by key header `x-seed-key` or app admin role.
+- Bulk create users with JSON to leverage conflict handling and capture `Location`/`id`:
+  ```json
+  { "users": { "user": [ { "school_uid": "carter_mock_20250929", "username": "carter_mock_20250929", "name_first": "Carter", "name_last": "Mock", "role_id": 3, "school_id": 123456 } ] } }
+  ```
+- Conflict resolution options (documented by Schoology):
+  - `?email_conflict_resolution=1` to create username-only if email exists.
+  - `?ignore_email_conflicts=1` for cross-school conflicts (not used by default here).
+- Prefer omitting `primary_email` in seeds to avoid conflicts.

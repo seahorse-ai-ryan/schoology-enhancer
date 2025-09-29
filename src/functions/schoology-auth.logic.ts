@@ -49,8 +49,6 @@ export const requestTokenLogic = async (db, consumerKey, consumerSecret, callbac
   const authorizeUrl = new URL(`${SCHOOLOGY_APP_URL}/oauth/authorize`);
   authorizeUrl.searchParams.set('oauth_token', token_key!);
   authorizeUrl.searchParams.set('oauth_callback', callbackUrl);
-  // Log the authorize URL host and callback host for diagnostics
-  try { console.log('[requestToken] authorizeHost', authorizeUrl.host, 'cbHost', new URL(callbackUrl).host); } catch (_) {}
   return authorizeUrl.toString();
 };
 

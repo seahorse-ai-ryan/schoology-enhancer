@@ -1,45 +1,10 @@
 {
   "users": {
     "parent": { "name": "Ryan Hickman", "email": "ryan@seahorsetwin.com", "role": "parent" },
-    "student": { "name": "Livio Mock", "role": "student", "grad_year": 2029 },
-    "teachers": [
-      { "name": "Martone", "role": "teacher" },
-      { "name": "Chana", "role": "teacher" },
-      { "name": "Zalatimo", "role": "teacher" },
-      { "name": "Resinger", "role": "teacher" },
-      { "name": "Becker", "role": "teacher" },
-      { "name": "Asmaeil", "role": "teacher" },
-      { "name": "Fields", "role": "teacher" }
-    ]
+    "student": { "name": "Livio Mock", "role": "student", "grad_year": 2029 }
   },
-  "courses": [
-    { "title": "Advisory/Prime 8", "teacher": "Martone", "section": "Adv (7062 9 Advisory/Prime 8)" },
-    { "title": "Algebra 1", "teacher": "Chana", "section": "04 (6008 5 Algebra 1)" },
-    { "title": "Choir", "teacher": "Martone", "section": "01 (6888 1 Choir)" },
-    { "title": "English 8", "teacher": "Zalatimo", "section": "06 (6538 12 English 8)" },
-    { "title": "French 1B", "teacher": "Resinger", "section": "02 (6563 1 French 1B)" },
-    { "title": "PE 81", "teacher": "Becker", "section": "05 (6941 1 PE 81)" },
-    { "title": "S St 8", "teacher": "Asmaeil", "section": "03 (6978 2 S St 8)" },
-    { "title": "Science 8", "teacher": "Fields", "section": "07 (6953 2 Science 8)" }
-  ],
-  "enrollments": [
-    { "course": "Advisory/Prime 8", "user": "Livio Mock", "role": "student" },
-    { "course": "Algebra 1", "user": "Livio Mock", "role": "student" },
-    { "course": "Choir", "user": "Livio Mock", "role": "student" },
-    { "course": "English 8", "user": "Livio Mock", "role": "student" },
-    { "course": "French 1B", "user": "Livio Mock", "role": "student" },
-    { "course": "PE 81", "user": "Livio Mock", "role": "student" },
-    { "course": "S St 8", "user": "Livio Mock", "role": "student" },
-    { "course": "Science 8", "user": "Livio Mock", "role": "student" }
-  ],
-  "assignments": [
-    { "course": "Algebra 1", "title": "U1. Skill 2 Test", "due": "2025-09-12T23:59:00", "category": "Tests", "points": 12, "score": 1 },
-    { "course": "Algebra 1", "title": "U1. Skill 3 Test", "due": "2025-09-16T23:59:00", "category": "Tests", "points": 16, "score": 0 },
-    { "course": "Algebra 1", "title": "U1. Skill 1 Test", "due": "2025-09-21T23:59:00", "category": "Tests", "points": 21, "score": 10 },
-    { "course": "Algebra 1", "title": "Wk4 Worksheet", "due": "2025-09-05", "category": "Practice", "points": 5, "score": 0, "status": "missing" },
-    { "course": "Choir", "title": "Music Theory Pre-Test", "due": "2025-08-29", "category": "Music Theory", "points": 10, "score": 10 },
-    { "course": "Choir", "title": "Flashcards 9/18-19", "due": "2025-09-19T23:59:00", "category": "Music Theory", "points": 10, "score": 10 },
-    { "course": "Choir", "title": "Ensemble Skills - MidQ1", "due": "2025-09-12T23:59:00", "category": "Ensemble Skills", "points": 15, "score": 14 },
-    { "course": "English 8", "title": "Turn in Long Way Down Character Handout", "due": "2025-09-12T15:00:00", "category": "Performance (Summative)", "points": 10, "note": "Revised score" },
-    { "course": "English 8", "title": "Writing Sample/Diagnostic", "due": "2025-08-20T23:59:00", "category": "Practice", "points": 5, "score": 5 },
-    { "course": "French 1B", "title": "U5 Edpuzzle: Quest-ce
+  "courses": [],
+  "enrollments": [],
+  "assignments": [],
+  "announcements": []
+}
