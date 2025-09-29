@@ -312,7 +312,7 @@ export class SchoologyDataService {
   }
 
   // Get courses from cache or return mock data
-  async getCourses(): Promise<SchoologyCourse[]> {
+  async getCourses(allowMock: boolean = true): Promise<SchoologyCourse[]> {
     try {
       // Try to get from cache first
       const userCoursesRef = collection(db, 'users', this.userId, 'courses');
@@ -340,8 +340,8 @@ export class SchoologyDataService {
       console.log('Failed to get cached courses, using mock data');
     }
 
-    // Return mock data if no cache
-    return this.getMockCourses();
+    // Return mock data if allowed; otherwise empty
+    return allowMock ? this.getMockCourses() : [];
   }
 
   // Cache assignments with modern structure
@@ -360,7 +360,9 @@ export class SchoologyDataService {
   }
 
   // Get assignments from cache or return mock data
-  async getAssignments(limit: number = 10): Promise<SchoologyAssignment[]> {
+  async getAssignments(limitOrAllowMock: number | { limit?: number; allowMock?: boolean } = 10): Promise<SchoologyAssignment[]> {
+    const limit = typeof limitOrAllowMock === 'number' ? limitOrAllowMock : (limitOrAllowMock.limit ?? 10);
+    const allowMock = typeof limitOrAllowMock === 'number' ? true : (limitOrAllowMock.allowMock ?? true);
     try {
       const userAssignmentsRef = collection(db, 'users', this.userId, 'assignments');
       const assignmentsQuery = query(
@@ -392,7 +394,7 @@ export class SchoologyDataService {
       console.log('Failed to get cached assignments, using mock data');
     }
 
-    return this.getMockAssignments();
+    return allowMock ? this.getMockAssignments() : [];
   }
 
   // Cache announcements with modern structure
@@ -411,7 +413,9 @@ export class SchoologyDataService {
   }
 
   // Get announcements from cache or return mock data
-  async getAnnouncements(limit: number = 5): Promise<SchoologyAnnouncement[]> {
+  async getAnnouncements(limitOrAllowMock: number | { limit?: number; allowMock?: boolean } = 5): Promise<SchoologyAnnouncement[]> {
+    const limit = typeof limitOrAllowMock === 'number' ? limitOrAllowMock : (limitOrAllowMock.limit ?? 5);
+    const allowMock = typeof limitOrAllowMock === 'number' ? true : (limitOrAllowMock.allowMock ?? true);
     try {
       const userAnnouncementsRef = collection(db, 'users', this.userId, 'announcements');
       const announcementsQuery = query(
@@ -441,12 +445,12 @@ export class SchoologyDataService {
       console.log('Failed to get cached announcements, using mock data');
     }
 
-    return this.getMockAnnouncements();
+    return allowMock ? this.getMockAnnouncements() : [];
   }
 
   // Get deadlines (assignments with due dates)
-  async getDeadlines(): Promise<SchoologyAssignment[]> {
-    const assignments = await this.getAssignments(20);
+  async getDeadlines(allowMock: boolean = true): Promise<SchoologyAssignment[]> {
+    const assignments = await this.getAssignments({ limit: 20, allowMock });
     const now = new Date();
     
     return assignments

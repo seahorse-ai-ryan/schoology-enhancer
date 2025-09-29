@@ -1,0 +1,46 @@
+{
+  "users": {
+    "parent": { "name": "Ryan Hickman", "email": "ryan@seahorsetwin.com", "role": "parent" },
+    "student": { "name": "Carter Mock", "role": "student", "grad_year": 2026 },
+    "teachers": [
+      { "name": "Summers E", "role": "teacher" },
+      { "name": "Gamboa A", "role": "teacher" },
+      { "name": "Javier R", "role": "teacher" },
+      { "name": "Scholten B", "role": "teacher" },
+      { "name": "Davis R", "role": "teacher" },
+      { "name": "Smith J", "role": "teacher" }
+    ]
+  },
+  "courses": [
+    { "title": "US Government", "teacher": "Summers E", "section": "p1 T1" },
+    { "title": "AP Biology", "teacher": "Gamboa A", "section": "p2 T1" },
+    { "title": "AP English Lit", "teacher": "Javier R", "section": "p4 T1" },
+    { "title": "AP Statistics", "teacher": "Scholten B", "section": "p3 T1" },
+    { "title": "PE Wt Training", "teacher": "Davis R", "section": "p7 T1" },
+    { "title": "Kinesiology Dual Enr 15", "teacher": "Smith J", "section": "p5 T1" }
+  ],
+  "enrollments": [
+    { "course": "US Government", "user": "Carter Mock", "role": "student" },
+    { "course": "AP Biology", "user": "Carter Mock", "role": "student" },
+    { "course": "AP English Lit", "user": "Carter Mock", "role": "student" },
+    { "course": "AP Statistics", "user": "Carter Mock", "role": "student" }
+  ],
+  "assignments": [
+    { "course": "US Government", "title": "Signed Syllabus", "due": "2025-08-21", "points": 10, "score": 10 },
+    { "course": "US Government", "title": "Self History Book", "due": "2025-08-21T23:59:00", "points": 10, "score": 10 },
+    { "course": "US Government", "title": "Personality Type Survey", "due": "2025-08-28T23:59:00", "points": 10, "score": 10 },
+    { "course": "US Government", "title": "Six Principles of Our Government Graphic Organizer", "due": "2025-09-04", "points": 10, "score": 10 },
+    { "course": "US Government", "title": "Create Your Own Political Party", "due": "2025-09-09T23:59:00", "points": 10, "status": "missing" },
+    { "course": "US Government", "title": "Political Ideology Test", "due": "2025-09-11T08:30:00", "points": 10, "score": 7, "late": true },
+    { "course": "US Government", "title": "Parent/Guardian Video Consent Form", "due": "2025-09-11", "points": 10, "score": 10 },
+    { "course": "US Government", "title": "Interest Groups WebQuest", "due": "2025-09-15T23:59:00", "points": 10, "status": "missing" },
+    { "course": "US Government", "title": "Selling Your Interest Group", "due": "2025-09-18T08:30:00", "points": 10, "status": "missing" },
+    { "course": "US Government", "title": "Liberal vs. Conservative Beliefs", "due": "2025-09-18", "points": 10, "score": 10 },
+    { "course": "US Government", "title": "Voter Participation in the 2024 Presidential Election", "due": "2025-09-18T23:59:00", "points": 10, "score": 10 },
+    { "course": "US Government", "title": "Foundations Unit 1 Test", "due": "2025-09-04", "category": "Assessments", "points": 30, "score": 22 }
+  ],
+  "announcements": [
+    { "course": "AP English Lit", "text": "Unit 5 Review Session Thursday after school." },
+    { "course": "US Government", "text": "Submit by 10/10: College List - Early Decision (if applicable)." }
+  ]
+}

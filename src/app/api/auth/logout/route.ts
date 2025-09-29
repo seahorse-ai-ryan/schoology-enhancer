@@ -5,8 +5,14 @@ export async function POST(request: NextRequest) {
     // Create response with cleared cookie
     const response = NextResponse.json({ success: true });
     
-    // Clear the session cookie
+    // Clear real and demo session cookies
     response.cookies.set('schoology_user_id', '', {
+      expires: new Date(0),
+      path: '/',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+    response.cookies.set('demo_session', '', {
       expires: new Date(0),
       path: '/',
       httpOnly: true,

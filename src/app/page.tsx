@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useDataMode } from '@/components/providers/DataModeProvider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +9,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 export default function HomePage() {
   const router = useRouter();
   const { enterSampleMode, startRealLogin, showingSampleData } = useDataMode();
+
+  // On landing, if already authenticated, send to dashboard
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/auth/status', { cache: 'no-store' });
+        if (res.ok) router.replace('/dashboard');
+      } catch (_) {}
+    })();
+  }, [router]);
 
   const handleSample = () => {
     enterSampleMode();
@@ -29,11 +40,7 @@ export default function HomePage() {
               Stay ahead of coursework, monitor progress, and keep the whole family aligned with a smarter Schoology experience.
             </p>
           </div>
-          {showingSampleData ? (
-            <span className="mx-auto rounded-full bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.2em] text-white/70">
-              Sample Mode Active
-            </span>
-          ) : null}
+          {/* Hidden pill; can be re-enabled for debugging */}
         </header>
 
         <main className="grid gap-6 md:grid-cols-2">

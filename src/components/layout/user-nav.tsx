@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,7 @@ import {
 import { useDataMode } from '@/components/providers/DataModeProvider';
 
 export function UserNav() {
+  const [liveProfile, setLiveProfile] = useState<{ name?: string; primary_email?: string; phone?: string; position?: string; bio?: string } | null>(null);
   const {
     personas,
     activePersonaId,
@@ -27,11 +28,33 @@ export function UserNav() {
     exitSampleMode,
     logout,
   } = useDataMode();
+  const [realChildren, setRealChildren] = useState<Array<{ id: string; name?: string }>>([]);
 
   const activePersona = useMemo(
     () => personas.find((persona) => persona.id === activePersonaId) ?? personas[0] ?? null,
     [personas, activePersonaId]
   );
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/schoology/me', { cache: 'no-store' });
+        if (res.ok) setLiveProfile(await res.json());
+      } catch (_) {}
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/parent/children', { cache: 'no-store' });
+        if (res.ok) {
+          const j = await res.json();
+          setRealChildren(Array.isArray(j.children) ? j.children : []);
+        }
+      } catch (_) {}
+    })();
+  }, []);
 
   const handlePersonaSelect = (personaId: string) => {
     setActivePersona(personaId);
@@ -46,7 +69,7 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-9 w-9 rounded-full" data-testid="user-avatar-trigger">
           <Avatar className="h-9 w-9">
-            <AvatarImage src="https://placehold.co/100x100.png" alt="user avatar" />
+            <AvatarImage src={(!showingSampleData && liveProfile && (liveProfile as any).picture_url) ? (liveProfile as any).picture_url : 'https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/user-default.svg'} alt="user avatar" />
             <AvatarFallback>SP</AvatarFallback>
           </Avatar>
           {showingSampleData ? (
@@ -60,19 +83,48 @@ export function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col gap-1">
             <p className="text-sm font-medium leading-none">
-              {showingSampleData ? sampleParent.name : activePersona?.displayName ?? 'Schoology User'}
+              {showingSampleData ? sampleParent.name : (liveProfile?.name || activePersona?.displayName || 'Schoology User')}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {showingSampleData ? sampleParent.email : activePersona?.email ?? 'connect@schoology.com'}
+              {showingSampleData ? sampleParent.email : (liveProfile?.primary_email || activePersona?.email || 'connect@schoology.com')}
             </p>
-            {showingSampleData ? (
-              <span className="text-[11px] text-muted-foreground">Viewing sample data</span>
+            {!showingSampleData && liveProfile ? (
+              <span className="text-[11px] text-muted-foreground">Live</span>
+            ) : null}
+            {!showingSampleData && liveProfile?.position ? (
+              <span className="text-xs text-muted-foreground">{liveProfile.position}</span>
+            ) : null}
+            {!showingSampleData && liveProfile?.bio ? (
+              <span className="text-xs text-muted-foreground line-clamp-2">{liveProfile.bio}</span>
             ) : null}
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        {personas.length > 0 ? (
+        {/* Real mode: show real children if present */}
+        {!showingSampleData && liveProfile && realChildren.length > 0 ? (
+          <DropdownMenuGroup>
+            <DropdownMenuLabel className="text-xs uppercase text-muted-foreground">Switch Student</DropdownMenuLabel>
+            {realChildren.map((c) => (
+              <DropdownMenuItem
+                key={c.id}
+                className="flex items-center justify-between"
+                onSelect={async () => {
+                  try {
+                    console.log('active_child_set', { childId: c.id, name: c.name || null });
+                    await fetch('/api/parent/active', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ childId: c.id }) });
+                    // Soft refresh to let dashboard read the new active child
+                    location.reload();
+                  } catch {}
+                }}
+              >
+                <span>{c.name || c.id}</span>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuGroup>
+        ) :
+        // Sample mode: show personas
+        (!showingSampleData && liveProfile ? null : personas.length > 0 ? (
           <DropdownMenuGroup>
             <DropdownMenuLabel className="text-xs uppercase text-muted-foreground">Switch Student</DropdownMenuLabel>
             {personas.map((persona) => (
@@ -87,17 +139,7 @@ export function UserNav() {
               </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>
-        ) : null}
-
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          {!showingSampleData ? (
-            <DropdownMenuItem onSelect={enterSampleMode} className="flex items-center justify-between">
-              <span>View Sample Data</span>
-              <Badge variant="secondary">Sample</Badge>
-            </DropdownMenuItem>
-          ) : null}
-        </DropdownMenuGroup>
+        ) : null)}
 
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={logout} data-testid="logout">

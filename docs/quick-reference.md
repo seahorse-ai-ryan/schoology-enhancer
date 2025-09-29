@@ -86,6 +86,9 @@ OAuth Notes
 
 - Schoology uses hCaptcha on the authorize page.
 - After first approval you may see a green “successfully approved” banner on Schoology; redirect to callback should follow. If you remain on Schoology, verify the `oauth_callback` in the request token step matches your current ngrok URL.
+- API reference: Schoology REST v1 [developers.schoology.com/api-documentation/rest-api-v1](https://developers.schoology.com/api-documentation/rest-api-v1/)
+- User management: [uc.powerschool-docs.com/.../user-management](https://uc.powerschool-docs.com/en/schoology/latest/user-management)
+- Managing parent accounts: [uc.powerschool-docs.com/.../managing-parent-accounts](https://uc.powerschool-docs.com/en/schoology/latest/managing-parent-accounts)
 
 Demo Session Policy
 

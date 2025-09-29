@@ -22,6 +22,13 @@ export async function GET(request: NextRequest) {
 
     const consumerKey = process.env.SCHOOLOGY_CONSUMER_KEY;
     const consumerSecret = process.env.SCHOOLOGY_CONSUMER_SECRET;
+    // Guard: prevent accidental use of admin (Manage API) credentials for 3-legged login
+    const adminKey = process.env.SCHOOLOGY_ADMIN_KEY;
+    const adminSecret = process.env.SCHOOLOGY_ADMIN_SECRET;
+    if (adminKey && adminSecret && consumerKey === adminKey) {
+      console.error('[requestToken] Misconfiguration: SCHOOLOGY_CONSUMER_KEY equals SCHOOLOGY_ADMIN_KEY. Use Developer App keys for login.');
+      return NextResponse.json({ error: 'OAuth misconfigured: using admin API credentials. Set Developer App key/secret in SCHOOLOGY_CONSUMER_KEY/SECRET.' }, { status: 500 });
+    }
     const callbackUrl =
       process.env.SCHOOLOGY_CALLBACK_URL || `${request.nextUrl.origin}/api/callback`;
 

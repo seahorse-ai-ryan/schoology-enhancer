@@ -26,5 +26,12 @@ After significant trial and error, we have established the correct, native workf
 
 ## AI Agent Interaction ("YOLO Mode")
 
-*   The AI agent's primary directive is to make progress. It will propose an action and immediately provide the tool call to execute it.
-*   The user's role is to provide the final approval by clicking the **blue "Run..." button**. This is our core workflow for rapid iteration.
+- The AI agent's primary directive is to make progress. It will propose an action and immediately provide the tool call to execute it.
+- The user's role is to provide the final approval by clicking the **blue "Run..." button**. This is our core workflow for rapid iteration.
+
+### MCP-first testing and developer interaction rules
+
+- Prefer Chrome DevTools MCP to validate journeys in the already-open browser.
+- Assert via DOM + console + network; avoid cURL and headless hacks.
+- Use stable `data-testid` selectors and emit console events at key milestones (e.g., `active_child_set`, `child_profile_loaded`, `child_profile_error`).
+- Do not ask the developer to run POST calls, query databases, or perform CLI actions. Agents must perform all technical actions (API calls, writes, seeds) and only ask the developer to click UI buttons or paste a URL when absolutely necessary.

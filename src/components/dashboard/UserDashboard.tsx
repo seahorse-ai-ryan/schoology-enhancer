@@ -19,6 +19,17 @@ interface DataSourceSummary {
   lastUpdated: Date | null;
 }
 
+interface LiveProfile {
+  id: string;
+  name?: string;
+  first?: string | null;
+  last?: string | null;
+  username?: string | null;
+  primary_email?: string | null;
+  school_id?: string | number | null;
+  role?: string | number | null;
+}
+
 export function UserDashboard() {
   const [user, setUser] = useState<User | null>(null);
   const [courses, setCourses] = useState<SchoologyCourse[]>([]);
@@ -27,7 +38,8 @@ export function UserDashboard() {
   const [dataSourceSummary, setDataSourceSummary] = useState<DataSourceSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [liveCheck, setLiveCheck] = useState<null | { id: string; name?: string }>(null);
+  const [liveProfile, setLiveProfile] = useState<LiveProfile | null>(null);
+  const [activeChildProfile, setActiveChildProfile] = useState<LiveProfile | null>(null);
 
   useEffect(() => {
     loadUserData();
@@ -43,14 +55,25 @@ export function UserDashboard() {
         setUser(userData);
         
         // Load Schoology data using the data service
-        await loadSchoologyData(userData.id);
+        await loadSchoologyData(userData.id, /*allowMock=*/false);
 
         // Hello World: prove we can hit a live Schoology endpoint
         try {
           const live = await fetch('/api/schoology/me');
           if (live.ok) {
             const j = await live.json();
-            setLiveCheck({ id: j.id, name: j.name });
+            setLiveProfile(j);
+          }
+        } catch {}
+
+        // If a child is selected, fetch child profile via admin creds
+        try {
+          const child = await fetch('/api/schoology/child');
+          if (child.ok) {
+            const cj = await child.json();
+            setActiveChildProfile(cj);
+          } else {
+            setActiveChildProfile(null);
           }
         } catch {}
       } else {
@@ -67,15 +90,15 @@ export function UserDashboard() {
     }
   };
 
-  const loadSchoologyData = async (userId: string) => {
+  const loadSchoologyData = async (userId: string, allowMock: boolean) => {
     try {
       const dataService = new SchoologyDataService(userId);
       
       // Load all data types
       const [coursesData, announcementsData, deadlinesData, summary] = await Promise.all([
-        dataService.getCourses(),
-        dataService.getAnnouncements(5),
-        dataService.getDeadlines(),
+        dataService.getCourses(allowMock),
+        dataService.getAnnouncements({ limit: 5, allowMock }),
+        dataService.getDeadlines(allowMock),
         dataService.getDataSourceSummary()
       ]);
       
@@ -153,7 +176,7 @@ export function UserDashboard() {
               {getDataSourceBadge(dataSourceSummary.courses)}
               {getDataSourceBadge(dataSourceSummary.announcements)}
               {getDataSourceBadge(dataSourceSummary.deadlines)}
-              {liveCheck && <Badge variant="default">Live Verified</Badge>}
+              {liveProfile && <Badge variant="default">Live Verified</Badge>}
               {dataSourceSummary.lastUpdated && (
                 <span className="text-blue-200 ml-2">
                   Last updated: {formatDate(dataSourceSummary.lastUpdated)}
@@ -162,6 +185,46 @@ export function UserDashboard() {
             </div>
           )}
         </div>
+
+        {/* Live Profile (from Schoology) */}
+        {liveProfile && (
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">Live Profile (Schoology)</CardTitle>
+              <CardDescription>Fetched via OAuth from /users/me</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div><span className="text-gray-500">Name:</span> {liveProfile.name || `${liveProfile.first ?? ''} ${liveProfile.last ?? ''}`.trim()}</div>
+                <div><span className="text-gray-500">Email:</span> {liveProfile.primary_email || '—'}</div>
+                <div><span className="text-gray-500">Username:</span> {liveProfile.username || '—'}</div>
+                <div><span className="text-gray-500">Role:</span> {String(liveProfile.role ?? '—')}</div>
+                <div><span className="text-gray-500">School ID:</span> {String(liveProfile.school_id ?? '—')}</div>
+                <div><span className="text-gray-500">User ID:</span> {liveProfile.id}</div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Active Child Profile (if selected) */}
+        {activeChildProfile && (
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">Active Student (Live)</CardTitle>
+              <CardDescription>Fetched via admin creds from /users/{'{id}'}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div><span className="text-gray-500">Name:</span> {activeChildProfile.name || `${activeChildProfile.first ?? ''} ${activeChildProfile.last ?? ''}`.trim()}</div>
+                <div><span className="text-gray-500">Email:</span> {activeChildProfile.primary_email || '—'}</div>
+                <div><span className="text-gray-500">Username:</span> {activeChildProfile.username || '—'}</div>
+                <div><span className="text-gray-500">Role:</span> {String(activeChildProfile.role ?? '—')}</div>
+                <div><span className="text-gray-500">School ID:</span> {String(activeChildProfile.school_id ?? '—')}</div>
+                <div><span className="text-gray-500">User ID:</span> {activeChildProfile.id}</div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -283,10 +346,12 @@ export function UserDashboard() {
   // If no data is available, show a message
   return (
     <div className="text-center py-8">
-      <p className="text-gray-600 mb-4">No data available</p>
-      <Button onClick={() => window.location.href = '/requestToken'}>
-        Sign in with Schoology
-      </Button>
+      <p className="text-gray-600 mb-2">No data available</p>
+      {!user ? (
+        <Button onClick={() => window.location.href = '/requestToken'}>
+          Sign in with Schoology
+        </Button>
+      ) : null}
     </div>
   );
 }

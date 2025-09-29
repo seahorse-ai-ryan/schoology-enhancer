@@ -42,6 +42,24 @@ export function DataModeProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // If the user is authenticated, force real mode and override any stale local sample flag
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/auth/status', { cache: 'no-store' });
+        if (res.ok) {
+          setMode('real');
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(STORAGE_KEY_MODE, 'real');
+            localStorage.removeItem(STORAGE_KEY_PERSONA);
+          }
+        }
+      } catch (_) {
+        // ignore
+      }
+    })();
+  }, []);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (mode === 'mock') {
@@ -61,10 +79,29 @@ export function DataModeProvider({ children }: { children: React.ReactNode }) {
   }, [activePersonaId]);
 
   const enterSampleMode = () => {
-    setMode('mock');
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY_MODE, 'mock');
-    }
+    (async () => {
+      try {
+        // Server will set HttpOnly demo_session cookie and redirect to /dashboard
+        const res = await fetch('/api/demo/start', { method: 'GET', redirect: 'follow' as any });
+        setMode('mock');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(STORAGE_KEY_MODE, 'mock');
+          // navigate if not auto-followed by the browser
+          if (res && 'url' in res && (res as any).url) {
+            window.location.href = (res as any).url as string;
+          } else {
+            window.location.href = '/dashboard';
+          }
+        }
+      } catch (_) {
+        // Fallback to client redirect
+        setMode('mock');
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(STORAGE_KEY_MODE, 'mock');
+          window.location.href = '/dashboard';
+        }
+      }
+    })();
   };
 
   const exitSampleMode = () => {
