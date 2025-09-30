@@ -114,3 +114,4 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to create assignments', details: String(error) }, { status: 500 });
   }
 }
+

@@ -21,6 +21,7 @@
 Modern Teaching is a Next.js application that enhances the Schoology learning management system with modern UI/UX, offline capabilities, and AI-ready data architecture.
 
 **Tech Stack:**
+
 - **Frontend:** Next.js 14 (App Router), React, TypeScript, Tailwind CSS
 - **Backend:** Next.js API Routes, Firebase Functions
 - **Database:** Firestore (caching & offline support)
@@ -79,6 +80,7 @@ Modern Teaching is a Next.js application that enhances the Schoology learning ma
 ```
 
 **Key Points:**
+
 - ✅ **API-First:** Always tries to fetch fresh data from Schoology
 - ✅ **Cache-Second:** Falls back to Firestore if API fails
 - ✅ **Offline Support:** Cached data available when offline
@@ -91,6 +93,7 @@ Modern Teaching is a Next.js application that enhances the Schoology learning ma
 ### Current Behavior (v1)
 
 **On Dashboard Load:**
+
 1. Call `fetch('/api/schoology/courses')`
 2. API route fetches from Schoology
 3. Transform and return data to UI
@@ -99,6 +102,7 @@ Modern Teaching is a Next.js application that enhances the Schoology learning ma
 6. If cache empty, show mock data (dev only)
 
 **Cache Structure:**
+
 ```
 /users/{userId}/courses/{courseId}
   - id: string
@@ -114,6 +118,7 @@ Modern Teaching is a Next.js application that enhances the Schoology learning ma
 ### Planned Improvements (v2)
 
 **Time-Based Staleness:**
+
 ```typescript
 // Check cache age before hitting API
 const cacheAge = Date.now() - lastUpdated.getTime();
@@ -129,11 +134,13 @@ if (cacheAge < TTL) {
 ```
 
 **Configuration:**
+
 - **Development:** 1 minute TTL (fast iteration)
 - **Mock School:** 10 minutes TTL (reasonable for testing)
 - **Production:** 1 hour TTL (balance freshness vs. API load)
 
 **Background Refresh:**
+
 - Popular courses refreshed automatically
 - User-triggered refresh available
 - WebSocket updates for real-time changes (future)
@@ -145,6 +152,7 @@ if (cacheAge < TTL) {
 ### OAuth 1.0a (3-Legged)
 
 **User Login Flow:**
+
 ```
 1. User clicks "Sign in with Schoology"
    → GET /api/requestToken
@@ -177,6 +185,7 @@ if (cacheAge < TTL) {
 ### Admin Credentials (2-Legged)
 
 **For Mock Users (No OAuth Tokens):**
+
 ```
 1. Check if user has accessToken in Firestore
    → If missing, use admin credentials
@@ -190,6 +199,7 @@ if (cacheAge < TTL) {
 ```
 
 **Use Cases:**
+
 - Mock students created via bulk import
 - Parent viewing child's data
 - Admin tools and debugging
@@ -200,30 +210,30 @@ if (cacheAge < TTL) {
 
 ### Authentication
 
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/api/requestToken` | GET | Initiate OAuth flow |
-| `/api/callback` | GET | Handle OAuth callback |
-| `/api/auth/status` | GET | Check authentication status |
+| Endpoint            | Method | Purpose                     |
+| ------------------- | ------ | --------------------------- |
+| `/api/requestToken` | GET    | Initiate OAuth flow         |
+| `/api/callback`     | GET    | Handle OAuth callback       |
+| `/api/auth/status`  | GET    | Check authentication status |
 
 ### User Data
 
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/api/schoology/me` | GET | Get current user profile |
-| `/api/schoology/child` | GET | Get active child profile (parents) |
-| `/api/schoology/courses` | GET | Get user's enrolled courses |
-| `/api/parent/children` | GET | Get parent's children list |
-| `/api/parent/active` | GET/POST | Get/set active child |
+| Endpoint                 | Method   | Purpose                            |
+| ------------------------ | -------- | ---------------------------------- |
+| `/api/schoology/me`      | GET      | Get current user profile           |
+| `/api/schoology/child`   | GET      | Get active child profile (parents) |
+| `/api/schoology/courses` | GET      | Get user's enrolled courses        |
+| `/api/parent/children`   | GET      | Get parent's children list         |
+| `/api/parent/active`     | GET/POST | Get/set active child               |
 
 ### Admin
 
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/api/admin/users` | GET | List all registered users |
-| `/api/admin/seed` | POST | Seed mock data |
-| `/api/admin/seed/csv` | GET | Generate CSV for bulk import |
-| `/api/admin/grading-periods` | GET/POST | Manage grading periods |
+| Endpoint                     | Method   | Purpose                      |
+| ---------------------------- | -------- | ---------------------------- |
+| `/api/admin/users`           | GET      | List all registered users    |
+| `/api/admin/seed`            | POST     | Seed mock data               |
+| `/api/admin/seed/csv`        | GET      | Generate CSV for bulk import |
+| `/api/admin/grading-periods` | GET/POST | Manage grading periods       |
 
 ---
 
@@ -232,6 +242,7 @@ if (cacheAge < TTL) {
 ### SchoologyCourse
 
 **Our Enhanced Model:**
+
 ```typescript
 interface SchoologyCourse {
   // Core identifiers
@@ -239,14 +250,14 @@ interface SchoologyCourse {
   externalId?: string; // Schoology's ID
   code: string;
   name: string;
-  
+
   // Academic metadata
   subject: string;
   gradeLevel: string;
   credits: number;
   academicYear: string;
   semester: string;
-  
+
   // Staff information
   teacher: {
     id: string;
@@ -254,18 +265,18 @@ interface SchoologyCourse {
     email: string;
     department: string;
   };
-  
+
   // Description
   description?: string;
-  
+
   // Status
   isActive: boolean;
-  
+
   // Cache metadata
   lastUpdated: Date;
   sourceTimestamp: Date;
-  dataSource: 'live' | 'cached' | 'mock';
-  
+  dataSource: "live" | "cached" | "mock";
+
   // LLM/RAG fields (future)
   embedding?: number[];
   semanticKeywords?: string[];
@@ -274,6 +285,7 @@ interface SchoologyCourse {
 ```
 
 **Schoology API Response:**
+
 ```json
 {
   "section": [
@@ -300,6 +312,7 @@ interface SchoologyCourse {
 ### ✅ v0.1 - "Hello World" (Sept 30, 2025)
 
 **Achieved:**
+
 - ✅ OAuth 1.0a authentication with Schoology
 - ✅ Parent-child account associations
 - ✅ Real-time course data fetching from Schoology API
@@ -309,6 +322,7 @@ interface SchoologyCourse {
 - ✅ Static ngrok domain for development
 
 **Demo:**
+
 - Parent logs in with real Schoology credentials
 - Selects child (Carter Mock) from profile menu
 - Dashboard shows child's 4 real courses from Schoology
@@ -317,6 +331,7 @@ interface SchoologyCourse {
 ### ⏳ v0.2 - "Smart Caching" (Next)
 
 **Planned:**
+
 - ⏳ Staleness checks with configurable TTL
 - ⏳ Background refresh jobs
 - ⏳ User-triggered manual refresh
@@ -327,6 +342,7 @@ interface SchoologyCourse {
 ### 🔮 v1.0 - "Production Ready"
 
 **Future:**
+
 - 🔮 Production deployment to Firebase
 - 🔮 Real user accounts (non-mock)
 - 🔮 Performance optimizations
@@ -342,12 +358,14 @@ interface SchoologyCourse {
 ### Local Environment
 
 **Prerequisites:**
+
 - Node.js 20+
 - Firebase CLI
 - Ngrok (with paid account for static domain)
 - Schoology Developer Account
 
 **Setup:**
+
 1. Clone repo
 2. Copy `.env.local.example` to `.env.local`
 3. Set environment variables (OAuth keys, Firebase config)
@@ -355,6 +373,7 @@ interface SchoologyCourse {
 5. Build Firebase functions: `npm run build`
 
 **Start Services (in order):**
+
 ```bash
 # Terminal 1: ngrok (named "Cursor (ngrok http)")
 ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout
@@ -367,6 +386,7 @@ npm run dev
 ```
 
 **Access:**
+
 - App: `https://modernteaching.ngrok.dev`
 - Firestore UI: `http://localhost:4000`
 - Ngrok Dashboard: `http://localhost:4040`
@@ -374,11 +394,13 @@ npm run dev
 ### Testing
 
 **Backend Tests:**
+
 ```bash
 npm run test:emu  # Jest + Firebase Emulators
 ```
 
 **E2E Tests:**
+
 ```bash
 npm run test:simple  # Playwright (only when MCP unavailable)
 ```
@@ -414,12 +436,15 @@ npm run test:simple  # Playwright (only when MCP unavailable)
 ## References
 
 **Project Docs:**
+
 - `README.md` - Setup and quick start
 - `docs/STARTUP.md` - Detailed dev environment guide
 - `docs/SCHOOLOGY-CSV-IMPORT.md` - Bulk import procedures
 - `docs/SCHOOLOGY-SEED-DATA-GUIDE.md` - Mock data best practices
 
 **External Docs:**
+
 - [Schoology Developer Portal](https://developers.schoology.com/)
 - [Schoology REST API](https://developers.schoology.com/api-documentation/rest-api-v1/)
 - [PowerSchool Help Center](https://uc.powerschool-docs.com/en/schoology/latest/)
+

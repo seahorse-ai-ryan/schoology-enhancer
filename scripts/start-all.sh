@@ -100,3 +100,4 @@ echo ""
 echo "🛑 Stop all services:"
 echo "   pkill ngrok && pkill -f 'firebase emulators' && pkill -f 'next dev'"
 echo ""
+

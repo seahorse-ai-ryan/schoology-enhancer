@@ -1,249 +1,79 @@
-# Cursor Rules for Schoology Enhancer Project
+# Cursor AI Rules for Modern Teaching
 
-You are an expert full-stack developer working on a modern, AI-ready educational application. This project combines Next.js, Firebase, and modern data architecture principles.
+This project uses modular rules for better organization and maintainability.
 
-## 🎯 Project Context
+## 📚 Read All Rule Files
 
-**Project Name:** Modern Teaching (formerly Schoology Enhancer)
+**Primary Context:**
+1. `.cursor/rules/core.md` - Project status, milestones, current priorities
+2. `.cursor/rules/workflow.md` - Dev environment, testing strategy, common issues
 
-**Current Status:** ✅ **"Hello World" Milestone Achieved!** Complete e2e flow working - parent logs in with real Schoology credentials, selects child, and sees real course data fetched from Schoology API and displayed in dashboard.
-
-**Key Achievements:**
-
-- ✅ OAuth 1.0a authentication flow complete
-- ✅ Parent-child account associations working
-- ✅ Real-time course data fetching from Schoology API (`/api/schoology/courses`)
-- ✅ Firestore caching with offline support
-- ✅ Dashboard displaying live student courses with teacher names
-- ✅ Mock data CSV bulk import fully working
-- ✅ Static ngrok domain for stable development
-- ✅ Modern data architecture ready for AI/ML applications
-
-**Next Priority:** Implement staleness checks with TTL-based caching (1min dev, 10min test, 1hr prod), then add assignments and announcements endpoints.
-
-## 🏗️ Architecture Principles
-
-### Data Models (`src/lib/schoology-data.ts`)
-
-- **LLM-Ready**: All interfaces include embedding fields, semantic keywords, and AI-generated summary fields
-- **RAG-Optimized**: Structured relationships and searchable content for retrieval-augmented generation
-- **Protocol Buffer Compatible**: Clean interfaces that can be easily serialized
-- **Backward Compatible**: Maintains compatibility with legacy Schoology API
-
-### Key Interfaces
-
-- `SchoologyCourse`: Academic metadata, objectives, difficulty levels, credits
-- `SchoologyAssignment`: Coursework, deadlines, grading, estimated time
-- `SchoologyAnnouncement`: Updates, notifications, engagement tracking
-- `SchoologyGrade`: Performance data, feedback, analytics
-- `SchoologyUser`: Profile, preferences, academic information
-
-## 🧪 Testing Strategy
-
-### Critical: Never Run Playwright Directly
-
-- **Problem**: `npx playwright test` will hang the inline chat in Cursor
-- **Solution**: Always use our custom test runner scripts
-- **Commands**:
-  - `npm run test:emu` - Jest backend tests (✅ Working)
-  - `npm run test:simple` - Playwright E2E tests (❌ MSW Issue)
-  - `npm run test:runner` - Interactive test runner
-
-### Test Infrastructure
-
-- **Backend Tests**: Jest + Firebase Emulators
-- **E2E Tests**: Prefer Chrome DevTools MCP; Playwright only via `npm run test:simple` when MCP is unavailable
-- **Mock Data**: Comprehensive test scenarios with data source indicators
-
-### Persistent Named Terminals
-
-**CRITICAL**: Start services in persistent terminals without `cd` prefixes to ensure proper terminal naming.
-
-**Startup Sequence** (in order):
-
-1. `ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout` - Creates "Cursor (ngrok http)"
-2. `firebase emulators:start` - Creates "Cursor (firebase emulators:start)"
-3. `npm run dev` - Creates "Cursor (npm run)"
-
-**Best Practices**:
-
-- ✅ Start each command directly (no `cd /workspaces/...` prefix)
-- ✅ Use `is_background: true` in run_terminal_cmd tool calls
-- ✅ Restart Next.js in-place (Ctrl+C then `npm run dev`)
-- ❌ Don't create new terminals or use pkill during active development
-- ❌ Never use `cd /path &&` prefix - it ruins terminal names
-
-**Static Domain**: `https://modernteaching.ngrok.dev` (eliminates manual URL updates)
-
-## 🔧 Current Technical Issues
-
-### AI Agent Testing Tools (New: Sept 29, 2025)
-
-**Chrome DevTools MCP**: Available for inspecting running applications
-
-- Read network requests/responses
-- View console logs and errors
-- Evaluate JavaScript in page context
-- Take screenshots for verification
-
-**Cursor Browser**: Enabled in settings for automated testing
-
-- End-to-end flow validation
-- Visual verification of changes
-- Automated user journey testing
-
-**Testing Workflow**:
-
-1. Make code changes
-2. Wait for Next.js hot reload (watch terminal: "✓ Compiled")
-3. Use Chrome DevTools MCP to verify changes
-4. Report findings with screenshots/logs
-
-### Expected Console Behavior
-
-**Normal 401 Errors** (not bugs!):
-
-- `/api/auth/status` returns 401 when user is not logged in
-- Landing page and dashboard handle this gracefully
-- These are intentional security checks, not failures
-
-## 🚀 Development Workflow
-
-### Environment Setup
-
-- **Static Ngrok Domain**: `https://modernteaching.ngrok.dev` (paid account)
-- **Firebase Emulators**: Local services (Firestore, Functions, Hosting)
-- **Firebase Project**: `demo-project` (configured in `.firebaserc` for offline development)
-- **Next.js Dev Server**: Port 9000 (exposed via ngrok)
-- **Ports**: Ngrok Dashboard(4040), Emulator UI(4000), Firestore(8080), Functions(5001), Hosting(5002), Next.js(9000)
-
-### Key Commands
-
-```bash
-npm run dev          # Start Next.js dev server
-npm run build        # Build Firebase Functions
-npm run test:emu     # Run Jest backend tests
-npm run test:simple  # Run Playwright tests (use this, not direct Playwright)
-npm run typecheck    # TypeScript type checking
-npm run lint         # ESLint code quality check
-```
-
-## 📱 UI Components Status
-
-### UserDashboard (`src/components/dashboard/UserDashboard.tsx`)
-
-- **✅ Complete**: Responsive design, data source indicators, loading states
-- **✅ Working**: Displays mock data with proper source badges
-- **❌ Issue**: Depends on MSW working for API calls
-
-### LoginButton (`src/components/auth/LoginButton.tsx`)
-
-- **✅ Complete**: OAuth flow, session management, user display
-- **✅ Working**: Redirects to Schoology for authentication
-
-### Data Source Indicators
-
-- **Mock**: Red badge for test/development data
-- **Cached**: Secondary badge for Firestore-stored data
-- **Live**: Default badge for real-time Schoology API data
-
-## 🔐 Security & Configuration
-
-### Local Development
-
-- **Credentials**: Stored in `.secret.local` (gitignored)
-- **Emulators**: Firebase services running locally
-- **MSW**: Browser-based API mocking for development
-
-### Production
-
-- **Credentials**: Managed via Google Secret Manager
-- **Deployment**: Firebase Hosting + Functions
-- **Security**: OAuth 1.0a with proper token management
-
-## 🎯 Immediate Next Steps
-
-### Priority 1: Fix MSW Integration
-
-1. **Debug Service Worker**: Add console logs to verify registration
-2. **Check Interception**: Verify API calls are being intercepted
-3. **Environment Isolation**: Test MSW in development vs. test environment
-4. **Alternative Approach**: Consider direct API route mocking if MSW continues to fail
-
-### Priority 2: Complete OAuth Testing
-
-1. **Verify Dashboard Loading**: Ensure components render with mock data
-2. **Test Authentication Flow**: Complete end-to-end OAuth testing
-3. **Validate Data Display**: Test all UI components with various data sources
-
-### Priority 3: Technical Debt
-
-1. **Fix Linter Errors**: Clean up TypeScript issues in data service
-2. **Error Boundaries**: Implement comprehensive error handling
-3. **Performance**: Optimize MSW handlers and data loading
-
-## 🚨 Common Pitfalls & Solutions
-
-### Playwright Usage
-
-- **❌ Don't**: Run `npx playwright test` directly
-- **✅ Do**: Use `npm run test:simple` or `npm run test:runner` only when MCP is unavailable
-
-### MSW Not Working
-
-- **Check**: Browser console for service worker registration
-- **Verify**: API calls are being intercepted
-- **Fallback**: Consider direct API route mocking
-
-### Firebase Functions 404
-
-- **Check**: Functions are built (`npm run build`)
-- **Verify**: Emulators are running and accessible
-- **Reset**: Use "Firebase Studio: Hard Restart" if needed
-
-## 📚 Key Documentation Files
-
-- **`README.md`**: Project overview and setup instructions
-- **`docs/ARCHITECTURE.md`**: Complete architecture overview - data flow, caching, auth, API endpoints, milestones
-- **`docs/STARTUP.md`**: Comprehensive startup guide for development environment
-- **`docs/SCHOOLOGY-CSV-IMPORT.md`**: Complete guide to Schoology CSV bulk import process
-- **`docs/SCHOOLOGY-SEED-DATA-GUIDE.md`**: Best practices for creating mock student/teacher/course data from JSON
-
-## 🧠 AI/ML Readiness
-
-### Current Capabilities
-
-- **Data Structure**: Rich, semantic models ready for LLM processing
-- **Embedding Fields**: Pre-configured for vector database integration
-- **RAG Optimization**: Structured relationships for retrieval-augmented generation
-- **Protocol Buffers**: Clean interfaces for data serialization
-
-### Future Opportunities
-
-- **LLM Integration**: Embedding generation, semantic search, AI recommendations
-- **Advanced Analytics**: Learning analytics, predictive deadline management
-- **Intelligent Planning**: AI-powered study recommendations and time management
-
-## 💡 Key Learnings from This Session
-
-### MSW Integration Complexity
-
-- **Browser vs Node**: MSW behaves differently in browser vs. Node.js environments
-- **Service Worker Registration**: Timing and scope issues in Playwright
-- **Environment Isolation**: Development vs. test environment differences
-
-### Test Infrastructure Design
-
-- **Inline Chat Compatibility**: Direct Playwright commands hang Cursor's inline chat
-- **Custom Test Runners**: Essential for maintaining development workflow
-- **Clear Output**: Test results must be easily readable and actionable
-
-### Modern Data Architecture Benefits
-
-- **LLM Readiness**: Rich metadata enables immediate AI integration
-- **RAG Optimization**: Structured relationships improve search and retrieval
-- **Backward Compatibility**: Can maintain legacy API support while adding modern features
+**Technical Details:**
+3. `docs/ARCHITECTURE.md` - Data flow, caching, auth, API endpoints
+4. `docs/CURRENT-STATUS.md` - Active development, TODOs, session context
+5. `docs/USER-JOURNEYS.md` - All implemented features and user flows
 
 ---
 
-**Remember**: You're working on a cutting-edge, AI-ready educational application. The current blocker is in the testing infrastructure, not the core functionality. Focus on getting MSW working in Playwright so we can validate the complete OAuth flow and move to live API integration.
+## 🚨 Critical Rules
+
+### DO NOT Refactor Code
+
+**Testing coverage must be complete before any code refactoring.**
+
+Currently allowed:
+- ✅ Documentation updates
+- ✅ Test creation
+- ✅ Infrastructure setup (Chrome, testing tools)
+
+Not allowed without approval:
+- ❌ Code refactoring
+- ❌ Architectural changes
+- ❌ Feature additions
+
+---
+
+## 🧪 Testing Strategy
+
+**Browser-First Approach:**
+
+1. **Chrome DevTools MCP** (Primary)
+   - AI-driven browser automation
+   - Best for E2E user journeys
+   - Real-time debugging
+   - See: https://github.com/ChromeDevTools/chrome-devtools-mcp/
+
+2. **Jest** (Backend/Unit Only)
+   - Data transformations
+   - API route logic
+   - Firebase integration
+   - Command: `npm run test:emu`
+
+3. **Playwright** (Minimal)
+   - Special cases only
+   - Command: `npm run test:simple`
+
+---
+
+## 🎯 Current Priority
+
+**Phase 1A:** Documentation cleanup ← **IN PROGRESS**  
+**Phase 1B:** Install Chrome in container  
+**Phase 2:** Testing infrastructure (Chrome MCP)  
+**Phase 3:** Fill testing gaps  
+
+**DO NOT proceed to code refactoring without explicit approval.**
+
+---
+
+## 📂 Quick Navigation
+
+- **Status:** `.cursor/rules/core.md`
+- **Workflow:** `.cursor/rules/workflow.md`
+- **Architecture:** `docs/ARCHITECTURE.md`
+- **TODOs:** `docs/CURRENT-STATUS.md`
+- **Features:** `docs/USER-JOURNEYS.md`
+
+---
+
+**For detailed rules, read the files above. This file only provides navigation.**

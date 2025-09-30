@@ -1,227 +1,247 @@
-# Schoology Enhancer
+# Modern Teaching
 
-A modern, intelligent academic planning application that enhances the Schoology learning management system with proactive planning, AI-powered insights, and a beautiful user interface.
+Next.js application enhancing Schoology with modern UI, offline support, and AI-ready data architecture.
 
-## 🎯 Project Goals
+## Status
 
-- **Schoology Integration**: Seamless OAuth 1.0a authentication with Schoology's API
-- **Modern Interface**: Beautiful, responsive UI built with Next.js and Shadcn/ui
-- **Proactive Planning**: Intelligent deadline tracking and course management
-- **AI-Ready Architecture**: Data structures optimized for LLM processing, RAG applications, and semantic search
-- **Performance**: Smart caching strategy with Firestore for offline-first experience
+✅ **Hello World Milestone Achieved** (September 30, 2025)
 
-## 🚀 Technology Stack
+**What Works:**
+- OAuth 1.0a authentication with Schoology
+- Parent-child account switching
+- Live course data from Schoology API
+- Firestore caching for offline access
+- Mock student data for development/testing
 
-- **Frontend**: Next.js 14 with App Router, TypeScript, Tailwind CSS
-- **UI Components**: Shadcn/ui with Radix UI primitives
-- **Backend**: Firebase Functions, Firestore, Authentication
-- **Data Layer**: Modern, semantic data models optimized for AI/ML applications
-- **Testing**: Jest for backend integration, Playwright for E2E testing
-- **Development**: Firebase Emulator Suite for local development
+**Current:** v0.1 - Hello World  
+**Next:** v0.2 - Smart Caching & Assignments
 
-## 🏗️ Architecture Highlights
+## Features
 
-### Modern Data Structure
+### Current (v0.1)
 
-Our data models are designed for the future of AI-powered education:
+- **Authentication:** Schoology OAuth 1.0a with secure token storage
+- **Parent Accounts:** Select and switch between multiple children
+- **Course Display:** Real-time data fetched from Schoology API
+- **Offline Support:** Firestore caching with automatic fallback
+- **Mock Data:** Seeded test accounts (Carter, Tazio, Livio Mock) in Schoology sandbox
+- **Admin Tools:** CSV generation for bulk import, grading period management
 
-- **Rich Metadata**: Academic information, difficulty levels, learning objectives
-- **LLM Optimization**: Embedding fields, semantic keywords, AI-generated summaries
-- **RAG-Ready**: Structured relationships and searchable content
-- **Protocol Buffer Compatible**: Clean interfaces for serialization
-- **Backward Compatible**: Maintains compatibility with legacy Schoology API
+### Planned (v0.2)
 
-### Data Sources & Caching
+- TTL-based cache staleness checks (1min/10min/1hr)
+- Assignments and grades display
+- Announcements and deadlines
+- Manual data refresh button
+- Background cache updates
 
-- **Live Data**: Real-time Schoology API integration
-- **Cached Data**: Firestore-based performance optimization
-- **Mock Data**: Comprehensive testing and development support
-- **Clear Indicators**: UI shows data source and freshness
+## Tech Stack
 
-## 📋 Prerequisites
+- **Frontend:** Next.js 14 (App Router), React, TypeScript, Tailwind CSS
+- **Backend:** Firebase Functions (Node.js), Next.js API Routes
+- **Database:** Firestore (caching & user data)
+- **Authentication:** Schoology OAuth 1.0a
+- **External API:** Schoology REST API v1
+- **Development:** ngrok (static domain), Firebase Emulators
+- **Testing:** Chrome DevTools MCP, Jest, Playwright
+- **Deployment:** Firebase Hosting + Functions (planned: modernteaching.com)
 
-- Node.js 18+ and npm
-- Google/Firebase account
-- Schoology Developer Account
-- Docker (for containerized development)
+## Quick Start
 
-## 🚀 Quick Start
+### Prerequisites
 
-### Automated Setup (Recommended)
+- Node.js 20 or later
+- Firebase CLI (`npm install -g firebase-tools`)
+- ngrok account with static domain
+- Schoology Developer Account with API credentials
 
-The easiest way to start development:
-
-```bash
-npm run dev:full
-```
-
-This script will:
-
-1. 🌐 Start ngrok tunnel and get a public URL
-2. 📝 Automatically update `.env.local` with the callback URL
-3. 🔥 Start Firebase emulators
-4. ⚡ Start Next.js dev server
-5. 🎉 Display all URLs and configuration
-
-**Note**: You'll need to update your Schoology Developer App domain once with the ngrok domain (the script will show you what to paste).
-
-### Manual Setup
-
-If you prefer manual control:
-
-### 1. Clone and Install
+### Installation
 
 ```bash
-git clone <repository-url>
+# Clone repository
+git clone https://github.com/seahorse-ai-ryan/schoology-enhancer.git
 cd schoology-enhancer
+
+# Install dependencies
 npm install
+
+# Build Firebase Functions
+npm run build
 ```
 
-### 2. Firebase Configuration
+### Configuration
 
 ```bash
-# Login to Firebase
-firebase login
+# Create environment file
+cp .env.local.example .env.local
 
-# Initialize project (use existing project ID)
-firebase use schoology-testing
-
-# Set up local secrets for development
-cp .secret.local.example .secret.local
-# Edit .secret.local with your Schoology API credentials
+# Edit .env.local with your credentials:
+# - SCHOOLOGY_CONSUMER_KEY/SECRET (OAuth for user login)
+# - SCHOOLOGY_ADMIN_KEY/SECRET (Admin API for seeding)
+# - SCHOOLOGY_CALLBACK_URL (https://modernteaching.ngrok.dev/api/callback)
 ```
 
-### 3. Development Environment (Cursor on Mac)
+### Start Development
+
+Run these commands in separate terminals:
 
 ```bash
-# Start development server
+# Terminal 1: ngrok (creates "Cursor (ngrok http)" terminal)
+ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout
+
+# Terminal 2: Firebase Emulators (creates "Cursor (firebase emulators:start)" terminal)
+firebase emulators:start
+
+# Terminal 3: Next.js Dev Server (creates "Cursor (npm run)" terminal)
 npm run dev
-
-# In another terminal, start Firebase emulators
-firebase emulators:start --only hosting,functions,firestore --project schoology-testing
 ```
 
-### 4. Testing (MCP-first)
+**Important:** Don't prefix commands with `cd` - it breaks terminal naming!
+
+### Access
+
+- **App:** https://modernteaching.ngrok.dev
+- **Firestore UI:** http://localhost:4000
+- **Ngrok Dashboard:** http://localhost:4040
+- **Emulator UI:** http://localhost:4000
+
+## Development
+
+See comprehensive guides in `/docs`:
+
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Data flow, caching strategy, auth flow, API endpoints
+- **[STARTUP.md](docs/STARTUP.md)** - Detailed environment setup and troubleshooting
+- **[USER-JOURNEYS.md](docs/USER-JOURNEYS.md)** - All implemented features and user flows
+- **[CURRENT-STATUS.md](docs/CURRENT-STATUS.md)** - Active development status and TODOs
+
+## Testing
+
+### Browser-Based Testing (Primary)
+
+Uses Chrome DevTools MCP for AI-driven browser automation:
 
 ```bash
-# Backend integration tests (Jest)
-npm run test:emu
-
-# MCP-first: Use Chrome DevTools MCP tools to validate journeys in your open Chrome
-# If MCP is unavailable, use Playwright via our scripts only
-npm run test:simple
-npm run test:runner
+# Chrome DevTools MCP enables AI agent to control browser
+# See: https://github.com/ChromeDevTools/chrome-devtools-mcp/
 ```
-
-## 🔧 Environment Configuration
-
-### Firebase Emulators
-
-The project uses Firebase Emulator Suite for local development:
-
-- **Functions**: Port 5001
-- **Firestore**: Port 8080
-- **Hosting**: Port 5000
-- **Auth**: Port 9099
-
-### Schoology API Setup
-
-1. Create a Schoology Developer App
-2. Set redirect URL to your local development URL
-3. Store credentials in `.secret.local` for development
-4. Use Google Secret Manager for production
-
-## 📊 Current Status
-
-### ✅ Completed
-
-- [x] Modern, LLM-optimized data structures
-- [x] Firebase Functions for OAuth 1.0a flow
-- [x] Comprehensive testing framework
-- [x] MSW integration for API mocking
-- [x] Beautiful UI components and layout
-- [x] Data caching and source tracking
-
-### 🔄 In Progress
-
-- [ ] MSW integration in Playwright test environment
-- [ ] End-to-end OAuth flow testing
-- [ ] Complete dashboard data display
-
-### 📋 Next Steps
-
-1. Fix MSW integration for Playwright tests
-2. Complete OAuth flow end-to-end testing
-3. Implement live Schoology API integration
-4. Add AI-powered insights and recommendations
-
-## 🧪 Testing Strategy
 
 ### Backend Tests (Jest)
 
-- **Location**: `src/test/`
-- **Command**: `npm run test:emu`
-- **Coverage**: OAuth logic, data services, Firebase integration
+Unit tests for data transformations, API logic, Firebase integration:
 
-### End-to-End Tests (Playwright)
+```bash
+npm run test:emu
+```
 
-- **Location**: `tests/e2e/`
-- **Command**: `npm run test:simple`
-- **Coverage**: Complete user flows, UI interactions, data display
+### E2E Tests (Playwright)
 
-### Test Data
+Minimal use for cases where browser automation isn't suitable:
 
-- **Mock Data**: Comprehensive test scenarios
-- **MSW Handlers**: API endpoint mocking
-- **Firebase Emulators**: Local database and functions
+```bash
+npm run test:simple
+```
 
-## 🔐 Security
+## Project Structure
 
-- **Local Development**: Credentials stored in `.secret.local` (gitignored)
-- **Production**: Credentials managed via Google Secret Manager
-- **OAuth Flow**: Secure token exchange with Schoology
-- **Data Privacy**: User data isolated by Firebase Auth UID
+```
+src/
+├── app/                      # Next.js app router
+│   ├── api/                  # API routes
+│   │   ├── schoology/        # Schoology API endpoints
+│   │   ├── parent/           # Parent-child functionality
+│   │   └── admin/            # Admin tools
+│   ├── (authenticated)/      # Protected pages
+│   └── layout.tsx            # Root layout
+├── components/               # React components
+│   ├── dashboard/            # Dashboard components
+│   ├── layout/               # Layout components (nav, etc.)
+│   └── ui/                   # Shadcn/ui components
+├── lib/                      # Shared utilities
+│   └── schoology-data.ts     # Data models and service
+├── functions/                # Firebase Functions
+│   └── schoology-auth.logic.ts  # OAuth logic
+└── test/                     # Jest backend tests
 
-## 🤝 Contributing
+tests/
+└── e2e/                      # Playwright E2E tests
 
-This is an open-source project. We welcome contributions!
+seed/
+└── sandbox/                  # Mock student data (JSON)
+```
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
+## Data Architecture
 
-## 📚 Documentation
+**LLM-Ready Data Models:**
+- Rich metadata (difficulty, objectives, credits)
+- Embedding fields for semantic search
+- AI-generated summaries
+- RAG-optimized relationships
+- Protocol buffer compatible
 
-- **`README.md`**: Project overview and setup instructions
-- **`.cursorrules`**: Cursor IDE rules and AI session guidelines
-- **`docs/LOG.md`**: Session logs and progress tracking
-- **`docs/action-plan.md`**: Development roadmap and milestones
-- **`docs/session-context.md`**: Current session context and debugging notes
-- **`docs/quick-reference.md`**: Quick status and command reference
-- **`.idx/airules.md`**: Firebase Studio-specific AI guidelines
+**See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for complete details.**
 
-## 🆘 Troubleshooting
+## Deployment
 
-### Common Issues
+**Target:** Firebase Hosting + Functions  
+**Domain:** modernteaching.com (planned)  
+**Current:** Local development only (ngrok)
 
-- **404 Errors**: Ensure Firebase emulators are running and functions are built
-- **MSW Not Working**: Check browser console for service worker registration
-- **Test Failures**: Verify Firebase emulator connectivity and mock data setup
+```bash
+# When ready for deployment
+firebase deploy
+```
 
-### Environment Reset
+## Documentation
 
-If you encounter persistent issues:
+**Core Docs:**
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md) - System architecture
+- [STARTUP.md](docs/STARTUP.md) - Environment setup
+- [USER-JOURNEYS.md](docs/USER-JOURNEYS.md) - Feature documentation
+- [CURRENT-STATUS.md](docs/CURRENT-STATUS.md) - Development status
 
-1. Use "Firebase Studio: Hard Restart" command
-2. Rebuild environment after configuration changes
-3. Check emulator logs for startup errors
+**Reference:**
+- [SCHOOLOGY-CSV-IMPORT.md](docs/SCHOOLOGY-CSV-IMPORT.md) - Bulk import guide
+- [SCHOOLOGY-SEED-DATA-GUIDE.md](docs/SCHOOLOGY-SEED-DATA-GUIDE.md) - Mock data best practices
+- [DEMO-MODE-DEPRECATED.md](docs/DEMO-MODE-DEPRECATED.md) - Why demo mode was removed
 
-## 📄 License
+## Common Commands
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```bash
+# Development
+npm run dev          # Next.js dev server (port 9000)
+npm run build        # Build Firebase Functions
+npm run typecheck    # TypeScript type checking
+npm run lint         # ESLint code quality
+
+# Testing
+npm run test:emu     # Jest backend tests
+npm run test:simple  # Playwright E2E (minimal use)
+
+# Deployment
+firebase deploy      # Deploy to production
+```
+
+## Common Issues
+
+### Services Won't Start
+- Check for zombie processes in terminals
+- Ensure ports are free: 9000, 5001, 8080, 4000
+- Delete terminals and restart fresh
+
+### OAuth Callback Fails
+- Verify `SCHOOLOGY_CALLBACK_URL` in `.env.local` matches ngrok URL
+- Check Schoology Developer App domain matches ngrok root domain
+- See [STARTUP.md](docs/STARTUP.md) for detailed troubleshooting
+
+### Tests Failing
+- Ensure Firebase Emulators are running
+- Check Firestore has mock data seeded
+- Verify admin role granted to test user
+
+## License
+
+MIT
 
 ---
 
-**Built with ❤️ for modern education technology**
+**Modern Teaching** - Enhancing education through modern technology
