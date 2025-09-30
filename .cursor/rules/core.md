@@ -32,10 +32,11 @@
 ⏳ **DO NOT REFACTOR CODE** until testing coverage is complete.
 
 **Current Focus:**
-1. Install Chrome in container for Cursor Browser + Chrome DevTools MCP
-2. Implement browser-first testing strategy
-3. Fill testing gaps for Hello World features (parent-child switching, live API, cache fallback)
-4. **ONLY THEN** consider code refactoring
+1. ✅ Switched to native Mac for full browser automation support
+2. Configure Chrome DevTools MCP in Cursor (user action)
+3. Implement browser-first testing strategy
+4. Fill testing gaps for Hello World features (parent-child switching, live API, cache fallback)
+5. **ONLY THEN** consider code refactoring
 
 **Upcoming Features:**
 - TTL-based staleness checks (1min dev, 10min test, 1hr prod)
@@ -45,19 +46,14 @@
 
 ---
 
-## Development Environments
+## Development Environment
 
-### Primary: Cursor on Mac (Daily Development)
-- Local development with ngrok
-- Chrome DevTools MCP for browser testing
-- Firebase Emulators for backend
-- All feature development happens here
-
-### Secondary: Firebase Studio (Cloud Deployment)
-- Deploy to Firebase Hosting
-- Manage cloud resources
-- Production debugging
-- See `.idx/airules.md` for Studio-specific rules
+### Native macOS Development
+- All development happens natively on Mac (no containers)
+- Local development with ngrok for Schoology OAuth callbacks
+- Chrome/Chromium for browser automation and AI-driven testing
+- Firebase Emulators for backend services
+- Full GUI support enables Cursor Browser + Chrome DevTools MCP
 
 ---
 

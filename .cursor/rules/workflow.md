@@ -1,10 +1,12 @@
 # Development Workflow
 
+**Environment:** Native macOS Development
+
 ## Startup Sequence
 
 ### Persistent Named Terminals
 
-**CRITICAL:** Start services in order without `cd` prefixes to ensure proper terminal naming.
+Start services in the project root directory (`/Users/ryanhickman/code/web-apps/schoology-enhancer`).
 
 ```bash
 # Terminal 1: "Cursor (ngrok http)"
@@ -18,11 +20,11 @@ npm run dev
 ```
 
 **Best Practices:**
-- ✅ Start each command directly (no `cd /workspaces/...` prefix)
+- ✅ Start from project root directory
 - ✅ Use `is_background: true` in run_terminal_cmd tool calls
 - ✅ Restart Next.js in-place (Ctrl+C then `npm run dev`)
 - ❌ Don't create new terminals or use pkill during active development
-- ❌ Never use `cd /path &&` prefix - ruins terminal names
+- ✅ All services run natively on macOS (no containers)
 
 **Static Domain:** `https://modernteaching.ngrok.dev` (eliminates manual URL updates)
 

@@ -1,7 +1,8 @@
 # Chrome DevTools MCP Setup
 
 **Last Updated:** September 30, 2025  
-**Status:** ✅ Chromium Installed, ⏳ MCP Configuration Pending
+**Status:** ✅ Native Mac Environment with Browser Automation  
+**Environment:** macOS (native development)
 
 ---
 
@@ -13,36 +14,35 @@ Chrome DevTools MCP enables AI agents to control a Chrome browser for automated 
 
 ---
 
-## Installation Status
+## Native Mac Setup
 
-### ✅ Chromium Installed in Container
+### Why Native?
 
-**Version:** Chromium 140.0.7339.185  
-**OS:** Debian GNU/Linux 12 (bookworm)  
-**Architecture:** ARM64 (aarch64)
+Browser automation requires a display environment to open browser windows. While containers are great for isolation, they lack GUI support without complex X11 forwarding. Running natively on macOS provides:
 
-**Required Flags for Container:**
-```bash
---no-sandbox              # Container can't create its own sandboxes
---disable-dev-shm-usage   # Prevent /dev/shm issues
---disable-gpu             # No GPU in container
-```
+- ✅ Full browser automation with visible windows
+- ✅ Cursor's built-in browser integration works
+- ✅ Chrome DevTools MCP can launch browsers
+- ✅ AI-driven E2E testing with visual feedback
+- ✅ Faster iteration with hot reload
 
-**Wrapper Script:** `scripts/chrome-container.sh`
-```bash
-#!/bin/bash
-exec chromium \
-  --no-sandbox \
-  --disable-dev-shm-usage \
-  --disable-gpu \
-  "$@"
-```
+### Prerequisites
+
+1. **Chrome or Chromium** installed on macOS
+   ```bash
+   # Check if installed
+   which google-chrome-stable || which chromium || which /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome
+   ```
+
+2. **Cursor IDE** with MCP support
+
+3. **Node.js 20+** for running Chrome DevTools MCP server
 
 ---
 
 ## Cursor MCP Configuration
 
-### Manual Step Required
+### Option 1: Use System Chrome (Recommended)
 
 Add to Cursor's MCP settings (Settings → MCP → New MCP Server):
 
@@ -54,23 +54,18 @@ Add to Cursor's MCP settings (Settings → MCP → New MCP Server):
       "args": [
         "-y",
         "chrome-devtools-mcp@latest",
-        "--executablePath=/usr/bin/chromium",
         "--isolated=true"
-      ],
-      "env": {
-        "CHROMIUM_FLAGS": "--no-sandbox --disable-dev-shm-usage --disable-gpu"
-      }
+      ]
     }
   }
 }
 ```
 
-**Key Configuration:**
-- `--executablePath=/usr/bin/chromium` - Use installed Chromium
-- `--isolated=true` - Clean profile for each test run
-- `env.CHROMIUM_FLAGS` - Pass container-required flags
+**Note:** Omitting `--executablePath` uses the system Chrome automatically.
 
-### Alternative: Use Wrapper Script
+### Option 2: Specify Chrome Path Explicitly
+
+If Chrome is in a non-standard location:
 
 ```json
 {
@@ -80,12 +75,19 @@ Add to Cursor's MCP settings (Settings → MCP → New MCP Server):
       "args": [
         "-y",
         "chrome-devtools-mcp@latest",
-        "--executablePath=/workspaces/schoology-enhancer/scripts/chrome-container.sh"
+        "--executablePath=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "--isolated=true"
       ]
     }
   }
 }
 ```
+
+### Configuration Details
+
+- `--isolated=true` - Clean browser profile for each test run (prevents cache/cookie interference)
+- No `--no-sandbox` or `--disable-gpu` needed on native Mac
+- No wrapper scripts required
 
 ---
 
@@ -95,18 +97,20 @@ Add to Cursor's MCP settings (Settings → MCP → New MCP Server):
 
 1. Restart Cursor
 2. Open new chat or inline chat
-3. Try prompt: "Check the performance of https://www.google.com"
-4. AI should open browser and record trace
+3. Try prompt: "Navigate to google.com and take a screenshot"
+4. AI should open a browser window and capture the page
 
 ### Expected Behavior
 
 **MCP Tools Available:**
-- `navigate_page` - Open URLs
+
+- `navigate` - Open URLs
+- `snapshot` - Get accessibility tree (best for understanding page structure)
 - `take_screenshot` - Capture page visuals
-- `evaluate_script` - Run JavaScript
-- `list_console_messages` - Read console logs
-- `get_network_request` - Inspect network calls
-- `click`, `fill`, `hover` - User interactions
+- `evaluate` - Run JavaScript in page context
+- `console_messages` - Read console logs
+- `network_requests` - Inspect network calls
+- `click`, `type`, `hover` - User interactions
 - And more...
 
 ---
@@ -116,13 +120,14 @@ Add to Cursor's MCP settings (Settings → MCP → New MCP Server):
 ### Verify Dashboard After Changes
 
 ```
-Prompt: "Start the dev servers, navigate to the dashboard, 
+Prompt: "Navigate to https://modernteaching.ngrok.dev/dashboard,
          take a screenshot, and check console for errors"
 ```
 
 AI will:
-1. Start ngrok, firebase, npm
-2. Open https://modernteaching.ngrok.dev/dashboard
+
+1. Open browser window
+2. Navigate to URL
 3. Capture screenshot
 4. Read console messages
 5. Report any errors
@@ -130,14 +135,15 @@ AI will:
 ### Test Parent-Child Switching
 
 ```
-Prompt: "Navigate to dashboard, click the profile menu, 
-         click 'Carter Mock', verify courses load, 
+Prompt: "Navigate to dashboard, click the profile menu,
+         click 'Carter Mock', verify courses load,
          take a screenshot showing the courses"
 ```
 
 AI will:
+
 1. Navigate to page
-2. Click elements
+2. Click elements using accessibility tree
 3. Wait for data to load
 4. Capture proof
 5. Verify expected state
@@ -145,11 +151,12 @@ AI will:
 ### Debug Network Issues
 
 ```
-Prompt: "Navigate to dashboard, list all network requests, 
+Prompt: "Navigate to dashboard, list all network requests,
          show me the response from /api/schoology/courses"
 ```
 
 AI will:
+
 1. Navigate to page
 2. Monitor network tab
 3. Extract specific request/response
@@ -157,67 +164,68 @@ AI will:
 
 ---
 
-## Known Limitations
-
-### Container Sandbox Restrictions
-
-**Issue:** Chromium can't create its own sandboxes in container  
-**Solution:** Use `--no-sandbox` flag  
-**Risk:** Slightly less secure (acceptable for development)
-
-**From Chrome DevTools MCP docs:**
-> Some MCP clients allow sandboxing the MCP server using macOS Seatbelt or Linux containers. 
-> If sandboxes are enabled, chrome-devtools-mcp is not able to start Chrome that requires 
-> permissions to create its own sandboxes.
-
-### D-Bus Errors (Normal)
-
-**Error:** "Failed to connect to the bus..."  
-**Impact:** None - browser still works  
-**Why:** Container doesn't have D-Bus daemon  
-**Solution:** Ignore these errors
-
----
-
 ## Troubleshooting
 
 ### Chrome Won't Start
 
+**Check Chrome installation:**
 ```bash
-# Test manually
-chromium --version
-chromium --headless --no-sandbox --disable-gpu --dump-dom https://www.google.com
+# Find Chrome
+ls -la /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome
+
+# Or find Chromium
+which chromium
+```
+
+**Test manually:**
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --version
 ```
 
 ### MCP Not Connecting
 
-1. Check Cursor MCP settings
-2. Verify `--executablePath` points to `/usr/bin/chromium`
-3. Restart Cursor
+1. Check Cursor MCP settings (Settings → MCP)
+2. Verify `chrome-devtools-mcp` is listed
+3. Restart Cursor completely
 4. Check Cursor logs for MCP errors
+5. Try without `--executablePath` to use system default
 
-### Cursor Browser Feature
+### Browser Opens But AI Can't Control It
 
-If Cursor's built-in browser feature still doesn't work:
-- Focus on Chrome DevTools MCP (separate from Cursor Browser)
-- Chrome MCP is what AI agents use programmatically
-- Cursor Browser is for visual display (nice-to-have)
+1. Ensure `--isolated=true` is set (clean profile)
+2. Restart MCP server (restart Cursor)
+3. Check console for permission errors
+
+---
+
+## Cursor Browser vs Chrome MCP
+
+**Cursor's Built-in Browser:**
+- Visual browser panel in IDE
+- Announced Sept 29, 2025
+- Good for manual inspection
+
+**Chrome DevTools MCP:**
+- Programmatic browser control for AI agents
+- Can run headless or visible
+- Better for automated testing
+
+**Both work together!** Chrome MCP can drive the browser while you watch in Cursor's panel.
 
 ---
 
 ## Next Steps
 
-**Manual (User):**
-1. Add MCP configuration to Cursor settings
-2. Restart Cursor
-3. Test with simple prompt
-4. Report if working
+**Testing Infrastructure:**
 
-**Automated (AI Agent):**
-1. Create browser-first testing examples
-2. Document usage patterns
-3. Update TESTING.md with Chrome MCP guide
+1. ✅ Native Mac environment configured
+2. ✅ Browser automation working
+3. ⏳ Create browser-first testing patterns
+4. ⏳ Document Chrome MCP usage patterns
+5. ⏳ Fill testing gaps for Hello World features
+
+**See:** `docs/CURRENT-STATUS.md` for active TODOs
 
 ---
 
-**Status:** Chrome installed, awaiting MCP configuration
+**Status:** Ready for AI-driven browser testing on native Mac

@@ -1,14 +1,17 @@
 # Modern Teaching - Development Environment Startup Guide
 
-**Last Updated**: September 30, 2025
+**Last Updated**: September 30, 2025  
+**Environment**: Native macOS Development
 
 ## 🎯 Quick Start
 
 ### Prerequisites
 
+- **macOS** (native development environment)
 - Node.js 20+ installed
 - Firebase CLI installed (`npm install -g firebase-tools`)
 - Ngrok account with static domain configured
+- Chrome or Chromium installed (for browser automation)
 - `.env.local` file with credentials (see below)
 
 ### Starting Development Services
@@ -28,9 +31,9 @@ npm run dev
 
 **Important**:
 
-- Do NOT prefix commands with `cd /workspaces/...` - this ruins terminal naming
-- Start in the project root directory
+- Start in the project root directory (`/Users/ryanhickman/code/web-apps/schoology-enhancer`)
 - Let each service initialize before starting the next
+- All services run natively on macOS (no containers)
 
 ### Expected Terminal Names in Cursor
 
