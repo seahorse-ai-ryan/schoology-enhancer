@@ -2,7 +2,16 @@
 
 **Last Updated:** September 30, 2025  
 **Current Version:** v0.1 (Hello World) ✅ Complete  
-**Next Version:** v0.2 (Smart Caching & Core Features)
+**Next Version:** v0.2 (Smart Caching & Core Features)  
+**Active Phase:** Documentation & Testing Cleanup
+
+---
+
+## Quick Navigation
+
+- **Current Features:** See `docs/USER-JOURNEYS.md`
+- **Active Work:** See `docs/CURRENT-STATUS.md`
+- **Architecture:** See `docs/ARCHITECTURE.md`
 
 ---
 

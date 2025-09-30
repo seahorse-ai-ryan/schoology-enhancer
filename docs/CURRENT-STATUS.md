@@ -19,40 +19,48 @@
 **Current Phase:** Documentation & Testing Cleanup
 
 **Active Work:**
-- Phase 1A: Deleting legacy docs, creating modular AI rules
-- Phase 1B: Installing Chrome in container (next)
-- Phase 2: Browser-first testing infrastructure (after Chrome)
+- Phase 1A: ✅ Complete - Deleted legacy docs, created modular AI rules
+- Phase 1B: ✅ Complete - Chromium installed in container
+- Phase 1C: ⏳ In Progress - User configures Chrome MCP in Cursor
+- Phase 2: Browser-first testing infrastructure (after MCP configured)
 
 ---
 
 ## 🚧 Active TODOs
 
-### Phase 1A: Documentation Cleanup (IN PROGRESS)
+### Phase 1A: Documentation Cleanup (COMPLETE ✅)
 
-- [x] Delete legacy files (LOG.md, mistakes-and-learnings.md, architecture-plan.md, mock-sandbox-plan.md)
+- [x] Delete legacy files (LOG.md, mistakes-and-learnings.md, architecture-plan.md, mock-sandbox-plan.md, quick-reference.md)
 - [x] Delete demo mode files (demo-session.spec.ts, demo-flow.spec.tsx)
 - [x] Rewrite README.md with accurate current state
-- [x] Create `.cursor/rules/core.md` (status, priorities)
-- [x] Create `.cursor/rules/workflow.md` (dev workflow, testing)
-- [x] Update `.cursorrules` (minimal delegator)
-- [x] Update `.idx/airules.md` (Firebase Studio only)
-- [x] Create `USER-JOURNEYS.md` (all current capabilities)
+- [x] Create `.cursor/rules/core.md` (status, priorities, DO NOT REFACTOR rule)
+- [x] Create `.cursor/rules/workflow.md` (dev workflow, testing strategy)
+- [x] Update `.cursorrules` (minimal delegator to modular rules)
+- [x] Update `.idx/airules.md` (Firebase Studio only, links to .cursor/rules/)
+- [x] Create `.cursor/ai-workflow.md` (for human developers, vibe coding guide)
+- [x] Create `USER-JOURNEYS.md` (all 11 current user journeys documented)
 - [x] Create `CURRENT-STATUS.md` (this file - session continuity)
-- [ ] Update `product-requirements.md` (mark v0.1 complete)
-- [ ] Audit `quick-reference.md` (merge useful parts, delete)
-- [ ] Audit `ai-best-practices.md` (move to `.cursor/ai-workflow.md`)
-- [ ] Git commit all changes
+- [x] Update `product-requirements.md` (v0.1 complete, roadmap to v2.0)
+- [x] Delete ai-best-practices.md (replaced by .cursor/ai-workflow.md)
 
-### Phase 1B: Install Chrome (NEXT)
+### Phase 1B: Install Chrome (COMPLETE ✅)
 
-- [ ] Check container OS and package manager
-- [ ] Install Chrome stable in container
-- [ ] Configure Chrome DevTools MCP in Cursor settings
-- [ ] Test Cursor Browser feature
-- [ ] Document installation for future reference
-- [ ] Update `docs/CURRENT-STATUS.md` with Chrome status
+- [x] Check container OS and package manager (Debian 12, apt-get)
+- [x] Install Chromium 140 in container (418 MB)
+- [x] Create wrapper script with --no-sandbox flag (scripts/chrome-container.sh)
+- [x] Test headless mode (working!)
+- [x] Update CURRENT-STATUS.md with Chrome status
+- [x] Created CHROME-MCP-SETUP.md documentation
 
-### Phase 2: Testing Infrastructure (AFTER CHROME)
+### Phase 1C: Configure Chrome MCP (USER ACTION REQUIRED)
+
+- [ ] User: Add MCP configuration to Cursor settings
+- [ ] User: Restart Cursor
+- [ ] User: Test with prompt "Check the performance of https://www.google.com"
+- [ ] AI: Verify MCP tools are available
+- [ ] AI: Document working configuration
+
+### Phase 2: Testing Infrastructure (AFTER MCP CONFIGURED)
 
 - [ ] Create browser-first testing examples with Chrome MCP
 - [ ] Document Chrome MCP usage patterns
@@ -160,9 +168,12 @@ This will load:
 - Next.js: Not currently running (start for dev work)
 
 **Container:**
-- OS: Linux (kernel 6.10.14-linuxkit)
+- OS: Debian GNU/Linux 12 (bookworm)
+- Kernel: 6.10.14-linuxkit
 - Architecture: aarch64 (ARM64)
-- Chrome: Not installed (Phase 1B priority)
+- Chrome: ✅ Chromium 140.0.7339.185 installed
+- Chrome Flags: `--no-sandbox --disable-dev-shm-usage` (required for container)
+- Wrapper Script: `scripts/chrome-container.sh`
 
 **Firebase Projects:**
 - `demo-project` - Local emulators (current)
