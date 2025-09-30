@@ -71,12 +71,39 @@
 - [x] Documented browser-first testing strategy (E2E > Integration > Unit)
 - [x] Tests ready to run in Cursor Test Explorer
 
-### Phase 3: Fill Testing Gaps (AFTER PHASE 2)
+### Phase 3: Comprehensive Test Coverage (IN PROGRESS ⏳)
 
-**Critical Missing Tests:**
-- [ ] Parent-child switching E2E test
-- [ ] Live API course fetching test
-- [ ] Cache fallback behavior test
+**Goal:** 100% coverage of all 11 user journeys before refactoring
+
+**See:** `docs/TEST-COVERAGE-PLAN.md` for detailed plan
+
+**Progress:** 1/11 user journeys covered
+
+**E2E Tests (Based on USER-JOURNEYS.md):**
+- [x] 1. Parent Authentication (with persistent OAuth!)
+- [ ] 2. View Default Child's Dashboard
+- [ ] 3. Switch Between Children
+- [ ] 4. View Course Details
+- [ ] 5. View Assignments List
+- [ ] 6. View Assignment Details
+- [ ] 7. Check Grades & Progress
+- [ ] 8. View Announcements
+- [ ] 9. Manage Incentives
+- [ ] 10. Data Source Indicators (Live/Cached/Mock)
+- [ ] 11. Multi-Child Planning View
+
+**Integration Tests:**
+- [ ] All API routes (`/api/auth/*`, `/api/schoology/*`)
+- [ ] Firebase integration with emulators
+- [ ] Cache expiration logic
+
+**Unit Tests:**
+- [ ] Data transformations
+- [ ] Utility functions
+- [ ] Grade calculations
+- [ ] Date formatting
+
+**Target:** 100% coverage before refactoring (Phase 4)
 - [ ] Child course display test
 - [ ] Switch between children test
 - [ ] Return to parent view test

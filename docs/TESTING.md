@@ -161,6 +161,24 @@ Examples:
 
 ---
 
+## 🚀 Quick Start: Automated Testing
+
+**Run automated tests with persistent auth:**
+
+```bash
+# First time: Sign in when browser opens
+node scripts/test-authenticated.js
+
+# All future runs: Fully automated!
+node scripts/test-authenticated.js
+```
+
+Session persists in `.auth/chrome-profile/` - no more manual login!
+
+**See:** `docs/TESTING-QUICK-START.md` for details.
+
+---
+
 ## 🧪 Test Scenarios to Cover
 
 ### Authentication Flow
