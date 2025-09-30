@@ -50,10 +50,18 @@ Next.js application enhancing Schoology with modern UI, offline support, and AI-
 
 ### Prerequisites
 
-- Node.js 20 or later
-- Firebase CLI (`npm install -g firebase-tools`)
-- ngrok account with static domain
-- Schoology Developer Account with API credentials
+**Required:**
+- **Node.js 20+** installed
+- **Java 17+** for Firebase Emulators (`brew install openjdk@17` on Mac)
+- **Firebase CLI** (`npm install -g firebase-tools`)
+- **Schoology Developer Account** - [Register here](https://developers.schoology.com)
+  - Create a new app in the Developer Portal
+  - Note your Consumer Key and Secret (for OAuth)
+  - Get your Admin API credentials from Schoology Settings → Integration
+- **ngrok Account** - [Sign up](https://dashboard.ngrok.com/signup)
+  - Free account: Ephemeral URLs (changes each restart)
+  - Paid account: Static domain (recommended for development)
+  - Get your auth token from [dashboard](https://dashboard.ngrok.com/get-started/your-authtoken)
 
 ### Installation
 
@@ -71,39 +79,71 @@ npm run build
 
 ### Configuration
 
+**1. Set up Schoology Developer App:**
+
+Visit [Schoology Developer Portal](https://developers.schoology.com) and create a new app:
+- **App Name:** Choose any name (e.g., "Modern Teaching Dev")
+- **App Domain:** Your ngrok domain (e.g., `your-domain.ngrok.dev`)
+  - ⚠️ **Important:** Use root domain only, NO paths (e.g., `/api/callback`)
+  - ✅ Correct: `your-domain.ngrok.dev`
+  - ❌ Wrong: `your-domain.ngrok.dev/api/callback`
+- Copy your **Consumer Key** and **Consumer Secret**
+
+**2. Get Schoology Admin API Credentials:**
+
+Go to Schoology → Settings → Integration → API Credentials:
+- These are separate from OAuth credentials
+- Used for seeding test data and admin operations
+
+**3. Configure Environment Variables:**
+
 ```bash
-# Create environment file
+# Copy template
 cp .env.local.example .env.local
 
-# Edit .env.local with your credentials:
-# - SCHOOLOGY_CONSUMER_KEY/SECRET (OAuth for user login)
-# - SCHOOLOGY_ADMIN_KEY/SECRET (Admin API for seeding)
-# - SCHOOLOGY_CALLBACK_URL (https://modernteaching.ngrok.dev/api/callback)
+# Edit .env.local with your actual values:
+nano .env.local
+
+# Required variables:
+# - SCHOOLOGY_CONSUMER_KEY       (from Developer Portal)
+# - SCHOOLOGY_CONSUMER_SECRET    (from Developer Portal)
+# - SCHOOLOGY_ADMIN_KEY          (from Schoology Settings)
+# - SCHOOLOGY_ADMIN_SECRET       (from Schoology Settings)
+# - NGROK_AUTH_TOKEN             (from ngrok dashboard)
+# - NEXT_PUBLIC_APP_URL          (your ngrok URL)
+# - SCHOOLOGY_CALLBACK_URL       (your ngrok URL + /api/callback)
 ```
+
+See `.env.local.example` for complete documentation of all variables.
 
 ### Start Development
 
-Run these commands in separate terminals:
+Run these commands in **separate terminals**:
 
 ```bash
-# Terminal 1: ngrok (creates "Cursor (ngrok http)" terminal)
-ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout
+# Terminal 1: ngrok tunnel
+# Replace YOUR_DOMAIN with your ngrok static domain or use without --url for ephemeral URL
+ngrok http --url=YOUR_DOMAIN.ngrok.dev 9000 --log stdout
 
-# Terminal 2: Firebase Emulators (creates "Cursor (firebase emulators:start)" terminal)
+# Terminal 2: Firebase Emulators (requires Java 17+)
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"  # Mac only
 firebase emulators:start
 
-# Terminal 3: Next.js Dev Server (creates "Cursor (npm run)" terminal)
+# Terminal 3: Next.js Dev Server
 npm run dev
 ```
 
-**Important:** Don't prefix commands with `cd` - it breaks terminal naming!
+**Notes:**
+- If using ngrok free account, omit `--url` flag to get ephemeral URL
+- Update `NEXT_PUBLIC_APP_URL` and `SCHOOLOGY_CALLBACK_URL` in `.env.local` to match your ngrok URL
+- Don't prefix commands with `cd` if using Cursor IDE (breaks terminal naming)
 
 ### Access
 
-- **App:** https://modernteaching.ngrok.dev
-- **Firestore UI:** http://localhost:4000
-- **Ngrok Dashboard:** http://localhost:4040
-- **Emulator UI:** http://localhost:4000
+- **App:** Your ngrok URL (e.g., `https://your-domain.ngrok.dev`)
+- **Firebase Emulator UI:** http://localhost:4000
+- **Ngrok Web Interface:** http://localhost:4040 (shows tunnel info)
+- **Next.js (local):** http://localhost:9000
 
 ## Development
 

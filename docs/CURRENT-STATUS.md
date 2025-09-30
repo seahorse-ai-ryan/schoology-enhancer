@@ -22,7 +22,8 @@
 - Phase 1A: ✅ Complete - Deleted legacy docs, created modular AI rules
 - Phase 1B: ✅ Complete - Switched from container to native Mac for browser automation
 - Phase 1C: ✅ Complete - Removed container artifacts, updated docs for native setup
-- Phase 2: ⏳ Ready to Start - Browser-first testing infrastructure
+- Phase 2: ✅ Complete - Browser-first testing infrastructure ready
+- Phase 3: ⏳ In Progress - Testing Hello World features with real OAuth
 
 ---
 
@@ -60,13 +61,15 @@
 - [x] Updated `docs/CURRENT-STATUS.md` to reflect native environment
 - [x] Ready to test browser automation and proceed to Phase 2
 
-### Phase 2: Testing Infrastructure (AFTER MCP CONFIGURED)
+### Phase 2: Testing Infrastructure (COMPLETE ✅)
 
-- [ ] Create browser-first testing examples with Chrome MCP
-- [ ] Document Chrome MCP usage patterns
-- [ ] Identify which tests stay as Jest
-- [ ] Identify which tests move to Chrome MCP
-- [ ] Create `docs/TESTING.md` comprehensive guide
+- [x] Simplified MCP setup (using Cursor's native Browser Automation only)
+- [x] Created `tests/e2e/authenticated-flow.spec.ts` with hybrid manual/automated pattern
+- [x] Implemented auth-aware testing (pause for manual OAuth, then resume automation)
+- [x] Updated `playwright.config.ts` (disabled extra browsers for speed)
+- [x] Created comprehensive `docs/TESTING.md` guide
+- [x] Documented browser-first testing strategy (E2E > Integration > Unit)
+- [x] Tests ready to run in Cursor Test Explorer
 
 ### Phase 3: Fill Testing Gaps (AFTER PHASE 2)
 

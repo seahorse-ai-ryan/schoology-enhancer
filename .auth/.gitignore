@@ -1,0 +1,5 @@
+# Ignore saved authentication state (contains session cookies)
+state.json
+
+# This directory stores authenticated browser sessions
+# Never commit these files - they contain your credentials!

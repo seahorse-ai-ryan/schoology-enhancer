@@ -39,3 +39,7 @@ test-results/
 # Next.js
 .next/
 out/
+
+# Authenticated browser state (contains session cookies)
+.auth/state.json
+.auth/chrome-profile/

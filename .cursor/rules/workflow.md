@@ -6,23 +6,27 @@
 
 ### Persistent Named Terminals
 
-Start services in the project root directory (`/Users/ryanhickman/code/web-apps/schoology-enhancer`).
+Start services in the project root directory.
 
 ```bash
-# Terminal 1: "Cursor (ngrok http)"
+# Terminal 1: ngrok (start anytime)
 ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout
 
-# Terminal 2: "Cursor (firebase emulators:start)"
+# Terminal 2: Firebase (WAIT for "All emulators ready!" message)
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 firebase emulators:start
 
-# Terminal 3: "Cursor (npm run)"
+# Terminal 3: Next.js (ONLY after Firebase is ready)
+export FIRESTORE_EMULATOR_HOST="localhost:8080"
 npm run dev
 ```
 
 **Best Practices:**
+- ✅ **CRITICAL:** Start Next.js ONLY after Firebase shows "All emulators ready!"
+- ✅ Set `FIRESTORE_EMULATOR_HOST` environment variable for Next.js
 - ✅ Start from project root directory
 - ✅ Use `is_background: true` in run_terminal_cmd tool calls
-- ✅ Restart Next.js in-place (Ctrl+C then `npm run dev`)
+- ✅ Restart Next.js in-place (Ctrl+C then restart with env var)
 - ❌ Don't create new terminals or use pkill during active development
 - ✅ All services run natively on macOS (no containers)
 

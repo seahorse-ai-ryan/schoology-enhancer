@@ -16,18 +16,29 @@
 
 ### Starting Development Services
 
-Run these **three commands in separate terminals** (in order):
+**⚠️ CRITICAL: Start services in this exact order to avoid Firebase connection errors!**
+
+Run these **three commands in separate terminals**:
 
 ```bash
-# Terminal 1: Start ngrok tunnel
-ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout
+# Terminal 1: Start ngrok tunnel (can start anytime)
+ngrok http --url=YOUR_DOMAIN.ngrok.dev 9000 --log stdout
 
 # Terminal 2: Start Firebase emulators
+# IMPORTANT: Wait for "✔ All emulators ready!" message before starting Next.js
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"  # Mac only
 firebase emulators:start
 
 # Terminal 3: Start Next.js dev server
+# ONLY start this AFTER Firebase emulators show "ready" message
+export FIRESTORE_EMULATOR_HOST="localhost:8080"
 npm run dev
 ```
+
+**Why this order matters:**
+- If Next.js starts before Firebase emulators are ready, it will try to connect to production Firebase
+- This causes "invalid_grant" errors and API routes will fail with 500 errors
+- Always wait for Firebase "All emulators ready!" message before starting Next.js
 
 **Important**:
 
