@@ -17,6 +17,7 @@ import { useDataMode } from '@/components/providers/DataModeProvider';
 
 export function UserNav() {
   const [liveProfile, setLiveProfile] = useState<{ name?: string; primary_email?: string; phone?: string; position?: string; bio?: string } | null>(null);
+  const [activeChild, setActiveChild] = useState<{ id: string; name?: string; picture_url?: string } | null>(null);
   const {
     personas,
     activePersonaId,
@@ -41,20 +42,42 @@ export function UserNav() {
         const res = await fetch('/api/schoology/me', { cache: 'no-store' });
         if (res.ok) setLiveProfile(await res.json());
       } catch (_) {}
+      
+      // Fetch active child profile if one is selected
+      try {
+        const childRes = await fetch('/api/schoology/child', { cache: 'no-store' });
+        if (childRes.ok) {
+          const childData = await childRes.json();
+          setActiveChild(childData);
+        } else {
+          setActiveChild(null);
+        }
+      } catch (_) {
+        setActiveChild(null);
+      }
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch('/api/parent/children', { cache: 'no-store' });
-        if (res.ok) {
-          const j = await res.json();
-          setRealChildren(Array.isArray(j.children) ? j.children : []);
-        }
-      } catch (_) {}
-    })();
-  }, []);
+  async function refreshChildren() {
+    try {
+      console.log('[user-nav] Fetching children from /api/parent/children');
+      const res = await fetch('/api/parent/children', { cache: 'no-store' });
+      console.log('[user-nav] Response status:', res.status);
+      if (res.ok) {
+        const j = await res.json();
+        console.log('[user-nav] Children data:', j);
+        setRealChildren(Array.isArray(j.children) ? j.children : []);
+        console.log('[user-nav] Set realChildren:', j.children);
+      } else {
+        const errText = await res.text();
+        console.error('[user-nav] Failed to fetch children:', res.status, errText);
+      }
+    } catch (e) {
+      console.error('[user-nav] Error fetching children:', e);
+    }
+  }
+
+  useEffect(() => { refreshChildren(); }, []);
 
   const handlePersonaSelect = (personaId: string) => {
     setActivePersona(personaId);
@@ -65,16 +88,27 @@ export function UserNav() {
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={(open) => { if (open) refreshChildren(); }}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-9 w-9 rounded-full" data-testid="user-avatar-trigger">
           <Avatar className="h-9 w-9">
-            <AvatarImage src={(!showingSampleData && liveProfile && (liveProfile as any).picture_url) ? (liveProfile as any).picture_url : 'https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/user-default.svg'} alt="user avatar" />
-            <AvatarFallback>SP</AvatarFallback>
+            <AvatarImage 
+              src={
+                activeChild?.picture_url || 
+                (!showingSampleData && liveProfile && (liveProfile as any).picture_url) ? (liveProfile as any).picture_url : 
+                'https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/user-default.svg'
+              } 
+              alt="user avatar" 
+            />
+            <AvatarFallback>{activeChild ? activeChild.name?.charAt(0) : 'SP'}</AvatarFallback>
           </Avatar>
           {showingSampleData ? (
             <Badge className="absolute -bottom-1 -right-1 px-1 text-[9px]" variant="secondary">
               Sample
+            </Badge>
+          ) : activeChild ? (
+            <Badge className="absolute -bottom-1 -right-1 px-1 text-[9px]" variant="default">
+              Child
             </Badge>
           ) : null}
         </Button>
@@ -83,23 +117,50 @@ export function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col gap-1">
             <p className="text-sm font-medium leading-none">
-              {showingSampleData ? sampleParent.name : (liveProfile?.name || activePersona?.displayName || 'Schoology User')}
+              {showingSampleData ? sampleParent.name : 
+               activeChild ? activeChild.name : 
+               (liveProfile?.name || activePersona?.displayName || 'Schoology User')}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {showingSampleData ? sampleParent.email : (liveProfile?.primary_email || activePersona?.email || 'connect@schoology.com')}
+              {showingSampleData
+                ? sampleParent.email
+                : activeChild 
+                  ? `Viewing as ${activeChild.name?.split(' ')[0] || 'student'}`
+                  : (liveProfile?.primary_email && liveProfile.primary_email.trim().length > 0)
+                    ? liveProfile.primary_email
+                    : 'No email on file'}
             </p>
-            {!showingSampleData && liveProfile ? (
-              <span className="text-[11px] text-muted-foreground">Live</span>
+            {!showingSampleData && (activeChild || liveProfile) ? (
+              <span className="text-[11px] text-muted-foreground">{activeChild ? 'Student View' : 'Parent View'}</span>
             ) : null}
-            {!showingSampleData && liveProfile?.position ? (
+            {!showingSampleData && !activeChild && liveProfile?.position ? (
               <span className="text-xs text-muted-foreground">{liveProfile.position}</span>
             ) : null}
-            {!showingSampleData && liveProfile?.bio ? (
+            {!showingSampleData && !activeChild && liveProfile?.bio ? (
               <span className="text-xs text-muted-foreground line-clamp-2">{liveProfile.bio}</span>
             ) : null}
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+
+        {/* Show "View as Parent" button if a child is selected */}
+        {!showingSampleData && activeChild ? (
+          <>
+            <DropdownMenuItem
+              onSelect={async () => {
+                try {
+                  // Clear active child by setting it to empty
+                  await fetch('/api/parent/active', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ childId: '' }) });
+                  location.reload();
+                } catch {}
+              }}
+              className="font-medium"
+            >
+              ↩️ View as Parent
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
+        ) : null}
 
         {/* Real mode: show real children if present */}
         {!showingSampleData && liveProfile && realChildren.length > 0 ? (
@@ -119,6 +180,7 @@ export function UserNav() {
                 }}
               >
                 <span>{c.name || c.id}</span>
+                {activeChild?.id === c.id ? <Badge variant="outline" className="ml-2">Active</Badge> : null}
               </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>

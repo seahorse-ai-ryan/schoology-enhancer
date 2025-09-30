@@ -4,11 +4,22 @@ You are an expert full-stack developer working on a modern, AI-ready educational
 
 ## 🎯 Project Context
 
-**Current Status:** We've completed a major refactor to modern, LLM-optimized data structures and beautiful UI components, but we're blocked on MSW (Mock Service Worker) integration in Playwright tests.
+**Project Name:** Modern Teaching (formerly Schoology Enhancer)
 
-**Key Achievement:** Modern data architecture ready for AI/ML applications with rich metadata, semantic fields, and RAG optimization.
+**Current Status:** ✅ **"Hello World" Milestone Achieved!** Complete e2e flow working - parent logs in with real Schoology credentials, selects child, and sees real course data fetched from Schoology API and displayed in dashboard.
 
-**Current Blocker:** MSW service worker not intercepting API calls in Playwright test environment, causing dashboard content to never load.
+**Key Achievements:**
+
+- ✅ OAuth 1.0a authentication flow complete
+- ✅ Parent-child account associations working
+- ✅ Real-time course data fetching from Schoology API (`/api/schoology/courses`)
+- ✅ Firestore caching with offline support
+- ✅ Dashboard displaying live student courses with teacher names
+- ✅ Mock data CSV bulk import fully working
+- ✅ Static ngrok domain for stable development
+- ✅ Modern data architecture ready for AI/ML applications
+
+**Next Priority:** Implement staleness checks with TTL-based caching (1min dev, 10min test, 1hr prod), then add assignments and announcements endpoints.
 
 ## 🏗️ Architecture Principles
 
@@ -46,29 +57,65 @@ You are an expert full-stack developer working on a modern, AI-ready educational
 
 ### Persistent Named Terminals
 
-- Use one persistent terminal per service: “npm run” for Next.js; “firebase emulators:start” for emulators; “ngrok http 9000” for tunneling.
-- Restart Next.js in-place (Ctrl+C then `npm run dev`) in the existing “npm run” terminal. Agents must not spawn new terminals or use pkill.
+**CRITICAL**: Start services in persistent terminals without `cd` prefixes to ensure proper terminal naming.
+
+**Startup Sequence** (in order):
+
+1. `ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout` - Creates "Cursor (ngrok http)"
+2. `firebase emulators:start` - Creates "Cursor (firebase emulators:start)"
+3. `npm run dev` - Creates "Cursor (npm run)"
+
+**Best Practices**:
+
+- ✅ Start each command directly (no `cd /workspaces/...` prefix)
+- ✅ Use `is_background: true` in run_terminal_cmd tool calls
+- ✅ Restart Next.js in-place (Ctrl+C then `npm run dev`)
+- ❌ Don't create new terminals or use pkill during active development
+- ❌ Never use `cd /path &&` prefix - it ruins terminal names
+
+**Static Domain**: `https://modernteaching.ngrok.dev` (eliminates manual URL updates)
 
 ## 🔧 Current Technical Issues
 
-### MCP-First Testing
+### AI Agent Testing Tools (New: Sept 29, 2025)
 
-- Use the developer’s already-open Chrome session via Chrome DevTools MCP for journey validation. Assert via DOM + console + network; do not use curl.
-- Keep `data-testid` stable and emit required console events.
+**Chrome DevTools MCP**: Available for inspecting running applications
 
-### Linter Errors in Data Service
+- Read network requests/responses
+- View console logs and errors
+- Evaluate JavaScript in page context
+- Take screenshots for verification
 
-- **File**: `src/lib/schoology-data.ts`
-- **Issues**: Some TypeScript errors related to Firestore timestamp handling
-- **Status**: Not blocking functionality, but should be cleaned up
+**Cursor Browser**: Enabled in settings for automated testing
+
+- End-to-end flow validation
+- Visual verification of changes
+- Automated user journey testing
+
+**Testing Workflow**:
+
+1. Make code changes
+2. Wait for Next.js hot reload (watch terminal: "✓ Compiled")
+3. Use Chrome DevTools MCP to verify changes
+4. Report findings with screenshots/logs
+
+### Expected Console Behavior
+
+**Normal 401 Errors** (not bugs!):
+
+- `/api/auth/status` returns 401 when user is not logged in
+- Landing page and dashboard handle this gracefully
+- These are intentional security checks, not failures
 
 ## 🚀 Development Workflow
 
 ### Environment Setup
 
-- **Firebase Studio**: Emulators start automatically via `.idx/dev.nix`
-- **Next.js Dev Server**: Use "Preview" button or `npm run dev`
-- **Ports**: Functions(5001), Firestore(8080), Hosting(5000), Next.js(9000)
+- **Static Ngrok Domain**: `https://modernteaching.ngrok.dev` (paid account)
+- **Firebase Emulators**: Local services (Firestore, Functions, Hosting)
+- **Firebase Project**: `demo-project` (configured in `.firebaserc` for offline development)
+- **Next.js Dev Server**: Port 9000 (exposed via ngrok)
+- **Ports**: Ngrok Dashboard(4040), Emulator UI(4000), Firestore(8080), Functions(5001), Hosting(5002), Next.js(9000)
 
 ### Key Commands
 
@@ -157,11 +204,10 @@ npm run lint         # ESLint code quality check
 ## 📚 Key Documentation Files
 
 - **`README.md`**: Project overview and setup instructions
-- **`docs/LOG.md`**: Session logs and progress tracking
-- **`docs/action-plan.md`**: Development roadmap and milestones
-- **`docs/session-context.md`**: Current session context and debugging notes
-- **`docs/quick-reference.md`**: Quick status and command reference
-- **`.idx/airules.md`**: Firebase Studio-specific AI guidelines
+- **`docs/ARCHITECTURE.md`**: Complete architecture overview - data flow, caching, auth, API endpoints, milestones
+- **`docs/STARTUP.md`**: Comprehensive startup guide for development environment
+- **`docs/SCHOOLOGY-CSV-IMPORT.md`**: Complete guide to Schoology CSV bulk import process
+- **`docs/SCHOOLOGY-SEED-DATA-GUIDE.md`**: Best practices for creating mock student/teacher/course data from JSON
 
 ## 🧠 AI/ML Readiness
 

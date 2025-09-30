@@ -26,13 +26,18 @@ export async function POST(request: NextRequest) {
     if (!userId) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     const body = await request.json().catch(() => ({}));
     const childId = String(body?.childId || '');
-    if (!childId) return NextResponse.json({ error: 'Missing childId' }, { status: 400 });
+    // Allow empty string to clear active child (return to parent view)
     const { getFirestore } = await import('firebase-admin/firestore');
     const { initializeApp, getApps } = await import('firebase-admin/app');
     if (!getApps().length) {
       initializeApp({ projectId: process.env.FIREBASE_PROJECT_ID || 'demo-project' });
     }
     const db = getFirestore();
+    if (childId === '') {
+      // Clear active child
+      await db.collection('parents').doc(String(userId)).set({ activeChildId: null, updatedAt: Date.now() }, { merge: true });
+      return NextResponse.json({ ok: true, activeChildId: null });
+    }
     await db.collection('parents').doc(String(userId)).set({ activeChildId: childId, updatedAt: Date.now() }, { merge: true });
     return NextResponse.json({ ok: true, activeChildId: childId });
   } catch (e) {

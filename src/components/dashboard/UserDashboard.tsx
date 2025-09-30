@@ -113,6 +113,7 @@ export function UserDashboard() {
   };
 
   const getDataSourceBadge = (source: 'live' | 'cached' | 'mock') => {
+    if (source === 'mock') return null;
     const variants = {
       live: 'default',
       cached: 'secondary',
@@ -173,9 +174,7 @@ export function UserDashboard() {
           {dataSourceSummary && (
             <div className="mt-4 flex items-center gap-2 text-sm">
               <span className="text-blue-200">Data source:</span>
-              {getDataSourceBadge(dataSourceSummary.courses)}
-              {getDataSourceBadge(dataSourceSummary.announcements)}
-              {getDataSourceBadge(dataSourceSummary.deadlines)}
+              {/* Hide mock badges in demo mode for cleaner UX */}
               {liveProfile && <Badge variant="default">Live Verified</Badge>}
               {dataSourceSummary.lastUpdated && (
                 <span className="text-blue-200 ml-2">
@@ -268,7 +267,7 @@ export function UserDashboard() {
                 <div key={course.id} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex-1">
                     <h3 className="font-medium">{course.name}</h3>
-                    <p className="text-sm text-gray-600">{course.code} • {course.teacher}</p>
+                    <p className="text-sm text-gray-600">{course.code} • {typeof (course as any).teacher === 'string' ? (course as any).teacher : (course as any).teacher?.name || 'Teacher'}</p>
                     {course.description && (
                       <p className="text-xs text-gray-500 mt-1">{course.description}</p>
                     )}

@@ -1,7 +1,7 @@
 {
   "users": {
-    "parent": { "name": "Ryan Hickman", "email": "ryan@seahorsetwin.com", "role": "parent" },
-    "student": { "name": "Livio Mock", "role": "student", "grad_year": 2029 }
+    "parent": { "name": "Ryan Hickman", "email": "ryan@seahorsetwin.com", "role": "parent", "school_uid": "ryan_hickman_20250929" },
+    "student": { "name": "Livio Mock", "role": "student", "grad_year": 2029, "school_uid": "livio_mock_20250929" }
   },
   "courses": [],
   "enrollments": [],

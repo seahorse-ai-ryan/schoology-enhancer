@@ -47,6 +47,28 @@ Our data models are designed for the future of AI-powered education:
 
 ## 🚀 Quick Start
 
+### Automated Setup (Recommended)
+
+The easiest way to start development:
+
+```bash
+npm run dev:full
+```
+
+This script will:
+
+1. 🌐 Start ngrok tunnel and get a public URL
+2. 📝 Automatically update `.env.local` with the callback URL
+3. 🔥 Start Firebase emulators
+4. ⚡ Start Next.js dev server
+5. 🎉 Display all URLs and configuration
+
+**Note**: You'll need to update your Schoology Developer App domain once with the ngrok domain (the script will show you what to paste).
+
+### Manual Setup
+
+If you prefer manual control:
+
 ### 1. Clone and Install
 
 ```bash

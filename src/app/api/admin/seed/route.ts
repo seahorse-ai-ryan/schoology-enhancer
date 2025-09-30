@@ -93,8 +93,14 @@ export async function POST(request: NextRequest) {
         if (!res.ok) {
           let errText = '';
           try { errText = await res.text(); } catch {}
-          console.error('[admin/seed] sgyPost_failed', { url, status: res.status, payload: body });
-          if (errText) console.error('[admin/seed] sgyPost_body', errText);
+          console.error('[admin/seed] sgyPost_failed', { 
+            url, 
+            status: res.status, 
+            statusText: res.statusText,
+            payload: body,
+            headers: Array.from(headers.entries()),
+            error: errText.slice(0, 1000)
+          });
         }
         else {
           // Log success response body for diagnostics
@@ -280,20 +286,33 @@ export async function POST(request: NextRequest) {
     async function ensureSchoolId(): Promise<number | undefined> {
       try {
         const s = await sgyGet('/schools');
+        console.log('[admin/seed] schools_response', { status: s.status, ok: s.ok });
         if (s.ok) {
           const sj: any = await s.json().catch(() => ({}));
+          console.log('[admin/seed] schools_data', { keys: Object.keys(sj), hasSchools: !!sj.schools });
           const schools: any[] = Array.isArray(sj?.schools?.school) ? sj.schools.school : Array.isArray(sj?.school) ? sj.school : [];
-          if (schools.length > 0 && schools[0]?.id) return Number(schools[0].id);
+          console.log('[admin/seed] schools_found', { count: schools.length, firstSchool: schools[0] });
+          if (schools.length > 0 && schools[0]?.id) {
+            const schoolId = Number(schools[0].id);
+            console.log('[admin/seed] using_school_id', { schoolId });
+            return schoolId;
+          }
         }
-      } catch {}
+      } catch (e) {
+        console.error('[admin/seed] schools_error', e);
+      }
       try {
         const me = await sgyGet('/users/me');
         if (me.ok) {
           const mj: any = await me.json().catch(() => ({}));
           const sid = Number(mj?.school_id || mj?.school_nid);
+          console.log('[admin/seed] fallback_to_users_me', { school_id: sid });
           if (sid) return sid;
         }
-      } catch {}
+      } catch (e) {
+        console.error('[admin/seed] users_me_error', e);
+      }
+      console.error('[admin/seed] no_school_id_found');
       return undefined;
     }
 
@@ -302,22 +321,179 @@ export async function POST(request: NextRequest) {
 
     // Feedback: do not mirror or write child records during seeding; verification will happen via Schoology only.
 
-    let courseId: string | number | null = null;
-    if (!usersOnly) {
-      const course = seed.courses?.[0];
-      if (course) {
-        if (!dryRun) {
-          const courseSchoolId = await ensureSchoolId();
-          const codeBase = (course.code || course.course_code || course.title || 'COURSE').toString().replace(/\s+/g, '-').toUpperCase().slice(0, 12);
-          const coursePayload: Record<string, any> = { name: course.title, course_code: `${codeBase}-${Date.now().toString().slice(-4)}` };
-          if (courseSchoolId) coursePayload.school_id = courseSchoolId;
-          const courseRes = await sgyPost('/courses', coursePayload);
-          const courseJson: any = courseRes.ok ? await courseRes.json() : {};
-          courseId = courseJson?.id || null;
+    const createdCourses: Record<string, string> = {};
+    const createdTeachers: Record<string, string> = {};
+    const createdSections: Record<string, string> = {};
+    const createdAssignments: number[] = [];
+    const errors: string[] = [];
+
+    if (!usersOnly && !dryRun) {
+      const courseSchoolId = await ensureSchoolId();
+      console.log('[admin/seed] school_id_resolved', { courseSchoolId });
+      
+      // Create teachers first
+      if (seed.users?.teachers) {
+        console.log('[admin/seed] creating_teachers', { count: seed.users.teachers.length });
+        for (const teacher of seed.users.teachers) {
+          const teacherResult = await ensureUser(teacher.name, 'teacher', undefined);
+          if (teacherResult.id) {
+            createdTeachers[teacher.name] = teacherResult.id;
+            console.log('[admin/seed] created_teacher', { name: teacher.name, id: teacherResult.id });
+          }
         }
-        const a = seed.assignments?.[0];
-        if (!dryRun && a && courseId) {
-          await sgyPost(`/courses/${courseId}/assignments`, { title: a.title, due: a.due });
+      }
+
+      // Create courses
+      console.log('[admin/seed] attempting_courses', { count: seed.courses?.length || 0, hasCoursesArray: !!seed.courses, schoolId: courseSchoolId });
+      if (seed.courses) {
+        for (const course of seed.courses) {
+          const codeBase = (course.course_code || course.title || 'COURSE').toString().replace(/\s+/g, '-').replace(/[^A-Za-z0-9-]/g, '').toUpperCase().slice(0, 12);
+          const timestamp = Date.now().toString().slice(-4);
+          
+          // Required fields per Schoology API: title, course_code, and school_id
+          const coursePayload: Record<string, any> = { 
+            title: course.title,
+            course_code: `${codeBase}-${timestamp}`,
+            school_id: courseSchoolId  // Always include school_id
+          };
+          
+          // Optional fields
+          if (course.description) coursePayload.description = course.description;
+          if (course.department) coursePayload.department = course.department;
+          
+          console.log('[admin/seed] attempting_course_create', { payload: coursePayload, hasSchoolId: !!courseSchoolId });
+          const courseRes = await sgyPost('/courses', coursePayload);
+          console.log('[admin/seed] course_create_response', { status: courseRes.status, ok: courseRes.ok });
+          
+          if (!courseRes.ok) {
+            const errText = await courseRes.text().catch(() => 'unable to read error');
+            errors.push(`Course creation failed for "${course.title}": ${courseRes.status} - ${errText.slice(0, 200)}`);
+            console.error('[admin/seed] course_create_failed', { title: course.title, status: courseRes.status, error: errText.slice(0, 500) });
+            continue; // Skip section/enrollment creation for this course
+          }
+          
+          const courseJson: any = await courseRes.json();
+          const courseId = courseJson?.id || courseJson?.course?.id || null;
+          if (courseId) {
+            createdCourses[course.title] = String(courseId);
+            console.log('[admin/seed] created_course', { title: course.title, id: courseId });
+
+            // Create section for this course
+            const sectionPayload: Record<string, any> = {
+              course_title: course.title,
+              section_title: course.section || 'Section 1',
+              section_code: `${codeBase}-S1`
+            };
+            if (courseSchoolId) sectionPayload.school_id = courseSchoolId;
+            
+            const sectionRes = await sgyPost(`/courses/${courseId}/sections`, sectionPayload);
+            if (sectionRes.ok) {
+              const sectionJson: any = await sectionRes.json();
+              const sectionId = sectionJson?.id || sectionJson?.section?.id || null;
+              if (sectionId) {
+                createdSections[course.title] = String(sectionId);
+                console.log('[admin/seed] created_section', { course: course.title, section_id: sectionId });
+
+                // Enroll student in this section
+                if (studentUser.id) {
+                  const enrollPayload = {
+                    enrollments: {
+                      enrollment: [{
+                        uid: studentUser.id,
+                        status: 1 // Active enrollment
+                      }]
+                    }
+                  };
+                  const enrollRes = await sgyPostJson(`/sections/${sectionId}/enrollments`, enrollPayload);
+                  if (enrollRes.ok) {
+                    console.log('[admin/seed] enrolled_student', { student: studentName, section: sectionId });
+                  }
+                }
+
+                // Enroll teacher if available
+                const teacherName = course.teacher;
+                if (teacherName && createdTeachers[teacherName]) {
+                  const teacherEnrollPayload = {
+                    enrollments: {
+                      enrollment: [{
+                        uid: createdTeachers[teacherName],
+                        status: 1,
+                        admin: 1 // Teacher/admin role
+                      }]
+                    }
+                  };
+                  const teacherEnrollRes = await sgyPostJson(`/sections/${sectionId}/enrollments`, teacherEnrollPayload);
+                  if (teacherEnrollRes.ok) {
+                    console.log('[admin/seed] enrolled_teacher', { teacher: teacherName, section: sectionId });
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Create assignments
+      if (seed.assignments && seed.assignments.length > 0) {
+        for (const assignment of seed.assignments) {
+          const courseName = assignment.course;
+          const sectionId = createdSections[courseName];
+          if (!sectionId) {
+            console.log('[admin/seed] skip_assignment_no_section', { assignment: assignment.title, course: courseName });
+            continue;
+          }
+
+          const assignmentPayload: Record<string, any> = {
+            title: assignment.title,
+            type: 'assignment'
+          };
+          if (assignment.due) assignmentPayload.due = assignment.due;
+          if (assignment.points) assignmentPayload.max_points = assignment.points;
+          if (assignment.description) assignmentPayload.description = assignment.description;
+
+          const assignRes = await sgyPost(`/sections/${sectionId}/assignments`, assignmentPayload);
+          if (assignRes.ok) {
+            const assignJson: any = await assignRes.json();
+            const assignId = assignJson?.id || assignJson?.assignment?.id || null;
+            if (assignId) {
+              createdAssignments.push(assignId);
+              console.log('[admin/seed] created_assignment', { title: assignment.title, section: sectionId, id: assignId });
+
+              // If there's a score, submit a grade
+              if (assignment.score !== undefined && studentUser.id) {
+                const gradePayload = {
+                  enrollment_id: studentUser.id,
+                  grade: assignment.score,
+                  max_points: assignment.points || 100
+                };
+                const gradeRes = await sgyPost(`/sections/${sectionId}/assignments/${assignId}/grades`, gradePayload);
+                if (gradeRes.ok) {
+                  console.log('[admin/seed] submitted_grade', { assignment: assignment.title, student: studentName, score: assignment.score });
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Create announcements (updates)
+      if (seed.announcements && seed.announcements.length > 0) {
+        for (const announcement of seed.announcements) {
+          const courseName = announcement.course;
+          const sectionId = createdSections[courseName];
+          if (!sectionId) {
+            console.log('[admin/seed] skip_announcement_no_section', { course: courseName });
+            continue;
+          }
+
+          const updatePayload = {
+            body: announcement.text,
+            type: 'update'
+          };
+          const updateRes = await sgyPost(`/sections/${sectionId}/updates`, updatePayload);
+          if (updateRes.ok) {
+            console.log('[admin/seed] created_announcement', { course: courseName, section: sectionId });
+          }
         }
       }
     }
@@ -325,14 +501,30 @@ export async function POST(request: NextRequest) {
     // Save idempotency metadata
     const seedMeta = {
       seed: seedName,
-      courseId,
+      courses: Object.keys(createdCourses).length,
+      sections: Object.keys(createdSections).length,
+      assignments: createdAssignments.length,
+      teachers: Object.keys(createdTeachers).length,
       parentUserId: parentUser.id || null,
       studentUserId: studentUser.id || null,
       updatedAt: Date.now(),
     };
     await adminDb.collection('sandboxSeeds').doc(seedName).set({ ...seedMeta, dryRunLast: dryRun }, { merge: true });
 
-    return NextResponse.json({ ok: true, dryRun, created: { course: courseId, studentUserId: studentUser.id || null }, seed: seedName, debug: { student: studentUser.debug || null } });
+    return NextResponse.json({ 
+      ok: true, 
+      dryRun, 
+      created: { 
+        courses: createdCourses,
+        sections: createdSections,
+        assignments: createdAssignments.length,
+        teachers: createdTeachers,
+        studentUserId: studentUser.id || null 
+      }, 
+      errors: errors.length > 0 ? errors : undefined,
+      seed: seedName, 
+      debug: { student: studentUser.debug || null } 
+    });
   } catch (error) {
     console.error('[admin/seed] Error', error);
     return NextResponse.json({ error: 'Seed failed' }, { status: 500 });

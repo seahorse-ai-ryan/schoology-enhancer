@@ -116,12 +116,24 @@ export const callbackLogic = async (
     const userIdValue = (u && (u.id ?? u.uid ?? u.user_id)) as string | number | undefined;
     const userId = userIdValue !== undefined && userIdValue !== null ? String(userIdValue) : '';
     if (userId) {
+      // Store comprehensive user data in Firestore
       await db.collection('users').doc(userId).set({
         accessToken: access_token_key,
         accessSecret: access_token_secret,
+        schoologyId: userId,
         name: u.name_display || u.name || 'Schoology User',
-      });
+        username: u.username || '',
+        email: u.primary_email || '',
+        schoolId: u.school_id || null,
+        roleId: u.role_id || null,
+        pictureUrl: u.picture_url || null,
+        lastLogin: Date.now(),
+        createdAt: Date.now(),
+        isMockUser: false,
+      }, { merge: true });
+      
+      console.log('[callback] User record created/updated in Firestore:', { userId, name: u.name_display || u.name });
     }
 
-    return { userId };
+    return { userId, name: u.name_display || u.name || 'Schoology User' };
 };

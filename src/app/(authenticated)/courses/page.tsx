@@ -23,7 +23,7 @@ export default function CoursesPage() {
           <Card key={course.id}>
             <CardHeader>
               <CardTitle>{course.name}</CardTitle>
-              <CardDescription>{course.teacher}</CardDescription>
+              <CardDescription>{typeof (course as any).teacher === 'string' ? (course as any).teacher : (course as any).teacher?.name || 'Teacher'}</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">

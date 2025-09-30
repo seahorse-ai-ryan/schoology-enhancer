@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { MSWProvider } from '@/components/providers/MSWProvider';
 import { DataModeProvider } from '@/components/providers/DataModeProvider';
 
 export const metadata: Metadata = {
@@ -25,12 +24,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <MSWProvider>
-          <DataModeProvider>
-            {children}
-            <Toaster />
-          </DataModeProvider>
-        </MSWProvider>
+        <DataModeProvider>
+          {children}
+          <Toaster />
+        </DataModeProvider>
       </body>
     </html>
   );

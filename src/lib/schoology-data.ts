@@ -311,10 +311,27 @@ export class SchoologyDataService {
     }
   }
 
-  // Get courses from cache or return mock data
+  // Get courses from API, then cache, or return mock data
   async getCourses(allowMock: boolean = true): Promise<SchoologyCourse[]> {
     try {
-      // Try to get from cache first
+      // Try to fetch fresh data from API
+      const response = await fetch('/api/schoology/courses');
+      
+      if (response.ok) {
+        const data = await response.json();
+        const courses = (data.courses || []) as SchoologyCourse[];
+        
+        // Cache the courses for offline use
+        if (courses.length > 0) {
+          await this.cacheCourses(courses);
+        }
+        
+        console.log('[schoology-data] Fetched', courses.length, 'courses from API');
+        return courses;
+      }
+      
+      // If API call failed, try cache
+      console.log('[schoology-data] API failed, trying cache...');
       const userCoursesRef = collection(db, 'users', this.userId, 'courses');
       const coursesQuery = query(
         userCoursesRef,
@@ -337,10 +354,11 @@ export class SchoologyDataService {
         return courses;
       }
     } catch (error) {
-      console.log('Failed to get cached courses, using mock data');
+      console.error('[schoology-data] Failed to get courses:', error);
     }
 
     // Return mock data if allowed; otherwise empty
+    console.log('[schoology-data] Returning mock courses, allowMock:', allowMock);
     return allowMock ? this.getMockCourses() : [];
   }
 
