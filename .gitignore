@@ -43,3 +43,6 @@ out/
 # Authenticated browser state (contains session cookies)
 .auth/state.json
 .auth/chrome-profile/
+
+# Local development history and logs
+.journal/

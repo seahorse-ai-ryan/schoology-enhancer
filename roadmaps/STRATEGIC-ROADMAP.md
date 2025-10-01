@@ -524,3 +524,14 @@ These principles guide every product decision:
 ---
 
 **This roadmap represents the strategic vision. All features subject to user research, technical feasibility, and business constraints. Living document - expect evolution!**
+
+---
+
+## References (Supplemental)
+
+For execution readiness and risk controls:
+- Operational Readiness: `OPERATIONAL-READINESS-PLAN.md`
+- Security Plan & Threat Model: `SECURITY-PLAN.md`
+- Identity & Access Design: `IDENTITY-ACCESS-DESIGN.md`
+- Performance/Cost Plan: `PERF-OPTIMIZATION-PLAN.md`
+- Extensibility & Automations: `EXTENSIBILITY-AUTOMATIONS.md`

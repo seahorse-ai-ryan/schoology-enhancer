@@ -3,8 +3,7 @@
 import { cookies } from 'next/headers';
 
 export async function loginWithSchoology(): Promise<string | null> {
-  console.log("--- [STEP 1] loginWithSchoology invoked (refactored) ---
-");
+  console.log("--- [STEP 1] loginWithSchoology invoked (refactored) ---");
   // Refactor: avoid build-time NEXT_PUBLIC_APP_URL. Let API compute callback from request origin.
   try {
     const authStartUrl = '/api/requestToken';
