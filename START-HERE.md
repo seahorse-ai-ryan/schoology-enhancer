@@ -1,233 +1,92 @@
-# 👋 START HERE - Modern Teaching Project
+# 👋 START HERE - Vibe Coding Session
 
-**Last Updated:** September 30, 2025  
-**For:** AI agents, collaborators, and future sessions  
-**Purpose:** Quick orientation to the project
-
----
-
-## ⚡ Quick Start
-
-**New Session? Read these in order:**
-
-1. **`docs/CURRENT-STATUS.md`** - Where we are right now (weekly updates)
-2. **`docs/NEXT-STEPS-ACTION-PLAN.md`** - What to do next (immediate priorities)
-3. **`.cursor/rules/core.md`** - Project rules and context
-
-**That's it! Those 3 files get you oriented in <5 minutes.**
+**Last Updated:** October 1, 2025  
+**For:** The next AI agent session  
+**Purpose:** To kick off a major documentation refactor and strategic alignment phase.
 
 ---
 
-## 📚 Documentation Map
+## 🎯 Current Mandate: Operation Golden Docs
 
-### 🎯 Strategic (Long-Term Vision)
-- `docs/STRATEGIC-ROADMAP.md` - 18-24 month product vision, 10 phases
-- `docs/PRODUCT-REQUIREMENTS.md` - Detailed feature specifications
+**Your mission is to lead a comprehensive refactoring of all planning and architectural documents.** The goal is to consolidate the various AI-generated inputs into a single, unified, and comprehensive vision for the project.
 
-### 📅 Tactical (3-Month Execution)
-- `docs/TACTICAL-ROADMAP.md` - Q4 2025 sprint plan (6 sprints)
-- `docs/TECHNICAL-ARCHITECTURE-DECISIONS.md` - Tech choices and trade-offs
-- `docs/REFACTORING-ANALYSIS.md` - Code quality priorities
-
-### 📍 Operational (Weekly/Daily)
-- `docs/CURRENT-STATUS.md` - **Start here!** Current progress
-- `docs/NEXT-STEPS-ACTION-PLAN.md` - Immediate priorities  
-- `.cursor/rules/core.md` - Project context and rules
-
-### 📖 Reference (As-Needed)
-- `docs/ARCHITECTURE.md` - System design
-- `docs/USER-JOURNEYS.md` - Implemented user flows
-- `docs/STARTUP.md` - Dev environment setup
-- `docs/TESTING-QUICK-START.md` - How to run tests
-
-### 📜 Historical (Context)
-- `docs/SESSION-FINAL-SUMMARY-2025-09-30.md` - Latest achievements
-- `docs/TEST-SUITE-COMPLETE.md` - Testing breakthrough
-- `docs/TESTING-SUCCESS.md` - How we solved hCaptcha
+When this phase is complete, the repository should be so clear and well-documented that it would impress any experienced developer who found it, especially knowing it's a solo "vibe coding" effort.
 
 ---
 
-## 🚀 Development Quick Commands
+## 📚 Project Context & Philosophy
 
-**Start Development:**
-```bash
-# Terminal 1: Ngrok
-ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout
+Before you begin, understand the following context:
 
-# Terminal 2: Firebase (wait for "All emulators ready!")
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
-firebase emulators:start
-
-# Terminal 3: Next.js (ONLY after Firebase ready!)
-export FIRESTORE_EMULATOR_HOST="localhost:8080"
-npm run dev
-```
-
-**Run Tests:**
-```bash
-# All E2E tests
-bash scripts/test-all.sh
-
-# Individual test
-node scripts/test-authenticated.js
-
-# Backend tests
-npm run test:emu
-```
-
-**Check Code Quality:**
-```bash
-# TypeScript errors
-npx tsc --noEmit
-
-# ESLint
-npm run lint
-
-# Format
-npm run format
-```
+*   **Multiple AI Collaborators:** The initial roadmaps and architecture were drafted by **Claude 4.5 Sonnet**. Subsequently, **GPT-5, Gemini Pro, and GPT-5-Codex** have all provided second opinions, audits, and new plans.
+*   **Expect Contradictions:** Because of the multiple AI inputs, there are likely conflicting suggestions and plans. Your first job is to identify these.
+*   **Awaiting Decisions:** Many of the documents contain open questions for me, the Product Owner. These need to be consolidated and presented to me for decision-making.
+*   **My Role:** I am a former Product Manager and Technical Program Manager at Google, not a Senior SWE. I will provide product direction, strategic decisions, and user-centric feedback. I will rely on you for technical leadership and best-practice implementation.
+*   **Documentation Style:**
+    *   Follow the principles in `docs/DOCUMENTATION-GUIDE.md`.
+    *   Replace obnoxious "milestone achieved" headers with simple "Last Updated" dates. Consistency is key.
+    *   The `/docs`, `/roadmaps`, and `/.journal` structure is intentional and should be maintained.
 
 ---
 
-## 🎯 Project Status
+## 🗺️ High-Level Execution Plan
 
-**Current Phase:** Foundation Complete, Planning Complete, Starting Refactoring
+We will follow this precise sequence. Do not proceed to the next step until the previous one is complete and approved.
 
-**Completed:**
-- ✅ OAuth with persistent sessions (no hCaptcha on re-run!)
-- ✅ E2E test infrastructure (7 automated tests)
-- ✅ Repository cleanup (50+ files removed)
-- ✅ Comprehensive 18-month roadmap
+1.  **Phase 1: Doc Analysis & Refactor (Your Current Task)**
+    *   **Goal:** Consolidate all plans and AI feedback into a single, coherent strategy.
+    *   **Action:** Conduct a meta-analysis, resolve contradictions, get my decisions on open questions, and rewrite the documentation to be consistent and clear.
 
-**This Week:**
-- ⏳ Fix TypeScript errors (critical)
-- ⏳ Standardize API patterns
-- ⏳ Expand seed data
-- ⏳ Implement dashboard widgets
+2.  **Phase 2: Seed Data Expansion**
+    *   **Goal:** Enrich our test environment with diverse and realistic data.
+    *   **Action:** I will provide new seed data based on real-world examples. You will need to guide me on how to either provide this data or integrate it via API calls using my admin key. This must be done before we can achieve full test coverage.
 
-**Next Week:**
-- 📅 Parent-child switching
-- 📅 Grade normalization
-- 📅 Navigation structure
+3.  **Phase 3: Achieve 100% Test Coverage**
+    *   **Goal:** Ensure every user journey and critical function is covered by an automated test.
+    *   **Action:** Write the necessary E2E and unit tests to fill any gaps identified in our test plans.
 
----
+4.  **Phase 4: Code Refactoring**
+    *   **Goal:** Elevate the existing codebase to be scalable, efficient, secure, and easily maintainable.
+    *   **Action:** With a full test suite providing a safety net, refactor the application to align with our newly solidified architectural plans.
 
-## 🏗️ Architecture Overview
-
-**Stack:**
-- **Frontend:** Next.js 15, React, TypeScript, Tailwind CSS
-- **Backend:** Next.js API Routes (no Firebase Functions)
-- **Database:** Firebase Firestore (with caching)
-- **Auth:** Schoology OAuth 1.0a (persistent sessions)
-- **Testing:** Playwright E2E + Jest unit/integration
-- **Deployment:** Firebase Hosting (planned)
-
-**Key Patterns:**
-- Mobile-first responsive design
-- Server-side rendering where beneficial
-- API route caching (15min - 24hr TTL)
-- User vs Account data separation
-- Test-driven development
+5.  **Phase 5: Final Polish & "Golden" Commit**
+    *   **Goal:** Create a "golden" state of the repository.
+    *   **Action:** Run all tests one last time, perform a final review, and commit the fully refactored and documented codebase. The public `README.md` will be updated as the final step.
 
 ---
 
-## 🎓 Key Learnings
+## 🚀 Immediate Action Items for This Session
 
-**From Today:**
-1. `chromium.launchPersistentContext()` solves OAuth automation
-2. Aggressive cleanup accelerates development
-3. Strategic planning before building prevents waste
-4. Documentation is a force multiplier
-5. Testing enables confident refactoring
+**Read this file, then get to work. Here is your plan:**
 
-**Carry Forward:**
-- Test before refactoring
-- Document decisions with rationale
-- Delete aggressively
-- Think strategically, execute tactically
+1.  **Create a Temporary Workspace:**
+    *   Create a new directory named `/.temp-doc-refactor`. This directory should be added to `.gitignore`.
+    *   This will be your workspace for drafting the new, consolidated documents without modifying the existing ones until we are ready.
 
----
+2.  **Conduct Meta-Analysis:**
+    *   Read all documents in the `/roadmaps` and `/.journal` directories.
+    *   **Your Goal:** Synthesize the different perspectives from Claude, GPT-5, Gemini, and Codex.
+    *   **Deliverable 1:** Create a new file, `/.temp-doc-refactor/META-ANALYSIS.md`, that summarizes the key strategies, identifies all contradictions between the plans, and lists the major strategic choices we need to make.
 
-## 🚧 Known Issues & Tech Debt
+3.  **Consolidate Open Questions:**
+    *   As you read, extract every open question directed at me (the Product Owner).
+    *   **Deliverable 2:** Create a second file, `/.temp-doc-refactor/CONSOLIDATED-QUESTIONS.md`. List every question, grouped by topic (e.g., Product, Architecture, UX), and cite the source file for each.
 
-**Critical (Fix This Week):**
-1. TypeScript errors being ignored in config
-2. Inconsistent API route patterns
-3. Data transformations scattered
+4.  **Request Human Interaction:**
+    *   Once the two deliverables are complete, pause and ask me to review them. This will be my entry point to make the necessary decisions to unblock the rest of the refactoring process.
 
-**Medium (Next Sprint):**
-4. Component prop drilling
-5. Loading states inconsistent
-6. Error boundaries missing
+5.  **Incorporate External Schoology Context (New Task):**
+    *   After I have reviewed your analysis and provided decisions, your next task is to integrate the following platform context into our documentation.
+    *   **Deliverable 3:** Create a new reference document at `docs/SCHOOLOGY-PLATFORM-GUIDE.md`. This document should become the central repository for external links and key summaries. Populate it with:
+        *   **User-Facing Docs:** [Schoology System Admin Guide](https://uc.powerschool-docs.com/en/schoology/latest/system-administrators)
+        *   **API Overview:** [Schoology API Documentation](https://developers.schoology.com/api/)
+        *   **Core API Reference:** [REST API v1](https://developers.schoology.com/api-documentation/rest-api-v1/)
+        *   **App Examples:** [Schoology App Center](https://app.schoology.com/apps/)
+        *   **Developer Portal:** [My Apps Publisher Page](https://app.schoology.com/apps/publisher)
+    *   **Deliverable 4:** Update the `roadmaps/STRATEGIC-ROADMAP.md`. Integrate the "Schoology App Center Submission" process as a major future milestone (e.g., "Phase 4: Public Launch"). Based on the contents of `temp-schoology-app-submit-guide.md`, this plan must include sub-tasks for:
+        *   Creating and provisioning the required test user: `sgy-app-tester@powerschool.com`.
+        *   Preparing detailed launch and configuration instructions for the Schoology review team.
+        *   Allocating a 30-day window for the approval process.
+    *   **Deliverable 5:** Update the `roadmaps/TECHNICAL-ARCHITECTURE-DECISIONS.md`. Add a new section titled "LTI Integration Analysis." In this section, analyze the LTI standard from [1EdTech LTI Standard](https://www.1edtech.org/standards/lti) and discuss the potential benefits (e.g., deeper integration, official platform support) and drawbacks (e.g., implementation complexity, architectural changes) of adopting it for this project.
 
-**See `docs/REFACTORING-ANALYSIS.md` for complete audit**
-
----
-
-## 📝 Open Questions for Product Owner
-
-**High Priority (Answer This Week):**
-1. Grading scale complexity - simple or weighted?
-2. Parent-child switching UX - dropdown or page?
-3. Mobile navigation - bottom tabs approved?
-
-**Medium Priority (Next 2 Weeks):**
-4. State management - Context or Zustand?
-5. Offline mode - when to implement?
-
-**Strategic (Quarterly Review):**
-- 22 questions in STRATEGIC-ROADMAP.md
-- 12 questions in PRODUCT-REQUIREMENTS.md
-- 3 questions in TECHNICAL-ARCHITECTURE-DECISIONS.md
-
----
-
-## 🎯 Success Metrics
-
-**Code Quality:**
-- TypeScript errors: Currently ignored → Target: 0
-- Test coverage: 7 E2E tests → Target: 11+ by Sprint 3
-- Documentation: 18 files → Keep current
-
-**Performance:**
-- Page load: Currently ~2s → Target: <2s maintained
-- API response: Currently <1s → Target: <500ms
-- Test execution: Currently ~5min → Target: <10min
-
-**Product:**
-- Features: 2 implemented → Target: 10 by end Q4
-- User flows: 2 complete → Target: 11 complete
-- Polish: Basic → Target: Production-ready
-
----
-
-## 🎉 You're Ready!
-
-**This project has:**
-- ✅ Solid technical foundation
-- ✅ Comprehensive strategic plan
-- ✅ Clear tactical roadmap
-- ✅ Detailed product requirements
-- ✅ Automated testing infrastructure
-- ✅ Clean, maintainable codebase
-
-**Next session:**
-1. Review planning docs (1-2 hours)
-2. Execute refactoring (4-6 hours)
-3. Build features with confidence!
-
----
-
-**Welcome back, and happy coding! 🚀**
-
----
-
-## 📖 Quick Reference
-
-**Confused?** → Read `CURRENT-STATUS.md`  
-**What's next?** → Read `NEXT-STEPS-ACTION-PLAN.md`  
-**How do I...?** → Read `STARTUP.md` or `TESTING-QUICK-START.md`  
-**Why this way?** → Read `TECHNICAL-ARCHITECTURE-DECISIONS.md`  
-**Where are we going?** → Read `STRATEGIC-ROADMAP.md`
-
-**Still confused?** → Open an issue or ask the AI agent!
+Do not begin rewriting or refactoring any documents in `/roadmaps` or `/docs` until I have reviewed your analysis and provided decisions. Good luck.

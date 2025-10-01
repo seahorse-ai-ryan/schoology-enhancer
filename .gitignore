@@ -46,3 +46,6 @@ out/
 
 # Local development history and logs
 .journal/
+
+# Temporary documentation refactoring workspace
+.temp-doc-refactor/

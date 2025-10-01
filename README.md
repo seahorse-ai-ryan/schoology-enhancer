@@ -54,7 +54,7 @@ Next.js application enhancing Schoology with modern UI, offline support, and AI-
 - **Node.js 20+** installed
 - **Java 17+** for Firebase Emulators (`brew install openjdk@17` on Mac)
 - **Firebase CLI** (`npm install -g firebase-tools`)
-- **Schoology Developer Account** - [Register here](https://developers.schoology.com)
+- **Schoology Developer Account** - You must register for a developer account to create the necessary API credentials. [Register here](https://app.schoology.com/apps/developer/request).
   - Create a new app in the Developer Portal
   - Note your Consumer Key and Secret (for OAuth)
   - Get your Admin API credentials from Schoology Settings → Integration
@@ -152,7 +152,7 @@ See comprehensive guides in `/docs`:
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Data flow, caching strategy, auth flow, API endpoints
 - **[STARTUP.md](docs/STARTUP.md)** - Detailed environment setup and troubleshooting
 - **[USER-JOURNEYS.md](docs/USER-JOURNEYS.md)** - All implemented features and user flows
-- **[CURRENT-STATUS.md](docs/CURRENT-STATUS.md)** - Active development status and TODOs
+- **[DOCUMENTATION-GUIDE.md](docs/DOCUMENTATION-GUIDE.md)** - Guide to the documentation structure
 
 ## Testing
 
@@ -237,7 +237,7 @@ firebase deploy
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) - System architecture
 - [STARTUP.md](docs/STARTUP.md) - Environment setup
 - [USER-JOURNEYS.md](docs/USER-JOURNEYS.md) - Feature documentation
-- [CURRENT-STATUS.md](docs/CURRENT-STATUS.md) - Development status
+- [DOCUMENTATION-GUIDE.md](docs/DOCUMENTATION-GUIDE.md) - How the docs are organized
 
 **Reference:**
 - [SCHOOLOGY-CSV-IMPORT.md](docs/SCHOOLOGY-CSV-IMPORT.md) - Bulk import guide
