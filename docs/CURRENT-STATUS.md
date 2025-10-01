@@ -104,11 +104,30 @@
 - [ ] Date formatting
 
 **Target:** 100% coverage before refactoring (Phase 4)
-- [ ] Child course display test
-- [ ] Switch between children test
-- [ ] Return to parent view test
 
-### Phase 4: Final Doc Updates (AFTER PHASE 3)
+---
+
+### Phase 4: Code Refactoring Analysis (AFTER PHASE 3)
+
+**Goal:** Analyze codebase for refactoring opportunities with test coverage safety net
+
+**Prerequisites:**
+- ✅ All E2E tests passing
+- ✅ 80%+ unit test coverage  
+- ✅ CI pipeline running all tests
+
+**Analysis Areas:**
+- Component structure & organization
+- API route patterns & error handling
+- Data transformation consistency
+- Cache strategy optimization
+- Type safety improvements
+
+**Rule:** NO refactoring without tests! Testing first, refactoring second.
+
+---
+
+### Phase 5: Final Doc Updates & Feature Development (AFTER PHASE 4)
 
 - [ ] Update all docs with testing learnings
 - [ ] Create API reference doc
