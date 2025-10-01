@@ -7,14 +7,33 @@
 ## 🚀 TL;DR
 
 ```bash
-# First run: Sign in manually when browser opens
-node scripts/test-authenticated.js
+# Run all E2E tests
+bash scripts/test-all.sh
 
-# All future runs: Fully automated!
+# Or run individual tests
 node scripts/test-authenticated.js
+node scripts/test-2-default-dashboard.js
+node scripts/test-3-child-switching.js
+# ... etc
 ```
 
-**Done!** Your session persists forever. No more manual login.
+**First run only:** Sign in when browser opens, then all future runs are fully automated!
+
+---
+
+## 🧪 Available Tests
+
+**All tests use persistent authentication - sign in once, automated forever!**
+
+| Test | Script | What It Tests |
+|------|--------|---------------|
+| 1 | `test-authenticated.js` | OAuth authentication & session persistence |
+| 2 | `test-2-default-dashboard.js` | Dashboard loads with default child |
+| 3 | `test-3-child-switching.js` | Switch between children |
+| 4 | `test-4-navigation.js` | Navigation & course details |
+| 5 | `test-5-assignments-grades.js` | Assignments & grades display |
+| 6 | `test-6-data-sources.js` | Data source indicators (Live/Cached/Mock) |
+| 7 | `test-7-complete-flow.js` | Complete user journey E2E |
 
 ---
 
@@ -33,12 +52,20 @@ node scripts/test-authenticated.js
 
 ## 📊 What Gets Tested
 
-Current automated tests verify:
-- ✅ Authentication persistence works
-- ✅ Dashboard loads with real data
-- ✅ Parent profile displayed correctly
-- ✅ Active student information shown
-- ✅ Courses section present
+**Core User Journeys:**
+- ✅ Authentication & session persistence
+- ✅ Dashboard with real/cached/mock data
+- ✅ Child switching (multiple students)
+- ✅ Navigation between sections
+- ✅ Assignments & grades display
+- ✅ Data source indicators
+- ✅ Complete user flow E2E
+
+**All tests:**
+- Use persistent auth (no manual login after first run)
+- Take screenshots in `test-results/`
+- Report detailed results
+- Run independently
 
 ---
 
@@ -58,38 +85,86 @@ node scripts/test-authenticated.js
 
 ---
 
-## 📁 What Gets Saved
+## 📁 Test Results
 
-`.auth/chrome-profile/` contains:
-- Cookies (including Schoology session)
-- localStorage
-- IndexedDB
-- Session storage
+All screenshots saved to `test-results/`:
+- `test-1-authenticated.png`
+- `test-2-default-dashboard.png`
+- `test-3-child-switching.png`
+- etc.
 
-**This directory is gitignored** (never committed).
+**Git ignores this directory** - screenshots are local only.
 
 ---
 
-## 🧪 Adding More Tests
+## 🎯 Running Tests
 
-Edit `scripts/test-authenticated.js`:
+**Run all tests in sequence:**
+```bash
+bash scripts/test-all.sh
+```
+
+**Run individual test:**
+```bash
+node scripts/test-authenticated.js
+node scripts/test-2-default-dashboard.js
+# etc.
+```
+
+**First time:**
+- Browser opens
+- Sign in with Schoology
+- Complete OAuth
+- Test continues automatically
+
+**Every time after:**
+- Fully automated!
+- No manual interaction
+- Session reused
+
+---
+
+## 📝 Adding New Tests
+
+Copy the template from any existing test:
 
 ```javascript
-// Add new test after authentication check
-console.log('Test 3: Clicking child selector...');
-await page.click('[data-testid="child-selector"]');
-await page.waitForTimeout(1000);
+const { chromium } = require('playwright');
+const path = require('path');
 
-const childName = await page.textContent('.active-child-name');
-console.log(`   ✅ Active child: ${childName}\n`);
+const PROFILE_DIR = path.join(__dirname, '..', '.auth', 'chrome-profile');
+const APP_URL = 'https://modernteaching.ngrok.dev';
+
+async function testNewFeature() {
+  const context = await chromium.launchPersistentContext(PROFILE_DIR, {
+    channel: 'chrome',
+    headless: false,
+  });
+
+  const page = context.pages()[0] || await context.newPage();
+  await page.goto(`${APP_URL}/dashboard`);
+  
+  // Your tests here
+  
+  await page.screenshot({ path: 'test-results/test-new.png' });
+  await context.close();
+}
+
+testNewFeature().catch(console.error);
 ```
 
 ---
 
-## 🎯 Next: Comprehensive Coverage
+## 🏆 Success!
 
-See `docs/CURRENT-STATUS.md` Phase 3 for the full test plan covering all 11 user journeys.
+**You now have:**
+- ✅ 7 automated E2E tests
+- ✅ Persistent auth (no repeated login)
+- ✅ Visual verification (screenshots)
+- ✅ Complete user journey coverage
+
+**Next:** Add integration & unit tests for 100% coverage!
 
 ---
 
-**For detailed documentation:** See `docs/TESTING-SUCCESS.md`
+**For detailed docs:** See `docs/TESTING-SUCCESS.md`

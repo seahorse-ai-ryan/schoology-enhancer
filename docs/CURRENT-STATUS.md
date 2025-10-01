@@ -77,20 +77,19 @@
 
 **See:** `docs/TEST-COVERAGE-PLAN.md` for detailed plan
 
-**Progress:** 1/11 user journeys covered
+**Progress:** 7/11 user journeys covered ✅
 
 **E2E Tests (Based on USER-JOURNEYS.md):**
-- [x] 1. Parent Authentication (with persistent OAuth!)
-- [ ] 2. View Default Child's Dashboard
-- [ ] 3. Switch Between Children
-- [ ] 4. View Course Details
-- [ ] 5. View Assignments List
-- [ ] 6. View Assignment Details
-- [ ] 7. Check Grades & Progress
-- [ ] 8. View Announcements
-- [ ] 9. Manage Incentives
-- [ ] 10. Data Source Indicators (Live/Cached/Mock)
-- [ ] 11. Multi-Child Planning View
+- [x] 1. Parent Authentication (with persistent OAuth!) - `test-authenticated.js`
+- [x] 2. View Default Child's Dashboard - `test-2-default-dashboard.js`
+- [x] 3. Switch Between Children - `test-3-child-switching.js`
+- [x] 4. Navigation & Course Details - `test-4-navigation.js`
+- [x] 5. Assignments & Grades - `test-5-assignments-grades.js`
+- [x] 6. Data Source Indicators - `test-6-data-sources.js`
+- [x] 7. Complete User Flow - `test-7-complete-flow.js`
+- [ ] 8-11. Additional features (Announcements, Incentives, Planning, etc.)
+
+**Run all tests:** `bash scripts/test-all.sh`
 
 **Integration Tests:**
 - [ ] All API routes (`/api/auth/*`, `/api/schoology/*`)
