@@ -283,6 +283,7 @@ export interface DataSourceSummary {
   courses: 'live' | 'cached' | 'mock';
   assignments: 'live' | 'cached' | 'mock';
   announcements: 'live' | 'cached' | 'mock';
+  deadlines: 'live' | 'cached' | 'mock';
   grades: 'live' | 'cached' | 'mock';
   lastUpdated: Date | null;
   dataQuality: 'excellent' | 'good' | 'fair' | 'poor';
@@ -379,7 +380,7 @@ export class SchoologyDataService {
 
   // Get assignments from cache or return mock data
   async getAssignments(limitOrAllowMock: number | { limit?: number; allowMock?: boolean } = 10): Promise<SchoologyAssignment[]> {
-    const limit = typeof limitOrAllowMock === 'number' ? limitOrAllowMock : (limitOrAllowMock.limit ?? 10);
+    const limitCount = typeof limitOrAllowMock === 'number' ? limitOrAllowMock : (limitOrAllowMock.limit ?? 10);
     const allowMock = typeof limitOrAllowMock === 'number' ? true : (limitOrAllowMock.allowMock ?? true);
     try {
       const userAssignmentsRef = collection(db, 'users', this.userId, 'assignments');
@@ -387,7 +388,7 @@ export class SchoologyDataService {
         userAssignmentsRef,
         where('status', '==', 'published'),
         orderBy('dueDate', 'asc'),
-        limit(limit)
+        limit(limitCount)
       );
       
       const snapshot = await getDocs(assignmentsQuery);
@@ -432,14 +433,14 @@ export class SchoologyDataService {
 
   // Get announcements from cache or return mock data
   async getAnnouncements(limitOrAllowMock: number | { limit?: number; allowMock?: boolean } = 5): Promise<SchoologyAnnouncement[]> {
-    const limit = typeof limitOrAllowMock === 'number' ? limitOrAllowMock : (limitOrAllowMock.limit ?? 5);
+    const limitCount = typeof limitOrAllowMock === 'number' ? limitOrAllowMock : (limitOrAllowMock.limit ?? 5);
     const allowMock = typeof limitOrAllowMock === 'number' ? true : (limitOrAllowMock.allowMock ?? true);
     try {
       const userAnnouncementsRef = collection(db, 'users', this.userId, 'announcements');
       const announcementsQuery = query(
         userAnnouncementsRef,
         orderBy('createdAt', 'desc'),
-        limit(limit)
+        limit(limitCount)
       );
       
       const snapshot = await getDocs(announcementsQuery);
@@ -805,6 +806,7 @@ export class SchoologyDataService {
         courses: courses[0]?.dataSource || 'mock',
         assignments: assignments[0]?.dataSource || 'mock',
         announcements: announcements[0]?.dataSource || 'mock',
+        deadlines: 'mock' as const, // Not implemented yet
         grades: 'mock' as const // Not implemented yet
       };
       
@@ -828,6 +830,7 @@ export class SchoologyDataService {
         courses: 'mock',
         assignments: 'mock',
         announcements: 'mock',
+        deadlines: 'mock',
         grades: 'mock',
         lastUpdated: null,
         dataQuality: 'poor',

@@ -4,14 +4,16 @@ This project uses modular rules for better organization and maintainability.
 
 ## 📚 Read All Rule Files
 
+**⭐⭐ START HERE:**
+1. `docs/CURRENT-TASKS.md` - **WHAT TO DO NOW** (atomic action items)
+
 **Primary Context:**
-1. `.cursor/rules/core.md` - Project status, milestones, current priorities
-2. `.cursor/rules/workflow.md` - Dev environment, testing strategy, common issues
+2. `.cursor/rules/core.md` - Project status, milestones, current priorities
+3. `.cursor/rules/workflow.md` - Dev environment, testing strategy, common issues
 
 **Technical Details:**
-3. `docs/ARCHITECTURE.md` - Data flow, caching, auth, API endpoints
-4. `docs/CURRENT-STATUS.md` - Active development, TODOs, session context
-5. `docs/USER-JOURNEYS.md` - All implemented features and user flows
+4. `docs/current/ARCHITECTURE.md` - Data flow, caching, auth, API endpoints
+5. `docs/current/USER-JOURNEYS.md` - All implemented features and user flows
 
 ---
 
@@ -57,10 +59,12 @@ Not allowed without approval:
 
 ## 🎯 Current Priority
 
-**Phase 1A:** Documentation cleanup ← **IN PROGRESS**  
-**Phase 1B:** Install Chrome in container  
-**Phase 2:** Testing infrastructure (Chrome MCP)  
-**Phase 3:** Fill testing gaps  
+**Check:** `docs/CURRENT-TASKS.md` for today's priorities
+
+**Testing-First Development:**
+1. Fix any regressions (test first!)
+2. Add test coverage for existing features
+3. ONLY THEN consider new features or refactoring
 
 **DO NOT proceed to code refactoring without explicit approval.**
 
@@ -68,11 +72,11 @@ Not allowed without approval:
 
 ## 📂 Quick Navigation
 
+- **TODOs:** `docs/CURRENT-TASKS.md` ⭐⭐ **START HERE**
 - **Status:** `.cursor/rules/core.md`
 - **Workflow:** `.cursor/rules/workflow.md`
-- **Architecture:** `docs/ARCHITECTURE.md`
-- **TODOs:** `docs/CURRENT-STATUS.md`
-- **Features:** `docs/USER-JOURNEYS.md`
+- **Architecture:** `docs/current/ARCHITECTURE.md`
+- **Features:** `docs/current/USER-JOURNEYS.md`
 
 ---
 

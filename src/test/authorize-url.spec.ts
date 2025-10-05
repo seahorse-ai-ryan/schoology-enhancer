@@ -1,4 +1,4 @@
-import { requestTokenLogic } from '@/functions/schoology-auth.logic';
+import { requestTokenLogic } from '../functions/schoology-auth.logic';
 
 class FakeDoc { constructor(private store: Map<string, any>, private id: string) {} async set(data: any) { this.store.set(this.id, data); } }
 class FakeCollection { constructor(private store: Map<string, any>) {} doc(id: string) { return new FakeDoc(this.store, id); } }

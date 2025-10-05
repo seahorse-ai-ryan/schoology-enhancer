@@ -1,0 +1,815 @@
+[
+  {
+    "student_name": "Carter Hickman",
+    "courses": [
+      {
+        "course_name": "AP Biology-3120: GamboaA p2 T1",
+        "categories": [
+          {
+            "category_name": "Final Semester We Service Project",
+            "weight": "15.99%",
+            "assignments": []
+          },
+          {
+            "category_name": "Full AP Labs",
+            "weight": "26.65%",
+            "assignments": [
+              {
+                "assignment_title": "Enzyme Activity Lab",
+                "grade": "A+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Enzyme Lab Report",
+                "grade": "A+",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Homework Assignments",
+            "weight": "10.13%",
+            "assignments": [
+              {
+                "assignment_title": "Copy of Acid Rain and the Buffering Capacity of Soil",
+                "grade": "A",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Copy of Fruit Fly Two Trait Crosses (Advanced)",
+                "grade": "A+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Copy of Math for Biology: Chi-Square Statistic",
+                "grade": "B+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Macromolecules PIVOT",
+                "grade": "B+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "QUIZ Curriculum Framework",
+                "grade": "A+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Exit Ticket",
+                "grade": "B+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Exit ticket",
+                "grade": "A+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "PH Sensor-Tech Tips with Vernier",
+                "grade": "A+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Analytical Questions (SP4/SP5)",
+                "grade": "A",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Digestive Enzymes",
+                "grade": "B+",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "My AP College Board Grade",
+            "weight": "21.11%",
+            "assignments": [
+              {
+                "assignment_title": "Activities Unit 1 grade",
+                "grade": "B+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Videos as percentage watched",
+                "grade": "A+",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Short Lab Activities",
+            "weight": "10.13%",
+            "assignments": [
+              {
+                "assignment_title": "Antarctica & Climate Change exit Ticket",
+                "grade": "0 Missing",
+                "comments": ""
+              },
+              {
+                "assignment_title": "SP 1: Mendelian Mystery Beans",
+                "grade": "A+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "SP 2: Visual representations Modeling Water's role in Biological Stystems",
+                "grade": "Collected",
+                "comments": ""
+              },
+              {
+                "assignment_title": "SP 3: Investigating the Properties of Water in Biological Systems",
+                "grade": "B+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Surface Area and Cell Size AP College board in Class Questions",
+                "grade": null,
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Unit Exam + AP Like Final exam",
+            "weight": "15.99%",
+            "assignments": [
+              {
+                "assignment_title": "Day 3,.2 Exit Ticket",
+                "grade": "D+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Day 6.1 Exit Ticket",
+                "grade": "B",
+                "comments": ""
+              },
+              {
+                "assignment_title": "UNIT 1 Exam",
+                "grade": "D+",
+                "comments": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "course_name": "AP English Lit-1410: JavierR p4 T1",
+        "categories": [
+          {
+            "category_name": "All Essays/Presentations",
+            "weight": "40%",
+            "assignments": [
+              {
+                "assignment_title": "3-Slide Snapshot",
+                "grade": "A",
+                "comments": ""
+              },
+              {
+                "assignment_title": "\"Unknown Citizen\" Pop In-Class Essay",
+                "grade": "C",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Romantic Poetry Group Presentations",
+                "grade": "C",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Literary Devices Test",
+                "grade": "B",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Romantic Poetry In-Class Essay",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "Final Poetry Test",
+                "grade": "B",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Classwork/Informal Discussions",
+            "weight": "10%",
+            "assignments": [
+              {
+                "assignment_title": "Jane Eyre Ch.18-23 Class Discussion",
+                "grade": "B",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Sylvia Plath Poetry",
+                "grade": "AD",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Maya Angelou Poetry",
+                "grade": "A",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Plath/Angelou Exit Ticket",
+                "grade": "A",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Borges & Frost Poetry Discussion",
+                "grade": "A",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Reading Logs",
+            "weight": "10%",
+            "assignments": [
+              {
+                "assignment_title": "Jane Eyre Ch. 1-8 Reading Log",
+                "grade": "C",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Jane Eyre 9-17 Exit Ticket",
+                "grade": "B",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Jane Eyre Ch. 24-28 Reading Log",
+                "grade": "C",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Socratic Seminars",
+            "weight": "40%",
+            "assignments": [
+              {
+                "assignment_title": "Jane Eyre Socratic Seminar",
+                "grade": "A",
+                "comments": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "course_name": "AP Statistics-2460: ScholtenB p3 T1",
+        "categories": [
+          {
+            "category_name": "Tests",
+            "weight": "85%",
+            "assignments": [
+              {
+                "assignment_title": "STATS Unit 1 FRQ",
+                "grade": "B-",
+                "comments": ""
+              },
+              {
+                "assignment_title": "STATS Unit 1 MCQ",
+                "grade": "C-",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Video Notes",
+            "weight": "5%",
+            "assignments": [
+              {
+                "assignment_title": "1.1 STATS VIDEO",
+                "grade": "A",
+                "comments": ""
+              },
+              {
+                "assignment_title": "1.2 STATS VIDEO",
+                "grade": "A",
+                "comments": ""
+              },
+              {
+                "assignment_title": "1.3 STATS VIDEO",
+                "grade": "A",
+                "comments": ""
+              },
+              {
+                "assignment_title": "1.4 STATS VIDEO",
+                "grade": "A",
+                "comments": ""
+              },
+              {
+                "assignment_title": "1.5 STATS VIDEO",
+                "grade": "B+",
+                "comments": ""
+              },
+              {
+                "assignment_title": "1.6 STATS VIDEO",
+                "grade": "0 Missing",
+                "comments": ""
+              },
+              {
+                "assignment_title": "2.1 STATS Video Notes",
+                "grade": "A",
+                "comments": ""
+              },
+              {
+                "assignment_title": "2.2 STATS Video Notes",
+                "grade": "C",
+                "comments": ""
+              },
+              {
+                "assignment_title": "2.3 STATS Video Notes",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "2.4 STATS Video Notes",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "2.5 STATS Video Notes",
+                "grade": null,
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Vocabulary Tests",
+            "weight": "10%",
+            "assignments": [
+              {
+                "assignment_title": "STATS Unit 1 Vocabulary Test",
+                "grade": "B",
+                "comments": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "student_name": "Tazio Passariello",
+    "courses": [
+      {
+        "course_name": "Acad Planning: 07 (8308 4 Acad Planning) Duong",
+        "categories": [
+          {
+            "category_name": "Weekly Plan",
+            "weight": null,
+            "assignments": [
+              {
+                "assignment_title": "Weekly Planning Sheet - Aug 18-22",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "WPS 8/25-8/29",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "WPS 9/2-9/5",
+                "grade": null,
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Work Completion",
+            "weight": null,
+            "assignments": [
+              {
+                "assignment_title": "Letter to Ms. Duong",
+                "grade": null,
+                "comments": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "course_name": "AmerLit 11: 03 (1261 2 AmerLit 11) Snell, Harris",
+        "categories": [
+          {
+            "category_name": "Language",
+            "weight": "10%",
+            "assignments": []
+          },
+          {
+            "category_name": "Listening and Speaking",
+            "weight": "25%",
+            "assignments": [
+              {
+                "assignment_title": "Poetry Presentation",
+                "grade": "9.5/15",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Practice for Symbol/Motif Presentation.",
+                "grade": null,
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Reading",
+            "weight": "25%",
+            "assignments": [
+              {
+                "assignment_title": "America Project",
+                "grade": "10/10",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Read and Annotate The Prologue",
+                "grade": "10/10",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Read &Annotate Tony Loneman & Derne Oxendene",
+                "grade": "10/10",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Read Opal Viola Bear Shield and Edwin Black",
+                "grade": "10/10",
+                "comments": ""
+              },
+              {
+                "assignment_title": "'Occupy Alcatraz' Activity and Discussion Questions",
+                "grade": "10/10",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Read Bill Davis, Calvin Johnson, and Jacquie Red Feather",
+                "grade": "10/10",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Read and Annotate Orvil and Interlude.",
+                "grade": "10/10",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Read and Annotate from 142-170",
+                "grade": "0 Missing",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Read and Annotate 171-207",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "Read and Annotate 208-247",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "Read 248-end of novel",
+                "grade": null,
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Student Expectations",
+            "weight": "10%",
+            "assignments": []
+          },
+          {
+            "category_name": "Writing",
+            "weight": "30%",
+            "assignments": [
+              {
+                "assignment_title": "Poetry Writing Assignment",
+                "grade": "0 Missing",
+                "comments": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "course_name": "Physics: 04 (3820 5 Physics) Eris",
+        "categories": [
+          {
+            "category_name": "Final",
+            "weight": "20%",
+            "assignments": []
+          },
+          {
+            "category_name": "Homework",
+            "weight": "10%",
+            "assignments": [
+              {
+                "assignment_title": "Introduce Yourself Discussion Board.",
+                "grade": "2/1",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Phys DB1.1: Welcome, physicists!",
+                "grade": "1/1",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Course guide Quiz",
+                "grade": "5/5",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Unit 1 Linear Motion: Benchmark #1",
+                "grade": "4/4",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Motion Graphing Check for Understanding",
+                "grade": "3/3",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Unit 1 Homework set",
+                "grade": "21/38",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Projectiles Class work",
+                "grade": "6/6",
+                "comments": ""
+              },
+              {
+                "assignment_title": "13 Phys Unit 2 Benchmark #2: Projectile Motion",
+                "grade": "7/7",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Unit 2 Hw set",
+                "grade": "17/17",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Lab/Project",
+            "weight": "30%",
+            "assignments": [
+              {
+                "assignment_title": "Position Graphing Activity Quiz",
+                "grade": "10/10",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Motion sensors lab activity",
+                "grade": "11.5/15",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Toy car lab",
+                "grade": "27/33",
+                "comments": "graph and slope calculations -3"
+              },
+              {
+                "assignment_title": "Free Fall Lab",
+                "grade": "0 Missing",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Ball in cup Lab",
+                "grade": "10/10",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Force and Motion Lab activity",
+                "grade": "11/11",
+                "comments": ""
+              },
+              {
+                "assignment_title": "(Tension) Forces Lab Activity",
+                "grade": null,
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Test/Quiz",
+            "weight": "40%",
+            "assignments": [
+              {
+                "assignment_title": "Unit 1 TEST",
+                "grade": "37/54",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Unit 2 quiz: Free fall and Projectile motion",
+                "grade": "16.5/20",
+                "comments": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "course_name": "Pre Calc: 01 (2371 1 Pre Calc) Bocksnick",
+        "categories": [
+          {
+            "category_name": "DM/BR",
+            "weight": "35%",
+            "assignments": [
+              {
+                "assignment_title": "DM 1A",
+                "grade": "5/5",
+                "comments": ""
+              },
+              {
+                "assignment_title": "DM 1B",
+                "grade": "5/5",
+                "comments": ""
+              },
+              {
+                "assignment_title": "BR 1A/1B",
+                "grade": "10/10",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "FINAL",
+            "weight": "15%",
+            "assignments": []
+          },
+          {
+            "category_name": "TESTS",
+            "weight": "50%",
+            "assignments": [
+              {
+                "assignment_title": "TST U1",
+                "grade": "70.3/100",
+                "comments": ""
+              },
+              {
+                "assignment_title": "TEST U2",
+                "grade": null,
+                "comments": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "student_name": "Livio Passariello",
+    "courses": [
+      {
+        "course_name": "Algebra 1: 04 (6008 5 Algebra 1) Chana",
+        "categories": [
+          {
+            "category_name": "Tests",
+            "weight": "80%",
+            "assignments": [
+              {
+                "assignment_title": "U1. Skill 2: Test",
+                "grade": "1/12",
+                "comments": ""
+              },
+              {
+                "assignment_title": "U1. Skill 3: Test",
+                "grade": "0/16",
+                "comments": ""
+              },
+              {
+                "assignment_title": "U1.Skill 1: Test",
+                "grade": "8/21",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Practice",
+            "weight": "20%",
+            "assignments": [
+              {
+                "assignment_title": "Wk3 Deltamath Corrections Homework",
+                "grade": "3/5",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Wk3 Homework Worksheet: Dek's Growth Graph",
+                "grade": "Missing",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Wk 4 Worksheet",
+                "grade": "0",
+                "comments": "Missing"
+              },
+              {
+                "assignment_title": "Wk 4 Deltamath Hw",
+                "grade": "5/5",
+                "comments": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "course_name": "Choir: 01 (6888 1 Choir) Martone",
+        "categories": [
+          {
+            "category_name": "Music Theory",
+            "weight": null,
+            "assignments": [
+              {
+                "assignment_title": "Music Theory Pre-Test",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "Flashcards 9/18-19",
+                "grade": "3- Proficient",
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Performances",
+            "weight": null,
+            "assignments": [
+              {
+                "assignment_title": "Ensemble Skills-Mid-Q1",
+                "grade": "14/15",
+                "comments": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "course_name": "English 8: 06 (6538 12 English 8) Zalatimo",
+        "categories": [
+          {
+            "category_name": "Performance (Summative)",
+            "weight": "80%",
+            "assignments": [
+              {
+                "assignment_title": "Turn in Long Way Down Character Handout",
+                "grade": "B/Proficient",
+                "comments": "Revised score."
+              },
+              {
+                "assignment_title": "LWD final draft",
+                "grade": null,
+                "comments": ""
+              }
+            ]
+          },
+          {
+            "category_name": "Practice",
+            "weight": "20%",
+            "assignments": [
+              {
+                "assignment_title": "Writing Sample/Diagnostic",
+                "grade": "B/Proficient",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Summer Reading Log/Note",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "Superman and Me annotations (in class)",
+                "grade": "Incomplete",
+                "comments": ""
+              },
+              {
+                "assignment_title": "Narrative Writing Sample: My Name draft",
+                "grade": "2.5/5",
+                "comments": "Your quotes are integrated and you explain them with your own words, which is great. Let's work on using TAG in the claim, using more context before your quotes and further elaborating on the significance of the word choice within the quotes and what that shows."
+              },
+              {
+                "assignment_title": "Independent Reading Mid-Quarter Grade",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "Long Way Down Analytical Paragraph/Essay Draft",
+                "grade": null,
+                "comments": ""
+              },
+              {
+                "assignment_title": "District Formative Reading Assessment",
+                "grade": null,
+                "comments": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

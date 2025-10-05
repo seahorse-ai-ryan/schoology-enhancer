@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SchoologyDataService, type SchoologyCourse, type SchoologyAnnouncement, type SchoologyDeadline } from '@/lib/schoology-data';
+import { SchoologyDataService, type SchoologyCourse, type SchoologyAnnouncement } from '@/lib/schoology-data';
 
 interface User {
   id: string;
@@ -34,7 +34,6 @@ export function UserDashboard() {
   const [user, setUser] = useState<User | null>(null);
   const [courses, setCourses] = useState<SchoologyCourse[]>([]);
   const [announcements, setSchoologyAnnouncements] = useState<SchoologyAnnouncement[]>([]);
-  const [deadlines, setDeadlines] = useState<SchoologyDeadline[]>([]);
   const [dataSourceSummary, setDataSourceSummary] = useState<DataSourceSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -79,12 +78,12 @@ export function UserDashboard() {
       } else {
         // If not authenticated, still show mock data for testing
         setError('Not authenticated');
-        await loadSchoologyData('mock-user');
+        await loadSchoologyData('mock-user', true);
       }
     } catch (error) {
       console.log('Failed to load user data, showing mock data:', error);
       // Show mock data even if there's an error
-      await loadSchoologyData('mock-user');
+      await loadSchoologyData('mock-user', true);
     } finally {
       setLoading(false);
     }
@@ -95,16 +94,14 @@ export function UserDashboard() {
       const dataService = new SchoologyDataService(userId);
       
       // Load all data types
-      const [coursesData, announcementsData, deadlinesData, summary] = await Promise.all([
+      const [coursesData, announcementsData, summary] = await Promise.all([
         dataService.getCourses(allowMock),
         dataService.getAnnouncements({ limit: 5, allowMock }),
-        dataService.getDeadlines(allowMock),
         dataService.getDataSourceSummary()
       ]);
       
       setCourses(coursesData);
       setSchoologyAnnouncements(announcementsData);
-      setDeadlines(deadlinesData);
       setDataSourceSummary(summary);
       
     } catch (error) {
@@ -112,22 +109,6 @@ export function UserDashboard() {
     }
   };
 
-  const getDataSourceBadge = (source: 'live' | 'cached' | 'mock') => {
-    if (source === 'mock') return null;
-    const variants = {
-      live: 'default',
-      cached: 'secondary',
-      mock: 'destructive'
-    } as const;
-    
-    const labels = {
-      live: 'Live',
-      cached: 'Cached',
-      mock: 'Mock'
-    };
-    
-    return <Badge variant={variants[source]}>{labels[source]}</Badge>;
-  };
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
@@ -148,7 +129,7 @@ export function UserDashboard() {
     );
   }
 
-  if (error && !courses.length && !announcements.length && !deadlines.length) {
+  if (error && !courses.length && !announcements.length) {
     return (
       <div className="text-center py-8">
         <p className="text-red-600 mb-4">{error}</p>
@@ -160,7 +141,7 @@ export function UserDashboard() {
   }
 
   // Show dashboard content if we have data, even if there was an error
-  if (courses.length > 0 || announcements.length > 0 || deadlines.length > 0) {
+  if (courses.length > 0 || announcements.length > 0) {
     return (
       <div className="space-y-6" data-testid="dashboard-content">
         {/* Welcome Header */}
@@ -170,17 +151,10 @@ export function UserDashboard() {
           </h1>
           <p className="text-blue-100">Here's what's happening in your Schoology courses</p>
           
-          {/* Data Source Indicator */}
-          {dataSourceSummary && (
-            <div className="mt-4 flex items-center gap-2 text-sm">
-              <span className="text-blue-200">Data source:</span>
-              {/* Hide mock badges in demo mode for cleaner UX */}
-              {liveProfile && <Badge variant="default">Live Verified</Badge>}
-              {dataSourceSummary.lastUpdated && (
-                <span className="text-blue-200 ml-2">
-                  Last updated: {formatDate(dataSourceSummary.lastUpdated)}
-                </span>
-              )}
+          {/* Last Updated Indicator */}
+          {dataSourceSummary && dataSourceSummary.lastUpdated && (
+            <div className="mt-4 text-sm text-blue-200">
+              Last updated: {formatDate(dataSourceSummary.lastUpdated)}
             </div>
           )}
         </div>
@@ -250,7 +224,8 @@ export function UserDashboard() {
               <CardTitle className="text-sm font-medium">Upcoming Deadlines</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{deadlines.length}</div>
+              <div className="text-2xl font-bold">0</div>
+              <p className="text-xs text-gray-500">Coming soon</p>
             </CardContent>
           </Card>
         </div>
@@ -273,7 +248,6 @@ export function UserDashboard() {
                     )}
                   </div>
                   <div className="flex items-center gap-2">
-                    {getDataSourceBadge(course.dataSource)}
                     <Badge variant="secondary">Active</Badge>
                   </div>
                 </div>
@@ -298,12 +272,9 @@ export function UserDashboard() {
                       <p className="text-sm text-gray-600">{announcement.courseName}</p>
                       <p className="text-xs text-gray-500 mt-1">{announcement.content}</p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {getDataSourceBadge(announcement.dataSource)}
-                      <span className="text-xs text-gray-500">
-                        {formatDate(announcement.createdAt)}
-                      </span>
-                    </div>
+                    <span className="text-xs text-gray-500">
+                      {formatDate(announcement.createdAt)}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -311,30 +282,15 @@ export function UserDashboard() {
           </CardContent>
         </Card>
 
-        {/* Upcoming Deadlines */}
+        {/* Upcoming Deadlines - Coming Soon */}
         <Card>
           <CardHeader>
             <CardTitle>Upcoming Deadlines</CardTitle>
             <CardDescription>Important dates to remember</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {deadlines.map((deadline) => (
-                <div key={deadline.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex-1">
-                    <h3 className="font-medium">{deadline.title}</h3>
-                    <p className="text-sm text-gray-600">{deadline.courseName}</p>
-                    {deadline.description && (
-                      <p className="text-xs text-gray-500 mt-1">{deadline.description}</p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {getDataSourceBadge(deadline.dataSource)}
-                    <Badge variant="destructive">{formatDate(deadline.dueDate)}</Badge>
-                    <Badge variant="outline" className="capitalize">{deadline.type}</Badge>
-                  </div>
-                </div>
-              ))}
+            <div className="text-center py-8 text-gray-500">
+              <p>Deadline tracking coming soon</p>
             </div>
           </CardContent>
         </Card>

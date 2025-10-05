@@ -4,33 +4,92 @@
 
 ## Startup Sequence
 
-### Persistent Named Terminals
+### Startup Principle: Clean Before You Start
 
-Start services in the project root directory.
+When starting the development environment, always assume the environment might be in an unknown or "borked" state. The default procedure is to **clean up before starting**.
 
-```bash
-# Terminal 1: ngrok (start anytime)
-ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout
+The `startup.js` hook is the source of truth for detecting conflicts. If this script reports any running processes, the **immediate next step** is to run the provided `pkill` or `kill` command to ensure a completely clean slate before attempting to start any services.
 
-# Terminal 2: Firebase (WAIT for "All emulators ready!" message)
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
-firebase emulators:start
+### Automated Startup with Cursor Hooks
 
-# Terminal 3: Next.js (ONLY after Firebase is ready)
-export FIRESTORE_EMULATOR_HOST="localhost:8080"
-npm run dev
-```
+The preferred method is to use the built-in startup hook, which automates port checking and service startup in the correct order within named, persistent terminals.
 
-**Best Practices:**
-- ✅ **CRITICAL:** Start Next.js ONLY after Firebase shows "All emulators ready!"
-- ✅ Set `FIRESTORE_EMULATOR_HOST` environment variable for Next.js
-- ✅ Start from project root directory
-- ✅ Use `is_background: true` in run_terminal_cmd tool calls
-- ✅ Restart Next.js in-place (Ctrl+C then restart with env var)
-- ❌ Don't create new terminals or use pkill during active development
-- ✅ All services run natively on macOS (no containers)
+**To Start All Services:**
+Open a new chat and use the following slash command:
+
+`/start-dev`
+
+The agent will then execute the logic defined in that command, which includes running the startup hooks, cleaning up zombie processes, starting services in the correct named terminals, and verifying the final state.
+
+### Manual Startup (If Needed)
+
+If you need to start services manually, follow the same sequence and use the same named terminals to maintain consistency.
+
+1.  **Check for conflicts:** `node .cursor/hooks/startup.js`
+2.  **Clean up if needed:** `pkill -9 -f "next dev|firebase emulators|ngrok"`
+3.  **Start services** in the three separate terminals as listed above, ensuring you wait for Firebase to be ready before starting Next.js.
+4.  **Verify:** `node .cursor/hooks/verify.js`
 
 **Static Domain:** `https://modernteaching.ngrok.dev` (eliminates manual URL updates)
+
+---
+
+## Working in a Parallel Chat Session (Side Tasks)
+
+If you have a stable development environment running and want to start a new, parallel chat for a non-disruptive task (like documentation, analysis, or writing a new script), use the prompt below to initialize the agent.
+
+This instructs the agent to learn the project context **without** attempting to manage the development environment.
+
+### How to Start a Parallel Chat Session
+
+To start a new, non-disruptive workstream, open a new chat and use the following slash command:
+
+`/parallel-work`
+
+This command contains all the necessary instructions to prevent the new agent from interfering with your running services. You can then give it a specific, non-disruptive task, such as:
+- "Please write a new script to analyze the seed data."
+- "Draft the documentation for the new component we just built."
+- "Review the `docs/roadmaps/MVP-PLAN.md` and suggest any inconsistencies."
+
+---
+
+## Agent Terminal Protocol (Named Persistent Terminals)
+
+To ensure stability and prevent resource conflicts, all AI agents **must** adhere to the following protocol for managing terminals.
+
+1.  **Always Use Named Terminals:** Agents must not create unnamed terminals for long-running services. Use the established names: `/dev/ngrok`, `/dev/firebase`, `/dev/nextjs`.
+2.  **Check Before Starting:** Before launching a service, the agent must check if a terminal with that name already exists and if the correct process is running. The `startup.js` hook handles this.
+3.  **Reuse, Don't Recreate:** If a service is already running correctly in its named terminal, the agent must reuse it.
+4.  **Graceful Shutdown:** When stopping services, agents should use the `stop-dev-env.md` slash command (to be created) which will gracefully stop processes rather than killing terminals.
+
+This protocol, enforced by our hooks and agent rules, is the "Named Persistent Terminals" strategy.
+
+---
+
+## Agent Tool Call Protocol
+
+**Attention Agents:** To ensure a stable development environment, you **MUST** use the following parameters when calling the `run_terminal_cmd` tool to start services. Do not deviate from this pattern.
+
+### 1. To Start Ngrok
+- **Tool:** `run_terminal_cmd`
+- **Parameters:**
+  - `command`: `"ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout"`
+  - `terminalName`: `"/dev/ngrok"`
+  - `is_background`: `true`
+
+### 2. To Start Firebase Emulators
+- **Tool:** `run_terminal_cmd`
+- **Parameters:**
+  - `command`: `"export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH" && firebase emulators:start --import=./.firebase/emulator-data --export-on-exit=./.firebase/emulator-data"`
+  - `terminalName`: `"/dev/firebase"`
+  - `is_background`: `true`
+
+### 3. To Start Next.js Dev Server
+- **Tool:** `run_terminal_cmd`
+- **Parameters:**
+  - `command`: `"export FIRESTORE_EMULATOR_HOST="localhost:8080" && npm run dev"`
+  - `terminalName`: `"/dev/nextjs"`
+  - `is_background`: `true`
 
 ---
 
@@ -89,7 +148,6 @@ npm run dev
 ```bash
 # Development
 npm run dev          # Next.js dev server (port 9000)
-npm run build        # Build Firebase Functions
 npm run typecheck    # TypeScript type checking
 npm run lint         # ESLint code quality
 
@@ -113,9 +171,8 @@ firebase deploy      # Deploy to production
 - "EADDRINUSE" errors
 
 **Solutions:**
-1. Check for zombie processes
-2. Delete terminals and restart fresh
-3. Ensure ports free: 9000, 5001, 8080, 4000
+1.  Run the startup hook: `node .cursor/hooks/startup.js`
+2.  It will provide a command to kill the specific zombie processes.
 
 ### OAuth Callback Fails
 
@@ -146,13 +203,13 @@ firebase deploy      # Deploy to production
 
 **Solutions:**
 1. Clear `.next` build directory: `rm -rf .next`
-2. Kill any zombie Next.js processes
+2. Kill any zombie Next.js processes (use `startup.js` hook to find them)
 3. Restart dev server fresh
 
 ### Tests Failing
 
 **Checklist:**
-1. Are Firebase Emulators running?
+1. Are Firebase Emulators running? (Use `verify.js` hook)
 2. Is Firestore seeded with mock data?
 3. Does test user have admin role?
 4. Are environment variables set correctly?
@@ -168,7 +225,6 @@ firebase deploy      # Deploy to production
 
 **Ports:**
 - Next.js: 9000
-- Firebase Functions: 5001
 - Firestore: 8080
 - Emulator UI: 4000
 - Ngrok Dashboard: 4040
@@ -188,7 +244,6 @@ firebase deploy
 
 # Deploy specific services
 firebase deploy --only hosting
-firebase deploy --only functions
 ```
 
 **Firebase Projects:**
@@ -201,5 +256,5 @@ firebase deploy --only functions
 
 - `.cursor/rules/core.md` - Project status and priorities
 - `docs/ARCHITECTURE.md` - Technical architecture
-- `docs/STARTUP.md` - Detailed setup guide
-- `docs/CURRENT-STATUS.md` - Active work and TODOs
+- `docs/guides/STARTUP.md` - Detailed setup guide (to be deprecated by this doc)
+- `docs/CURRENT-TASKS.md` - Active work and TODOs

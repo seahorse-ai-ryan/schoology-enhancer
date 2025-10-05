@@ -61,7 +61,7 @@ export async function getRequestToken() {
   console.log('[STEP 3b] Making fetch request to Schoology for request token...');
   const response = await fetch(requestData.url, {
     method: requestData.method,
-    headers: oauth.toHeader(oauth.authorize(requestData)),
+    headers: oauth.toHeader(oauth.authorize(requestData)) as unknown as HeadersInit,
   });
 
   const responseText = await response.text();
@@ -97,7 +97,7 @@ export async function getAccessToken(
 
     const response = await fetch(requestData.url, {
         method: requestData.method,
-        headers: oauth.toHeader(oauth.authorize(requestData, token, { oauth_verifier })), // Include oauth_verifier here
+        headers: oauth.toHeader(oauth.authorize(requestData, token)) as unknown as HeadersInit,
     });
 
     if (!response.ok) {

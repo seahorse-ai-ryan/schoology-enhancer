@@ -45,7 +45,5 @@ out/
 .auth/chrome-profile/
 
 # Local development history and logs
-.journal/
-
-# Temporary documentation refactoring workspace
-.temp-doc-refactor/
+# Note: .journal/ is tracked in git - only session logs and archives
+# The archive subfolder contains historical AI opinions and planning artifacts

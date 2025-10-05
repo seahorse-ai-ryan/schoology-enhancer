@@ -15,8 +15,6 @@ interface User {
 }
 
 export default function AdminToolsPage() {
-  const [seed, setSeed] = useState('carter-mock');
-  const [dryRun, setDryRun] = useState(true);
   const [log, setLog] = useState<string>('');
   const [users, setUsers] = useState<User[]>([]);
   const [usersStats, setUsersStats] = useState<any>(null);
@@ -190,95 +188,18 @@ export default function AdminToolsPage() {
       </div>
 
       <div style={{ marginTop: 24, padding: 12, border: '1px solid #ddd', borderRadius: 8 }}>
-        <h2>Run Sandbox Seed</h2>
-        <label>
-          Dataset:&nbsp;
-          <input value={seed} onChange={(e) => setSeed(e.target.value)} placeholder="carter-mock" />
-        </label>
-        <label style={{ marginLeft: 16 }}>
-          <input type="checkbox" checked={dryRun} onChange={(e) => setDryRun(e.target.checked)} /> Dry run
-        </label>
-        <div style={{ marginTop: 8 }}>
-          <button onClick={() => postJson('/api/admin/seed', { seed, dryRun })}>Run Seed (Users & Teachers Only)</button>
-        </div>
-      </div>
-
-      <div style={{ marginTop: 24, padding: 12, border: '1px solid #ddd', borderRadius: 8 }}>
-        <h2>Bulk Import CSVs (All 3 Students Combined)</h2>
+        <h2>Seed Data Management</h2>
         <p style={{ fontSize: 14, color: '#666', marginBottom: 12 }}>
-          Download CSV files for bulk import into Schoology. These CSVs combine data from Carter, Tazio, and Livio. Upload them at: 
-          <a href="https://app.schoology.com/course/import" target="_blank" rel="noopener" style={{ marginLeft: 4, color: '#0066cc' }}>
-            Schoology Bulk Import
-          </a>
+          For bulk CSV generation and assignment/grade imports, use the command-line scripts in the <code>/scripts</code> directory.
         </p>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <a 
-            href={`/api/admin/seed/csv?type=users`}
-            download
-            style={{ 
-              padding: '8px 12px', 
-              background: '#28a745', 
-              color: 'white', 
-              textDecoration: 'none', 
-              borderRadius: 4,
-              fontSize: 14
-            }}
-          >
-            👨‍🏫 Download Teachers CSV
-          </a>
-          <a 
-            href={`/api/admin/seed/csv?type=courses`}
-            download
-            style={{ 
-              padding: '8px 12px', 
-              background: '#0066cc', 
-              color: 'white', 
-              textDecoration: 'none', 
-              borderRadius: 4,
-              fontSize: 14
-            }}
-          >
-            📚 Download Courses CSV
-          </a>
-          <a 
-            href={`/api/admin/seed/csv?type=enrollments`}
-            download
-            style={{ 
-              padding: '8px 12px', 
-              background: '#007bff', 
-              color: 'white', 
-              textDecoration: 'none', 
-              borderRadius: 4,
-              fontSize: 14,
-              fontWeight: 'bold'
-            }}
-          >
-            👥 Download Enrollments CSV
-          </a>
-        </div>
-        <div style={{ marginTop: 12, padding: 12, background: '#fff3cd', borderRadius: 4, fontSize: 13, border: '1px solid #ffc107' }}>
-          <strong>⚠️ Critical Settings:</strong>
+        <div style={{ padding: 12, background: '#f7f7f7', borderRadius: 4, fontSize: 13 }}>
+          <strong>Available Scripts:</strong>
           <ul style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>During upload, you MUST select:
-              <ul style={{ paddingLeft: 20 }}>
-                <li><strong>School</strong> (your developer sandbox school)</li>
-                <li><strong>Grading Periods</strong> (create one first using "Create Default Grading Period" above if needed)</li>
-                <li><strong>Enroll based on:</strong> <span style={{ color: '#d9534f', fontWeight: 'bold' }}>Section School Code</span> (NOT "Section Code"!)</li>
-                <li><strong>Enrollment Type:</strong> "Use Import File" → Admin CSV Value=1, Member CSV Value=2</li>
-              </ul>
-            </li>
-            <li>Section codes must be unique across courses and grading periods</li>
-            <li>Existing courses (matched by course code) will be reused if found</li>
+            <li><code>node scripts/generate-seed-csvs.js</code> - Generate CSV files for users, courses, enrollments, and parent associations</li>
+            <li><code>node scripts/import-assignments-grades.js</code> - Bulk import assignments and grades via Schoology API</li>
           </ul>
-        </div>
-        <div style={{ marginTop: 12, padding: 12, background: '#f0f7ff', borderRadius: 4, fontSize: 13 }}>
-          <strong>Import Order:</strong>
-          <ol style={{ margin: '8px 0', paddingLeft: 20 }}>
-            <li>Upload <strong>Courses CSV</strong> (includes sections)</li>
-            <li>Upload <strong>All Enrollments CSV</strong> (teachers + students in one file)</li>
-          </ol>
-          <p style={{ margin: '8px 0', fontSize: 12, color: '#0056b3' }}>
-            <strong>Note:</strong> Students use <code>20250929</code>, Teachers use <code>20250930</code>
+          <p style={{ margin: '8px 0', fontSize: 12, color: '#666' }}>
+            See <code>docs/guides/BULK-ASSIGNMENT-IMPORT.md</code> for detailed instructions.
           </p>
         </div>
       </div>

@@ -103,11 +103,31 @@ Testing coverage must be complete first to prevent regressions.
 
 ## Session Continuity
 
-**Starting a new chat?** Read this file + `docs/CURRENT-STATUS.md` to resume work.
+**Starting a new chat?** Read these docs first:
 
-**Key Docs:**
-- `.cursor/rules/core.md` (this file) - Current status
-- `.cursor/rules/workflow.md` - Dev environment
-- `docs/ARCHITECTURE.md` - Technical details
-- `docs/CURRENT-STATUS.md` - Active TODOs and context
-- `docs/USER-JOURNEYS.md` - Implemented features
+**CRITICAL (Read Every Session):**
+1. `.cursor/rules/core.md` (this file) - Current status & rules
+2. `.cursor/rules/workflow.md` - Dev environment & testing
+3. `../docs/CURRENT-TASKS.md` ⭐⭐ - **WHAT TO DO NOW** (atomic action items)
+4. `../docs/roadmaps/MVP-PLAN.md` ⭐ - What we're building (12-week plan)
+5. `../docs/roadmaps/PRODUCT-DECISIONS.md` ⭐ - Why we chose this approach
+6. `../docs/QUICK-START.md` ⭐ - One-page dev reference
+
+**Current State (What's Built):**
+- `../docs/current/ARCHITECTURE.md` - System design, data flow
+- `../docs/current/USER-JOURNEYS.md` - Implemented features
+
+**Developer Guides (How-To):**
+- `../docs/guides/STARTUP.md` - Starting services
+- `../docs/guides/TESTING-QUICK-START.md` - Running tests
+- `../docs/guides/STATE-MANAGEMENT.md` ⭐ - Zustand + SWR
+- `../docs/guides/I18N-STRATEGY.md` ⭐ - next-intl for UI
+- `../docs/guides/THIRD-PARTY-INTEGRATIONS.md` ⭐ - ClassLink, Infinite Campus
+- `../docs/guides/SEED-DATA-REFERENCE.md` ⭐ - Test personas
+
+**Design & UI:**
+- `../docs/design/FIGMA-PROMPTS.md` ⭐ - AI mockup prompts
+- `../docs/design/SCREEN-SPECS.md` ⭐ - All screen requirements
+
+⭐ = Updated Oct 2025 - Essential reading  
+⭐⭐ = **START HERE** - Immediate action items

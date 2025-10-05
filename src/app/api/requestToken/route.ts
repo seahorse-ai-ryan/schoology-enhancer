@@ -44,6 +44,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(sampleRedirectUrl);
     }
 
+    if (!db) {
+      throw new Error('Firestore not initialized');
+    }
+
     console.log('[requestToken] Calling requestTokenLogic.', {
       consumerKey: `${consumerKey?.slice(0, 6)}***`,
       projectId: process.env.FIREBASE_PROJECT_ID,

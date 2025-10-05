@@ -1,0 +1,797 @@
+{
+  "new_assignments": [
+    {
+      "course_school_code": "DRAMA-101-S1",
+      "category": "Classwork",
+      "title": "Improvisation Practice",
+      "due": "2025-09-10T23:59:00Z",
+      "points": 20,
+      "score": null
+    },
+    {
+      "course_school_code": "HEALTH-101-S1",
+      "category": "Tests",
+      "title": "Mental Health Unit Test",
+      "due": "2025-09-12T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "LA-8-101-S1",
+      "category": "Homework",
+      "title": "Vocabulary Workshop Unit 3",
+      "due": "2025-09-15T23:59:00Z",
+      "points": 15,
+      "score": null
+    },
+    {
+      "course_school_code": "SCI-8-6953-S1",
+      "category": "Skill 2: Modeling",
+      "title": "Cellular Respiration Diagram",
+      "due": "2025-09-18T23:59:00Z",
+      "points": 30,
+      "score": null
+    },
+    {
+      "course_school_code": "SS-8-6978-S1",
+      "category": "Practice (classwork and homework)",
+      "title": "Industrial Revolution Reading Questions",
+      "due": "2025-09-20T23:59:00Z",
+      "points": 10,
+      "score": null
+    },
+    {
+      "course_school_code": "ALG-1-6008-S1",
+      "category": "Practice",
+      "title": "Worksheet: Solving Quadratic Equations",
+      "due": "2025-09-22T23:59:00Z",
+      "points": 20,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-BIO-3120-S1",
+      "category": "Homework Assignments",
+      "title": "Chapter 5 Reading Guide",
+      "due": "2025-09-25T23:59:00Z",
+      "points": 10,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-ENG-LIT-1410-S1",
+      "category": "All Essays/Presentations",
+      "title": "Frankenstein Thematic Essay",
+      "due": "2025-09-27T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+        "course_school_code": "AP-STATS-2460-S1",
+        "category": "Tests",
+        "title": "Probability Unit Test",
+        "due": "2025-10-01T23:59:00Z",
+        "points": 100,
+        "score": null
+    },
+    {
+        "course_school_code": "US-GOV-1845-S1",
+        "category": "Assignments",
+        "title": "Bill of Rights Skit",
+        "due": "2025-10-02T23:59:00Z",
+        "points": 50,
+        "score": null
+    },
+    {
+        "course_school_code": "PE-WT-TRAIN-2470-S1",
+        "category": "Participation",
+        "title": "Weekly Fitness Log 10/3",
+        "due": "2025-10-03T23:59:00Z",
+        "points": 15,
+        "score": null
+    },
+    {
+        "course_school_code": "US-HIST-16869-S1",
+        "category": "Assessments",
+        "title": "WWII Map Quiz",
+        "due": "2025-10-04T23:59:00Z",
+        "points": 40,
+        "score": null
+    },
+    {
+        "course_school_code": "AMERLIT-11-1261-S1",
+        "category": "Writing",
+        "title": "Analysis of 'The Great Gatsby' Symbolism",
+        "due": "2025-10-07T23:59:00Z",
+        "points": 75,
+        "score": null
+    },
+    {
+        "course_school_code": "PHYS-3820-S1",
+        "category": "Lab/Project",
+        "title": "Thermodynamics Lab",
+        "due": "2025-10-08T23:59:00Z",
+        "points": 60,
+        "score": null
+    },
+    {
+        "course_school_code": "PRECALC-2371-S1",
+        "category": "TESTS",
+        "title": "Unit 3 Test: Trigonometric Functions",
+        "due": "2025-10-09T23:59:00Z",
+        "points": 100,
+        "score": null
+    },
+    {
+        "course_school_code": "AP-CS-PRINC-8635-S1",
+        "category": "Standards Assignments",
+        "title": "Project: Create a Simple App",
+        "due": "2025-10-10T23:59:00Z",
+        "points": 150,
+        "score": null
+    },
+    {
+        "course_school_code": "AUTO-3-5053-S1",
+        "category": "Labs",
+        "title": "Transmission Fluid Change Lab",
+        "due": "2025-10-11T23:59:00Z",
+        "points": 50,
+        "score": null
+    },
+    {
+        "course_school_code": "ACAD-PLAN-8308-S1",
+        "category": "Weekly Plan",
+        "title": "Weekly Planning Sheet - Oct 14-18",
+        "due": "2025-10-14T23:59:00Z",
+        "points": 10,
+        "score": null
+    },
+    {
+        "course_school_code": "SCI-8-6953-S1",
+        "category": "Skill 4: Experiment and Design",
+        "title": "Ecosystem in a Bottle Project",
+        "due": "2025-10-15T23:59:00Z",
+        "points": 100,
+        "score": null
+    },
+    {
+        "course_school_code": "ALG-1-6008-S1",
+        "category": "Tests",
+        "title": "Midterm Exam",
+        "due": "2025-10-16T23:59:00Z",
+        "points": 150,
+        "score": null
+    },
+    {
+        "course_school_code": "CHOIR-6888-S1",
+        "category": "Music Theory",
+        "title": "Key Signatures Quiz",
+        "due": "2025-10-17T23:59:00Z",
+        "points": 30,
+        "score": null
+    },
+    {
+        "course_school_code": "ENG-8-6538-S1",
+        "category": "Performance (Summative)",
+        "title": "Persuasive Speech Presentation",
+        "due": "2025-10-18T23:59:00Z",
+        "points": 80,
+        "score": null
+    },
+    {
+        "course_school_code": "FR-1B-6563-S1",
+        "category": "Skill 2 Interpersonal",
+        "title": "Skit: At the Restaurant",
+        "due": "2025-10-21T23:59:00Z",
+        "points": 40,
+        "score": null
+    },
+    {
+        "course_school_code": "PE-8-6941-S1",
+        "category": "daily participation",
+        "title": "Basketball Skills Drills",
+        "due": "2025-10-22T23:59:00Z",
+        "points": 10,
+        "score": null
+    },
+    {
+        "course_school_code": "SS-8-6978-S1",
+        "category": "Summative Assessments",
+        "title": "DBQ Essay: Causes of the Civil War",
+        "due": "2025-10-24T23:59:00Z",
+        "points": 100,
+        "score": null
+    },
+    {
+        "course_school_code": "KINS-DUAL-15-7926-S1",
+        "category": "Practice",
+        "title": "Muscle Group Identification Quiz",
+        "due": "2025-10-25T23:59:00Z",
+        "points": 25,
+        "score": null
+    },
+    {
+      "course_school_code": "DRAMA-101-S1",
+      "category": "Performances",
+      "title": "Scene Study Performance",
+      "due": "2025-10-28T23:59:00Z",
+      "points": 120,
+      "score": null
+    },
+    {
+      "course_school_code": "HEALTH-101-S1",
+      "category": "Projects",
+      "title": "First Aid Scenarios Project",
+      "due": "2025-10-29T23:59:00Z",
+      "points": 80,
+      "score": null
+    },
+    {
+      "course_school_code": "LA-8-101-S1",
+      "category": "Essays",
+      "title": "Narrative Essay: A Personal Experience",
+      "due": "2025-10-30T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-BIO-3120-S1",
+      "category": "Full AP Labs",
+      "title": "Photosynthesis Lab",
+      "due": "2025-10-31T23:59:00Z",
+      "points": 120,
+      "score": null
+    },
+    {
+      "course_school_code": "US-HIST-16869-S1",
+      "category": "Assignments",
+      "title": "Primary Source Analysis: The Great Depression",
+      "due": "2025-11-01T23:59:00Z",
+      "points": 25,
+      "score": null
+    },
+    {
+      "course_school_code": "DRAMA-101-S1",
+      "category": "Classwork",
+      "title": "Script Analysis: Act I",
+      "due": "2025-11-04T23:59:00Z",
+      "points": 25,
+      "score": null
+    },
+    {
+      "course_school_code": "HEALTH-101-S1",
+      "category": "Tests",
+      "title": "Quiz: Substance Abuse",
+      "due": "2025-11-05T23:59:00Z",
+      "points": 50,
+      "score": null
+    },
+    {
+      "course_school_code": "LA-8-101-S1",
+      "category": "Reading",
+      "title": "Independent Reading Log #4",
+      "due": "2025-11-06T23:59:00Z",
+      "points": 20,
+      "score": null
+    },
+    {
+      "course_school_code": "SCI-8-6953-S1",
+      "category": "Skill 3: Communication",
+      "title": "Genetics Presentation",
+      "due": "2025-11-07T23:59:00Z",
+      "points": 50,
+      "score": null
+    },
+    {
+      "course_school_code": "SS-8-6978-S1",
+      "category": "Practice (classwork and homework)",
+      "title": "Westward Expansion Map Activity",
+      "due": "2025-11-07T23:59:00Z",
+      "points": 15,
+      "score": null
+    },
+    {
+      "course_school_code": "ALG-1-6008-S1",
+      "category": "Practice",
+      "title": "Graphing Inequalities Practice",
+      "due": "2025-11-06T23:59:00Z",
+      "points": 10,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-BIO-3120-S1",
+      "category": "Short Lab Activities",
+      "title": "DNA Extraction Lab",
+      "due": "2025-11-04T23:59:00Z",
+      "points": 30,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-ENG-LIT-1410-S1",
+      "category": "Reading Logs",
+      "title": "Wuthering Heights Ch. 1-10 Reading Log",
+      "due": "2025-11-05T23:59:00Z",
+      "points": 20,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-STATS-2460-S1",
+      "category": "Video Notes",
+      "title": "4.1 STATS Video Notes",
+      "due": "2025-11-06T23:59:00Z",
+      "points": 10,
+      "score": null
+    },
+    {
+      "course_school_code": "US-GOV-1845-S1",
+      "category": "Assessments",
+      "title": "Unit 3 Test: Civil Liberties & Civil Rights",
+      "due": "2025-11-07T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "PE-WT-TRAIN-2470-S1",
+      "category": "Participation",
+      "title": "Technique Check: Squats",
+      "due": "2025-11-04T23:59:00Z",
+      "points": 20,
+      "score": null
+    },
+    {
+      "course_school_code": "KINS-DUAL-15-7926-S1",
+      "category": "Knowledge",
+      "title": "Quiz on Skeletal System",
+      "due": "2025-11-08T23:59:00Z",
+      "points": 40,
+      "score": null
+    },
+    {
+      "course_school_code": "US-HIST-16869-S1",
+      "category": "Assignments",
+      "title": "Vietnam War Debate Prep",
+      "due": "2025-11-05T23:59:00Z",
+      "points": 30,
+      "score": null
+    },
+    {
+      "course_school_code": "AMERLIT-11-1261-S1",
+      "category": "Reading",
+      "title": "The Crucible Act II Questions",
+      "due": "2025-11-06T23:59:00Z",
+      "points": 15,
+      "score": null
+    },
+    {
+      "course_school_code": "PHYS-3820-S1",
+      "category": "Homework",
+      "title": "Chapter 5 Problems: Work and Energy",
+      "due": "2025-11-07T23:59:00Z",
+      "points": 20,
+      "score": null
+    },
+    {
+      "course_school_code": "PRECALC-2371-S1",
+      "category": "DM/BR",
+      "title": "DM 4A",
+      "due": "2025-11-04T23:59:00Z",
+      "points": 5,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-CS-PRINC-8635-S1",
+      "category": "Standards Assignments",
+      "title": "Cybersecurity Research Paper",
+      "due": "2025-11-08T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "AUTO-3-5053-S1",
+      "category": "Quizzes",
+      "title": "Quiz: Electrical Systems",
+      "due": "2025-11-05T23:59:00Z",
+      "points": 30,
+      "score": null
+    },
+    {
+      "course_school_code": "ACAD-PLAN-8308-S1",
+      "category": "Work Completion",
+      "title": "College Application Brag Sheet",
+      "due": "2025-11-07T23:59:00Z",
+      "points": 25,
+      "score": null
+    },
+    {
+      "course_school_code": "CHOIR-6888-S1",
+      "category": "Ensemble Skills",
+      "title": "Sectional Rehearsal Participation",
+      "due": "2025-11-06T23:59:00Z",
+      "points": 15,
+      "score": null
+    },
+    {
+      "course_school_code": "ENG-8-6538-S1",
+      "category": "Practice",
+      "title": "Grammar Exercise: Clauses",
+      "due": "2025-11-05T23:59:00Z",
+      "points": 10,
+      "score": null
+    },
+    {
+      "course_school_code": "FR-1B-6563-S1",
+      "category": "Skill 3 Interpretive",
+      "title": "Reading Comprehension: Le Petit Prince",
+      "due": "2025-11-07T23:59:00Z",
+      "points": 20,
+      "score": null
+    },
+    {
+      "course_school_code": "PE-8-6941-S1",
+      "category": "cardiovascular fitness",
+      "title": "Mile Run #2",
+      "due": "2025-11-04T23:59:00Z",
+      "points": 25,
+      "score": null
+    },
+    {
+      "course_school_code": "DRAMA-101-S1",
+      "category": "Performances",
+      "title": "Final Scene Performance",
+      "due": "2025-11-14T23:59:00Z",
+      "points": 150,
+      "score": null
+    },
+    {
+      "course_school_code": "HEALTH-101-S1",
+      "category": "Projects",
+      "title": "Healthy Relationships PSA",
+      "due": "2025-11-12T23:59:00Z",
+      "points": 75,
+      "score": null
+    },
+    {
+      "course_school_code": "LA-8-101-S1",
+      "category": "Essays",
+      "title": "Compare/Contrast Essay: Book vs. Movie",
+      "due": "2025-11-13T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "SCI-8-6953-S1",
+      "category": "Skill 1: Analysis and Interpretation",
+      "title": "Unit 3 Test: Genetics",
+      "due": "2025-11-14T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "SS-8-6978-S1",
+      "category": "Summative Assessments",
+      "title": "Mid-Term Exam",
+      "due": "2025-11-15T23:59:00Z",
+      "points": 150,
+      "score": null
+    },
+    {
+      "course_school_code": "ALG-1-6008-S1",
+      "category": "Tests",
+      "title": "Unit 4 Test: Systems of Equations",
+      "due": "2025-11-11T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-BIO-3120-S1",
+      "category": "Unit Exam + AP Like Final exam",
+      "title": "UNIT 3 Exam",
+      "due": "2025-11-12T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-ENG-LIT-1410-S1",
+      "category": "Socratic Seminars",
+      "title": "Wuthering Heights Socratic Seminar",
+      "due": "2025-11-13T23:59:00Z",
+      "points": 50,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-STATS-2460-S1",
+      "category": "Tests",
+      "title": "STATS Unit 3 FRQ",
+      "due": "2025-11-14T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "US-GOV-1845-S1",
+      "category": "Assignments",
+      "title": "Mock Congress Bill Proposal",
+      "due": "2025-11-15T23:59:00Z",
+      "points": 75,
+      "score": null
+    },
+    {
+      "course_school_code": "PE-WT-TRAIN-2470-S1",
+      "category": "Participation",
+      "title": "Weekly Fitness Log 11/14",
+      "due": "2025-11-14T23:59:00Z",
+      "points": 15,
+      "score": null
+    },
+    {
+      "course_school_code": "KINS-DUAL-16A-7920A-S1",
+      "category": "Science and Engineering Practices",
+      "title": "Case Study: Sports Injury",
+      "due": "2025-11-11T23:59:00Z",
+      "points": 60,
+      "score": null
+    },
+    {
+      "course_school_code": "US-HIST-16869-S1",
+      "category": "Assessments",
+      "title": "Cold War Unit Test",
+      "due": "2025-11-12T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "AMERLIT-11-1261-S1",
+      "category": "Writing",
+      "title": "Final Essay: The Crucible",
+      "due": "2025-11-13T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "PHYS-3820-S1",
+      "category": "Test/Quiz",
+      "title": "Test: Work, Energy, and Power",
+      "due": "2025-11-14T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "PRECALC-2371-S1",
+      "category": "TESTS",
+      "title": "Unit 4 Test: Analytic Trigonometry",
+      "due": "2025-11-15T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "AP-CS-PRINC-8635-S1",
+      "category": "Standards Assignments",
+      "title": "Data Analysis Project",
+      "due": "2025-11-11T23:59:00Z",
+      "points": 120,
+      "score": null
+    },
+    {
+      "course_school_code": "AUTO-3-5053-S1",
+      "category": "Labs",
+      "title": "Suspension System Diagnostic",
+      "due": "2025-11-12T23:59:00Z",
+      "points": 70,
+      "score": null
+    },
+    {
+      "course_school_code": "ACAD-PLAN-8308-S1",
+      "category": "Weekly Plan",
+      "title": "Weekly Planning Sheet - Nov 11-15",
+      "due": "2025-11-11T23:59:00Z",
+      "points": 10,
+      "score": null
+    },
+    {
+      "course_school_code": "CHOIR-6888-S1",
+      "category": "Music Theory",
+      "title": "Final Music Theory Exam",
+      "due": "2025-11-13T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "ENG-8-6538-S1",
+      "category": "Performance (Summative)",
+      "title": "Short Story Writing Project",
+      "due": "2025-11-14T23:59:00Z",
+      "points": 100,
+      "score": null
+    },
+    {
+      "course_school_code": "FR-1B-6563-S1",
+      "category": "Skill 1 Presentational",
+      "title": "Writing Assignment: My Family",
+      "due": "2025-11-15T23:59:00Z",
+      "points": 30,
+      "score": null
+    },
+    {
+      "course_school_code": "PE-8-6941-S1",
+      "category": "daily participation",
+      "title": "Volleyball Tournament",
+      "due": "2025-11-12T23:59:00Z",
+      "points": 20,
+      "score": null
+    }
+  ],
+  "new_grades": [
+    {
+      "course_school_code": "DRAMA-101-S1",
+      "student_school_uid": "lily_mock",
+      "assignment_title": "Improvisation Practice",
+      "grade": "19",
+      "comment": null
+    },
+    {
+      "course_school_code": "HEALTH-101-S1",
+      "student_school_uid": "lily_mock",
+      "assignment_title": "Mental Health Unit Test",
+      "grade": "96",
+      "comment": "Excellent analysis and critical thinking"
+    },
+    {
+      "course_school_code": "LA-8-101-S1",
+      "student_school_uid": "lily_mock",
+      "assignment_title": "Vocabulary Workshop Unit 3",
+      "grade": "15",
+      "comment": null
+    },
+    {
+      "course_school_code": "SCI-8-6953-S1",
+      "student_school_uid": "lily_mock",
+      "assignment_title": "Cellular Respiration Diagram",
+      "grade": "29",
+      "comment": null
+    },
+    {
+      "course_school_code": "SCI-8-6953-S1",
+      "student_school_uid": "livio_mock",
+      "assignment_title": "Cellular Respiration Diagram",
+      "grade": "23",
+      "comment": null
+    },
+    {
+      "course_school_code": "SS-8-6978-S1",
+      "student_school_uid": "lily_mock",
+      "assignment_title": "Industrial Revolution Reading Questions",
+      "grade": "10",
+      "comment": null
+    },
+    {
+      "course_school_code": "SS-8-6978-S1",
+      "student_school_uid": "livio_mock",
+      "assignment_title": "Industrial Revolution Reading Questions",
+      "grade": "7",
+      "comment": null
+    },
+    {
+      "course_school_code": "ALG-1-6008-S1",
+      "student_school_uid": "lily_mock",
+      "assignment_title": "Worksheet: Solving Quadratic Equations",
+      "grade": "20",
+      "comment": null
+    },
+    {
+      "course_school_code": "ALG-1-6008-S1",
+      "student_school_uid": "livio_mock",
+      "assignment_title": "Worksheet: Solving Quadratic Equations",
+      "grade": "15",
+      "comment": null
+    },
+    {
+      "course_school_code": "AP-BIO-3120-S1",
+      "student_school_uid": "carter_mock",
+      "assignment_title": "Chapter 5 Reading Guide",
+      "grade": "9",
+      "comment": null
+    },
+    {
+      "course_school_code": "AP-ENG-LIT-1410-S1",
+      "student_school_uid": "carter_mock",
+      "assignment_title": "Frankenstein Thematic Essay",
+      "grade": "85",
+      "comment": "Great improvement from last assignment!"
+    },
+    {
+      "course_school_code": "AP-STATS-2460-S1",
+      "student_school_uid": "carter_mock",
+      "assignment_title": "Probability Unit Test",
+      "grade": "82",
+      "comment": null
+    },
+    {
+      "course_school_code": "US-GOV-1845-S1",
+      "student_school_uid": "carter_mock",
+      "assignment_title": "Bill of Rights Skit",
+      "grade": "44",
+      "comment": null
+    },
+    {
+      "course_school_code": "PE-WT-TRAIN-2470-S1",
+      "student_school_uid": "carter_mock",
+      "assignment_title": "Weekly Fitness Log 10/3",
+      "grade": "12",
+      "comment": "Late submission - 10% penalty applied"
+    },
+    {
+      "course_school_code": "US-HIST-16869-S1",
+      "student_school_uid": "tazio_mock",
+      "assignment_title": "WWII Map Quiz",
+      "grade": "26",
+      "comment": "See me for retake opportunity - available until October 15th"
+    },
+    {
+      "course_school_code": "AMERLIT-11-1261-S1",
+      "student_school_uid": "tazio_mock",
+      "assignment_title": "Analysis of 'The Great Gatsby' Symbolism",
+      "grade": "0",
+      "comment": "Missing key components - please review rubric"
+    },
+    {
+      "course_school_code": "PHYS-3820-S1",
+      "student_school_uid": "tazio_mock",
+      "assignment_title": "Thermodynamics Lab",
+      "grade": "35",
+      "comment": null
+    },
+    {
+      "course_school_code": "PRECALC-2371-S1",
+      "student_school_uid": "tazio_mock",
+      "assignment_title": "Unit 3 Test: Trigonometric Functions",
+      "grade": "68",
+      "comment": null
+    },
+    {
+      "course_school_code": "AP-CS-PRINC-8635-S1",
+      "student_school_uid": "tazio_mock",
+      "assignment_title": "Project: Create a Simple App",
+      "grade": "110",
+      "comment": null
+    },
+    {
+      "course_school_code": "AUTO-3-5053-S1",
+      "student_school_uid": "tazio_mock",
+      "assignment_title": "Transmission Fluid Change Lab",
+      "grade": "0",
+      "comment": "Missing"
+    },
+    {
+      "course_school_code": "ACAD-PLAN-8308-S1",
+      "student_school_uid": "tazio_mock",
+      "assignment_title": "Weekly Planning Sheet - Oct 14-18",
+      "grade": "5",
+      "comment": null
+    },
+    {
+      "course_school_code": "SCI-8-6953-S1",
+      "student_school_uid": "livio_mock",
+      "assignment_title": "Ecosystem in a Bottle Project",
+      "grade": "75",
+      "comment": "Partial credit given - resubmit by Friday for full points"
+    },
+    {
+      "course_school_code": "ALG-1-6008-S1",
+      "student_school_uid": "livio_mock",
+      "assignment_title": "Midterm Exam",
+      "grade": "105",
+      "comment": null
+    },
+    {
+      "course_school_code": "CHOIR-6888-S1",
+      "student_school_uid": "livio_mock",
+      "assignment_title": "Key Signatures Quiz",
+      "grade": "22",
+      "comment": null
+    },
+    {
+      "course_school_code": "ENG-8-6538-S1",
+      "student_school_uid": "livio_mock",
+      "assignment_title": "Persuasive Speech Presentation",
+      "grade": "60",
+      "comment": "Needs more detail in explanation section"
+    }
+  ]
+}

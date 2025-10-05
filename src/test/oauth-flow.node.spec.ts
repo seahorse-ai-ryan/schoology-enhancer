@@ -1,7 +1,7 @@
-import { server } from '@/mocks/server';
-import { rest } from 'msw';
+import { server } from '../mocks/server';
+import { http, HttpResponse } from 'msw';
 
-import { requestTokenLogic, callbackLogic } from '@/functions/schoology-auth.logic';
+import { requestTokenLogic, callbackLogic } from '../functions/schoology-auth.logic';
 
 // Minimal in-memory fake for Firestore admin API shape we use
 class FakeDoc {
@@ -36,19 +36,23 @@ describe('OAuth flow (MSW Node)', () => {
   it('requestToken includes callback and persists secret, then callback exchanges with verifier', async () => {
     // Override MSW handlers for OAuth token endpoints to deterministic outputs
     server.use(
-      rest.get('https://api.schoology.com/v1/oauth/request_token', (req, res, ctx) => {
+      http.get('https://api.schoology.com/v1/oauth/request_token', ({ request }) => {
         // Assert oauth_callback passed
-        const url = new URL(req.url.toString());
+        const url = new URL(request.url);
         expect(url.searchParams.get('oauth_callback')).toBe('https://example.ngrok-free.app/callback');
-        return res(ctx.text('oauth_token=req_123&oauth_token_secret=req_secret'));
+        return new HttpResponse('oauth_token=req_123&oauth_token_secret=req_secret', {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        });
       }),
-      rest.get('https://api.schoology.com/v1/oauth/access_token', (req, res, ctx) => {
-        const url = new URL(req.url.toString());
+      http.get('https://api.schoology.com/v1/oauth/access_token', ({ request }) => {
+        const url = new URL(request.url);
         expect(url.searchParams.get('oauth_verifier')).toBe('ver_789');
-        return res(ctx.text('oauth_token=acc_456&oauth_token_secret=acc_secret'));
+        return new HttpResponse('oauth_token=acc_456&oauth_token_secret=acc_secret', {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        });
       }),
-      rest.get('https://api.schoology.com/v1/users/me', (_req, res, ctx) => {
-        return res(ctx.json({ id: 'u_1', name_display: 'Ryan Hickman' }));
+      http.get('https://api.schoology.com/v1/users/me', () => {
+        return HttpResponse.json({ id: 'u_1', name_display: 'Ryan Hickman' });
       }),
     );
 

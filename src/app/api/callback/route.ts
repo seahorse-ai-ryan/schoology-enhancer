@@ -35,6 +35,10 @@ async function handleCallback(request: NextRequest) {
       throw new Error('Missing Schoology consumer credentials');
     }
 
+    if (!db) {
+      throw new Error('Firestore not initialized');
+    }
+
     console.log('[callback] Exchanging request token for access token.');
     const userData = await callbackLogic(db, consumerKey, consumerSecret, oauthToken, oauthVerifier);
     console.log('[callback] User data received.', { id: userData.userId, name: userData.name });

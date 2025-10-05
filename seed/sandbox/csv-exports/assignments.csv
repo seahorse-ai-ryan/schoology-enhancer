@@ -1,0 +1,104 @@
+assignment_id,section_school_code,title,description,due_date,max_points,type
+assignment_1,AP-BIO-3120-S1,Enzyme Lab Report,Full AP Labs,2025-09-24,100,assignment
+assignment_2,AP-BIO-3120-S1,UNIT 1 Exam,Unit Exam + AP Like Final exam,2025-09-25,100,assignment
+assignment_3,AP-BIO-3120-S1,Antarctica & Climate Change exit Ticket,Short Lab Activities,2025-09-20,20,assignment
+assignment_4,AP-BIO-3120-S1,Digestive Enzymes,Homework Assignments,2025-09-25,50,assignment
+assignment_5,AP-BIO-3120-S1,Surface Area and Cell Size Questions,My AP College Board Grade,2025-10-10,30,assignment
+assignment_6,AP-ENG-LIT-1410-S1,"""Unknown Citizen"" Pop In-Class Essay",All Essays/Presentations,2025-08-22,100,assignment
+assignment_7,AP-ENG-LIT-1410-S1,Romantic Poetry Group Presentations,All Essays/Presentations,2025-08-29,100,assignment
+assignment_8,AP-ENG-LIT-1410-S1,Final Poetry Test,All Essays/Presentations,2025-09-22,100,assignment
+assignment_9,AP-ENG-LIT-1410-S1,Jane Eyre Ch. 1-8 Reading Log,Reading Logs,2025-08-25,20,assignment
+assignment_10,AP-ENG-LIT-1410-S1,Jane Eyre Socratic Seminar,Socratic Seminars,2025-09-24,50,assignment
+assignment_11,AP-STATS-2460-S1,STATS Unit 1 FRQ,Tests,2025-09-11,100,assignment
+assignment_12,AP-STATS-2460-S1,STATS Unit 1 MCQ,Tests,2025-09-11,100,assignment
+assignment_13,AP-STATS-2460-S1,2.2 STATS Video Notes,Video Notes,2025-09-24,10,assignment
+assignment_14,AP-STATS-2460-S1,2.5 STATS Video Notes,Video Notes,2025-10-01,10,assignment
+assignment_15,AP-STATS-2460-S1,STATS Unit 1 Vocabulary Test,Vocabulary Tests,2025-09-09,50,assignment
+assignment_16,US-GOV-1845-S1,Create Your Own Political Party,Assignments,2025-09-09,10,assignment
+assignment_17,US-GOV-1845-S1,Interest Groups WebQuest,Assignments,2025-09-15,25,assignment
+assignment_18,US-GOV-1845-S1,Selling Your Interest Group,Assignments,2025-09-18,50,assignment
+assignment_19,US-GOV-1845-S1,Foundations Unit 1 Test,Assessments,2025-09-04,30,assignment
+assignment_20,US-GOV-1845-S1,Identitree,Assignments,2025-10-02,20,assignment
+assignment_21,US-GOV-1845-S1,Career Interest Profiler,Assignments,2025-10-02,15,assignment
+assignment_22,PE-WT-TRAIN-2470-S1,Participation: Monday 9/15,Participation,2025-09-15,12,assignment
+assignment_23,PE-WT-TRAIN-2470-S1,Participation: Thursday 9/18,Participation,2025-09-18,12,assignment
+assignment_24,PE-WT-TRAIN-2470-S1,Grade Check Submission,Participation,2025-09-22,20,assignment
+assignment_25,PE-WT-TRAIN-2470-S1,Participation: Thursday 9/25,Participation,2025-09-25,12,assignment
+assignment_26,PE-WT-TRAIN-2470-S1,Participation: Tuesday 9/30,Participation,2025-09-30,12,assignment
+assignment_27,PE-WT-TRAIN-2470-S1,Participation: Thursday 10/02,Participation,2025-10-02,12,assignment
+assignment_28,US-HIST-16869-S1,USH-Slavery to Secession Assessment,Assessments,2025-09-19,50,assignment
+assignment_29,US-HIST-16869-S1,USH - Frederick Douglass Reading Assignment,Assignments,2025-09-05,10,assignment
+assignment_30,US-HIST-16869-S1,How Did the Virginia Slave Codes Change Race Relations Write Up,Assignments,2025-08-27,15,assignment
+assignment_31,US-HIST-16869-S1,Quote Quiz - Slavery to Secession,Assessments,2025-09-12,20,assignment
+assignment_32,US-HIST-16869-S1,Civil War & Reconstruction Vocabulary,Assignments,2025-10-03,25,assignment
+assignment_33,AMERLIT-11-1261-S1,Poetry Writing Assignment,Writing,2025-08-28,10,assignment
+assignment_34,AMERLIT-11-1261-S1,Poetry Presentation,Listening and Speaking,2025-09-09,15,assignment
+assignment_35,AMERLIT-11-1261-S1,Read and Annotate 142-170 (Minimum of 15 annotations),Reading,2025-09-30,10,assignment
+assignment_36,AMERLIT-11-1261-S1,Read and Annotate 171-207 (Minimum of 15 annotations),Reading,2025-10-02,10,assignment
+assignment_37,AMERLIT-11-1261-S1,Read and Annotate 208-247 (Minimum of 15 annotations),Reading,2025-10-07,10,assignment
+assignment_38,PHYS-3820-S1,Free Fall Lab,Lab/Project,2025-09-15,15,assignment
+assignment_39,PHYS-3820-S1,Unit 1 TEST,Test/Quiz,2025-09-09,54,assignment
+assignment_40,PHYS-3820-S1,Unit 2 quiz: Free fall and Projectile motion,Test/Quiz,2025-09-23,20,assignment
+assignment_41,PHYS-3820-S1,"Phys Benchmark: Ws#2Equilibrium, Inertia",Homework,2025-10-02,10,assignment
+assignment_42,PHYS-3820-S1,(Tension) Forces Lab Activity,Lab/Project,2025-10-02,20,assignment
+assignment_43,PRECALC-2371-S1,TEST U1,TESTS,2025-09-04,100,assignment
+assignment_44,PRECALC-2371-S1,DM 2E,DM/BR,2025-09-25,5,assignment
+assignment_45,PRECALC-2371-S1,BR 2E,DM/BR,2025-09-26,10,assignment
+assignment_46,PRECALC-2371-S1,TEST U2,TESTS,2025-10-02,100,assignment
+assignment_47,PRECALC-2371-S1,U2R,DM/BR,2025-09-30,10,assignment
+assignment_48,AP-CS-PRINC-8635-S1,1. Modern Art Project,Standards Assignments,2025-09-05,100,assignment
+assignment_49,AP-CS-PRINC-8635-S1,"2. Privacy Concerns, Benefit/Harm of Tech Innovations",Standards Assignments,2025-09-15,50,assignment
+assignment_50,AP-CS-PRINC-8635-S1,3. Follow the Leader,Standards Assignments,2025-09-19,30,assignment
+assignment_51,AP-CS-PRINC-8635-S1,4. Choice Project,Standards Assignments,2025-09-29,150,assignment
+assignment_52,AP-CS-PRINC-8635-S1,Unit 2 Quiz: Abstraction,Standards Assignments,2025-10-06,75,assignment
+assignment_53,AUTO-3-5053-S1,Shop Safety Quiz,Quizzes,2025-08-22,25,assignment
+assignment_54,AUTO-3-5053-S1,Engine Teardown Lab Report,Labs,2025-09-12,100,assignment
+assignment_55,AUTO-3-5053-S1,Brake System Inspection,Labs,2025-09-26,50,assignment
+assignment_56,AUTO-3-5053-S1,Mid-term Practical Exam,Final,2025-10-10,150,assignment
+assignment_57,AUTO-3-5053-S1,Oil Change Competency Check,Labs,2025-09-05,30,assignment
+assignment_58,ACAD-PLAN-8308-S1,WPS 9/2-9/5,Weekly Plan,2025-09-05,10,assignment
+assignment_59,ACAD-PLAN-8308-S1,Letter to Ms. Duong,Work Completion,2025-08-22,20,assignment
+assignment_60,ACAD-PLAN-8308-S1,Weekly Planning Sheet - Aug 18-22,Weekly Plan,2025-08-22,10,assignment
+assignment_61,SCI-8-6953-S1,9/29 Sub Lesson,Skill 4: Experiment and Design,2025-09-29,10,assignment
+assignment_62,SCI-8-6953-S1,Unit 2 Test,Skill 1: Analysis and Interpretation,2025-10-10,100,assignment
+assignment_63,SCI-8-6953-S1,Wk5 Test Unit 1 Skill 1,Skill 1: Analysis and Interpretation,2025-09-19,25,assignment
+assignment_64,SCI-8-6953-S1,Wk4 Test Sled Wars Skill 2,Skill 2: Modeling,2025-09-10,20,assignment
+assignment_65,SCI-8-6953-S1,Wk4 Test Sled Wars Skill 4,Skill 4: Experiment and Design,2025-09-10,20,assignment
+assignment_66,SCI-8-6953-S1,Wk3 Brainpop Types of Energy,Skill 3: Communication,2025-08-29,10,assignment
+assignment_67,SCI-8-6953-S1,Wk5 Homework Kinetic Energy Movie,Skill 2: Modeling,2025-09-12,15,assignment
+assignment_68,ALG-1-6008-S1,U1.Skill 1: Test,Tests,2025-09-12,21,assignment
+assignment_69,ALG-1-6008-S1,U1. Skill 2: Test,Tests,2025-09-12,12,assignment
+assignment_70,ALG-1-6008-S1,U1. Skill 3: Test,Tests,2025-09-12,16,assignment
+assignment_71,ALG-1-6008-S1,Wk3 Homework Worksheet: Dek's Growth Graph,Practice,2025-08-29,5,assignment
+assignment_72,ALG-1-6008-S1,Wk 4 Worksheet,Practice,2025-09-05,5,assignment
+assignment_73,CHOIR-6888-S1,Ensemble Skills-Mid-Q1,Ensemble Skills,2025-09-12,15,assignment
+assignment_74,CHOIR-6888-S1,Music Theory Pre-Test,Music Theory,2025-08-29,20,assignment
+assignment_75,CHOIR-6888-S1,Flashcards 9/18-19,Music Theory,2025-09-19,10,assignment
+assignment_76,CHOIR-6888-S1,Winter Concert Performance,Ensemble Skills,2025-12-04,100,assignment
+assignment_77,CHOIR-6888-S1,Sight-Reading Quiz,Music Theory,2025-10-17,25,assignment
+assignment_78,ENG-8-6538-S1,LWD final draft,Performance (Summative),2025-09-29,100,assignment
+assignment_79,ENG-8-6538-S1,Turn in Long Way Down Character Handout,Practice,2025-09-12,30,assignment
+assignment_80,ENG-8-6538-S1,Long Way Down Analytical Paragraph/Essay Draft,Practice,2025-09-24,5,assignment
+assignment_81,ENG-8-6538-S1,Summer Reading Log/Note,Practice,2025-08-22,20,assignment
+assignment_82,ENG-8-6538-S1,District Formative Reading Assessment,Performance (Summative),2025-09-30,50,assignment
+assignment_83,FR-1B-6563-S1,Unit 5 Summative Presentational Speaking,Skill 1 Presentational,2025-09-25,20,assignment
+assignment_84,FR-1B-6563-S1,Unit 5 Summative Listening Assessment,Skill 3 Interpretive,2025-10-07,20,assignment
+assignment_85,FR-1B-6563-S1,Unit 5 Summative Reading Assessment,Skill 3 Interpretive,2025-10-07,20,assignment
+assignment_86,FR-1B-6563-S1,Unit 5 Summative Interpersonal Assessment,Skill 2 Interpersonal,2025-10-09,20,assignment
+assignment_87,FR-1B-6563-S1,Unit 5 Summative Writing Assessment,Skill 1 Presentational,2025-10-14,20,assignment
+assignment_88,PE-8-6941-S1,Week #7 Participation,daily participation,2025-10-03,10,assignment
+assignment_89,PE-8-6941-S1,Week #6 Participation,daily participation,2025-09-26,15,assignment
+assignment_90,PE-8-6941-S1,Swimming Day 1,cardiovascular fitness,2025-09-08,10,assignment
+assignment_91,PE-8-6941-S1,Cardiovascular Fitness Run #1,cardiovascular fitness,2025-09-02,20,assignment
+assignment_92,PE-8-6941-S1,Fitness Test - Pushups,cardiovascular fitness,2025-10-15,25,assignment
+assignment_93,SS-8-6978-S1,The Break-Up Letter,Practice (classwork and homework),2025-10-02,30,assignment
+assignment_94,SS-8-6978-S1,"Summative assessment on sourcing, contextualizing, corroboration, lateral reading",Summative Assessments,2025-09-16,10,assignment
+assignment_95,SS-8-6978-S1,Snapshot Autobiography (summative assessment),Summative Assessments,2025-09-02,50,assignment
+assignment_96,SS-8-6978-S1,PaC 9/22-9/26,Participation and Citizenship,2025-09-26,5,assignment
+assignment_97,SS-8-6978-S1,Evaluating Source Information,Practice (classwork and homework),2025-09-08,15,assignment
+assignment_98,KINS-DUAL-15-7926-S1,Syllabus Quiz,Knowledge,2025-08-25,20,assignment
+assignment_99,KINS-DUAL-15-7926-S1,Mid-Term Practical,Science and Engineering Practices,2025-10-15,100,assignment
+assignment_100,KINS-DUAL-16A-7920A-S1,Anatomical Terms Quiz,Knowledge,2025-10-03,50,assignment
+assignment_101,DRAMA-101-S1,Monologue Performance,Performances,2025-09-26,100,assignment
+assignment_102,HEALTH-101-S1,Nutrition Project,Projects,2025-09-19,50,assignment
+assignment_103,LA-8-101-S1,Book Report: The Outsiders,Essays,2025-09-30,100,assignment
