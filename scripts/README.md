@@ -1,10 +1,17 @@
 # Scripts Directory
 
-**Purpose:** Automation scripts for seeding, testing, and managing Schoology data
+**Purpose:** Automation scripts for seeding, verification, and development
+
+**Organization:**
+- **Seeding:** Setup Schoology data (run once or when reseeding)
+- **Verification:** Check data state (run anytime)
+- **Dev Utilities:** Development workflow tools
+- **E2E Tests:** `/tests/e2e/` - Browser-based end-to-end tests
+- **Archive:** `archive/` - Historical/debug scripts
 
 ---
 
-## 🌱 Seeding Scripts
+## 🌱 Seeding Scripts (Essential)
 
 ### Complete Seeding Workflow
 
@@ -33,7 +40,9 @@ node scripts/import-grades-only.js
 
 ---
 
-## 🧪 Testing & Verification Scripts
+---
+
+## ✅ Verification Scripts (Run Anytime)
 
 ### Show All Student Grades
 ```bash
@@ -59,7 +68,9 @@ Compares our API responses against Schoology's API directly to verify 100% accur
 
 ---
 
-## 🔧 Utility Scripts
+---
+
+## 🔧 Development Utilities
 
 ### Check Grading Categories
 ```bash
@@ -84,32 +95,34 @@ Starts Firebase emulators with correct Java PATH.
 
 ---
 
-## 📊 Test Scripts (E2E Browser Tests)
+---
 
-### Authentication Flow
+## 🧪 End-to-End Tests
+
+**Location:** `/tests/e2e/`
+
 ```bash
-node scripts/e2e-auth-flow.js           # Full OAuth flow
-node scripts/e2e-child-switching.js     # Parent switching between children
+cd tests/e2e
+./test-all.sh          # Run all E2E tests
 ```
 
-### Dashboard Tests
-```bash
-node scripts/test-2-default-dashboard.js   # Default dashboard load
-node scripts/test-3-child-switching.js     # Child switching
-node scripts/test-4-navigation.js          # Navigation flow
-node scripts/test-5-assignments-grades.js  # Assignments and grades display
-node scripts/test-6-data-sources.js        # Data source indicators
-node scripts/test-7-complete-flow.js       # Complete user journey
-```
-
-### Run All Tests
-```bash
-./scripts/test-all.sh
-```
+**Individual tests:**
+- `e2e-auth-flow.js` - OAuth login flow
+- `e2e-child-switching.js` - Parent child switching
+- `test-2-default-dashboard.js` - Dashboard widgets
+- `test-3-child-switching.js` - Child switch functionality
+- `test-4-navigation.js` - Page navigation
+- `test-5-assignments-grades.js` - Grades display
+- `test-6-data-sources.js` - Data sources
+- `test-7-complete-flow.js` - Complete user journey
 
 ---
 
-## 🔨 Development Helper Scripts
+## 📦 Archived Scripts
+
+**Location:** `scripts/archive/`
+
+Historical debug and one-off test scripts preserved for reference.
 
 ### Generate CSV Files from Seed Data
 ```bash
