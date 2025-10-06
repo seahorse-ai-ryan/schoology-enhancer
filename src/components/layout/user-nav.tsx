@@ -119,23 +119,23 @@ export function UserNav() {
   return (
     <DropdownMenu onOpenChange={(open) => { if (open) loadChildren(); }}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-9 w-9 rounded-full" data-testid="user-avatar-trigger">
-          <Avatar className="h-9 w-9">
-            <AvatarImage 
-              src={
-                activeChild?.picture_url || 
-                liveProfile?.picture_url || 
-                'https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/user-default.svg'
-              } 
-              alt="user avatar" 
-            />
-            <AvatarFallback>{activeChild ? activeChild.name?.charAt(0) : (liveProfile?.name?.charAt(0) || 'U')}</AvatarFallback>
-          </Avatar>
-          {activeChild && (
-            <Badge className="absolute -bottom-1 -right-1 px-1 text-[9px]" variant="default">
-              Child
-            </Badge>
-          )}
+        <Button variant="ghost" className="relative h-auto rounded-full px-3 py-2" data-testid="user-avatar-trigger">
+          <div className="flex items-center gap-2">
+            <Avatar className="h-9 w-9">
+              <AvatarImage 
+                src={
+                  activeChild?.picture_url || 
+                  liveProfile?.picture_url || 
+                  'https://asset-cdn.schoology.com/sites/all/themes/schoology_theme/images/user-default.svg'
+                } 
+                alt="user avatar" 
+              />
+              <AvatarFallback>{activeChild ? activeChild.name?.charAt(0) : (liveProfile?.name?.charAt(0) || 'U')}</AvatarFallback>
+            </Avatar>
+            <span className="text-sm font-medium">
+              {activeChild ? activeChild.name : (liveProfile?.name || 'User')}
+            </span>
+          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-64" align="end" forceMount>
@@ -167,13 +167,19 @@ export function UserNav() {
         <DropdownMenuSeparator />
 
         {/* Show "View as Parent" button if a child is selected */}
-        {activeChild && (
+        {activeChild && liveProfile && (
           <>
             <DropdownMenuItem
               onSelect={handleViewAsParent}
               className="font-medium"
             >
-              ↩️ View as Parent
+              <div className="flex items-center gap-2">
+                <span>👤</span>
+                <div className="flex flex-col">
+                  <span>{liveProfile.name || 'Parent'}</span>
+                  <span className="text-xs text-muted-foreground">Parent View</span>
+                </div>
+              </div>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
           </>
@@ -182,14 +188,17 @@ export function UserNav() {
         {/* Show children list if parent has children */}
         {liveProfile && children.length > 0 && (
           <DropdownMenuGroup>
-            <DropdownMenuLabel className="text-xs uppercase text-muted-foreground">Switch Student</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-xs uppercase text-muted-foreground">Students</DropdownMenuLabel>
             {children.map((c) => (
               <DropdownMenuItem
                 key={c.id}
                 className="flex items-center justify-between"
                 onSelect={() => handleChildSelect(c.id)}
               >
-                <span>{c.name || c.id}</span>
+                <div className="flex items-center gap-2">
+                  <span>🎓</span>
+                  <span>{c.name || c.id}</span>
+                </div>
                 {activeChild?.id === c.id && <Badge variant="outline" className="ml-2">Active</Badge>}
               </DropdownMenuItem>
             ))}

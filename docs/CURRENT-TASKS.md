@@ -8,7 +8,29 @@
 
 ## 🎯 IMMEDIATE ACTIONS (Today)
 
-### 1. Fix requestToken Regression 🔴
+### 1. Implement Firestore Caching Layer 🟡
+**Priority:** 🟡 HIGH - Performance & Cost Optimization
+
+**Problem:** Courses and grades APIs hit Schoology on every page load
+- No caching implemented
+- Unnecessary API calls
+- Slower page loads
+- No offline support
+
+**Solution:** Implement TTL-based caching as documented in ARCHITECTURE.md
+- Cache courses and grades in Firestore
+- 60-second TTL for development
+- Cache-first, then check staleness, then API
+- Update `/api/schoology/courses/route.ts` and `/api/schoology/grades/route.ts`
+
+**Success Criteria:**
+- Page loads use cached data when fresh
+- Schoology API only called when cache is stale
+- Offline access works with cached data
+
+---
+
+### 2. Fix requestToken Regression (If Still Occurring) 🔴
 **Priority:** 🔴 CRITICAL - OAuth is broken!
 
 **Problem:** `/api/requestToken` returns 500 error with `invalid_grant / invalid_rapt`
