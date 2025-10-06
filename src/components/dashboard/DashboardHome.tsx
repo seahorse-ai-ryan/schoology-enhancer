@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
-import { ArrowRight, Calendar, AlertCircle, CheckCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle } from 'lucide-react';
+import { UpcomingWidget } from './UpcomingWidget';
+import { RecentActivityWidget } from './RecentActivityWidget';
 
 interface Course {
   id: string;
@@ -137,17 +139,8 @@ export function DashboardHome() {
           </CardContent>
         </Card>
 
-        {/* Upcoming Tests */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Upcoming</CardTitle>
-            <CardDescription>Tests & quizzes</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-500 italic">Coming soon</p>
-            {/* TODO: Filter assignments for type=test and sort by due date */}
-          </CardContent>
-        </Card>
+        {/* Upcoming Tests - Now a separate component */}
+        <UpcomingWidget />
       </div>
 
       {/* Middle Row: Announcements (2/3) | Courses & Activity (1/3) */}
@@ -238,17 +231,8 @@ export function DashboardHome() {
             </CardContent>
           </Card>
 
-          {/* Recent Activity Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Recent submissions</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500 italic">Coming soon</p>
-              {/* TODO: Show recent assignment submissions */}
-            </CardContent>
-          </Card>
+          {/* Recent Activity - Now a separate component */}
+          <RecentActivityWidget />
         </div>
       </div>
     </div>
