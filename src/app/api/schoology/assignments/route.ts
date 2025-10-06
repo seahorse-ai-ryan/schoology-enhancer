@@ -125,8 +125,10 @@ export async function GET(request: NextRequest) {
     // Process each assignment
     const processedAssignments = assignments.map((a: any) => {
       const gradeData = assignmentGradesMap[a.id];
-      const categoryName = a.grading_category_id 
-        ? (categoryMap.get(a.grading_category_id) || 'Uncategorized')
+      // IMPORTANT: Schoology uses "grading_category" (string), not "grading_category_id"
+      const categoryId = a.grading_category || a.grading_category_id;
+      const categoryName = categoryId 
+        ? (categoryMap.get(parseInt(categoryId)) || categoryMap.get(categoryId) || 'Uncategorized')
         : 'Uncategorized';
 
       const assignment = {
@@ -137,7 +139,7 @@ export async function GET(request: NextRequest) {
         grade: gradeData?.grade || null,
         comment: gradeData?.comment || null,
         categoryName,
-        categoryId: a.grading_category_id || null,
+        categoryId: categoryId || null,
       };
 
       assignmentsByCategory[categoryName].push(assignment);
