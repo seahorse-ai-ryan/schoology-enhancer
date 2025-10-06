@@ -87,8 +87,10 @@ export function UserNav() {
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify({ childId }) 
       });
-      // Use Next.js router refresh to reload data without losing scroll position
-      router.refresh();
+      // Navigate to dashboard to show new child's data
+      // Using push with current path would preserve scroll, but dashboard is better UX
+      router.push('/dashboard');
+      router.refresh(); // Force refetch
     } catch (error) {
       console.error('[user-nav] Failed to set active child:', error);
     }
@@ -101,7 +103,8 @@ export function UserNav() {
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify({ childId: '' }) 
       });
-      // Use Next.js router refresh
+      // Navigate to dashboard
+      router.push('/dashboard');
       router.refresh();
     } catch (error) {
       console.error('[user-nav] Failed to clear active child:', error);
