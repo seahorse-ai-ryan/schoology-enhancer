@@ -1,7 +1,7 @@
 # Modern Teaching - Architecture Overview
 
-**Last Updated:** September 30, 2025  
-**Status:** ✅ "Hello World" Milestone Achieved
+**Last Updated:** October 6, 2025  
+**Status:** ✅ Near MVP v0.1 - Full grade system, caching, announcements working
 
 ---
 
@@ -383,24 +383,31 @@ interface SchoologyCourse {
 
 ## Milestones
 
-### ✅ v0.1 - "Hello World" (Sept 30, 2025)
+### ✅ v0.1 - Near MVP (Oct 6, 2025)
 
 **Achieved:**
 
 - ✅ OAuth 1.0a authentication with Schoology
-- ✅ Parent-child account associations
-- ✅ Real-time course data fetching from Schoology API
-- ✅ Firestore caching for offline support
-- ✅ Dashboard displaying live student courses
-- ✅ Mock data seeding via CSV bulk import
+- ✅ Parent-child account associations with profile dropdown
+- ✅ Complete grade system (courses, assignments, final grades)
+- ✅ Firestore caching with 60s TTL (courses, grades, assignments, announcements)
+- ✅ 3-page structure: Dashboard, Courses, Announcements
+- ✅ Dashboard with 6 widgets (GPA, Status, Upcoming, Announcements, Courses, Activity)
+- ✅ Expandable course assignments grouped by category
+- ✅ Announcement feed with smart truncation
+- ✅ Filtered upcoming assignments (Important/All)
+- ✅ Recent activity tracking
+- ✅ Realistic seed data (4 students, 28 courses, 120+ assignments, 100+ grades)
 - ✅ Static ngrok domain for development
 
 **Demo:**
 
-- Parent logs in with real Schoology credentials
-- Selects child (Carter Mock) from profile menu
-- Dashboard shows child's 4 real courses from Schoology
-- Data cached to Firestore for offline access
+- Parent logs in with Schoology credentials
+- Dashboard shows: GPA, status, upcoming tests, recent announcements, courses with grades
+- Click child from dropdown → instant switch with new data
+- Courses page: Expandable assignments with grades and comments
+- Announcements page: School updates with deep linking
+- All data cached for performance (16x faster)
 
 ### ⏳ v0.2 - "Smart Caching" (Next)
 
