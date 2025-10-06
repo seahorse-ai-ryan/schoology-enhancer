@@ -189,7 +189,19 @@ seed/
     └── UPLOAD-INSTRUCTIONS.md
 ```
 
-**Note:** After uploading CSVs, query Schoology API to get numeric IDs and save to `.schoology-instance.json`
+**Note:** After uploading CSVs, create `.schoology-instance.json` with your instance's numeric IDs:
+```json
+{
+  "school_group_id": "YOUR_GROUP_ID",
+  "super_teacher_id": "YOUR_TEACHER_ID",
+  "student_ids": {
+    "carter_mock": "YOUR_ID",
+    ...
+  }
+}
+```
+
+⚠️ **This file is gitignored** - You must create it locally after seeding.
 
 ---
 
