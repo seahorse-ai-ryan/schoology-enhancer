@@ -1,5 +1,9 @@
-import { UserDashboard } from '@/components/dashboard/UserDashboard';
+import { DashboardHome } from '@/components/dashboard/DashboardHome';
 
 export default function DashboardPage() {
-  return <UserDashboard />;
+  return (
+    <div className="container mx-auto py-6">
+      <DashboardHome />
+    </div>
+  );
 }
