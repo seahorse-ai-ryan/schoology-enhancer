@@ -97,8 +97,8 @@ export function DashboardHome() {
 
   return (
     <div className="space-y-6">
-      {/* Top Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Top Row: GPA | Status | Upcoming */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* GPA Card */}
         <Card className={gpa ? getGradeBgColor(gpa) : ''}>
           <CardHeader>
@@ -130,127 +130,127 @@ export function DashboardHome() {
               <CheckCircle className="h-8 w-8 text-green-600" />
               <div>
                 <p className="font-medium text-green-700">All caught up!</p>
-                <p className="text-sm text-gray-600">No overdue assignments</p>
+                <p className="text-sm text-gray-600">No overdue items</p>
               </div>
             </div>
             {/* TODO: Add overdue logic */}
           </CardContent>
         </Card>
+
+        {/* Upcoming Tests */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Upcoming</CardTitle>
+            <CardDescription>Tests & quizzes</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-gray-500 italic">Coming soon</p>
+            {/* TODO: Filter assignments for type=test and sort by due date */}
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Upcoming Tests */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle>Upcoming Tests & Quizzes</CardTitle>
-            <CardDescription>Next 7 days</CardDescription>
-          </div>
-          <Link href="/courses" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
-            View all <ArrowRight className="h-4 w-4" />
-          </Link>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-500 italic">Coming soon - will show upcoming assessments</p>
-          {/* TODO: Filter assignments for type=test and sort by due date */}
-        </CardContent>
-      </Card>
-
-      {/* Courses with Grades */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle>Courses</CardTitle>
-            <CardDescription>Click to view details</CardDescription>
-          </div>
-          <Link href="/courses" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
-            View all <ArrowRight className="h-4 w-4" />
-          </Link>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            {courses.slice(0, 6).map(course => {
-              const courseGrade = grades[course.id];
-              return (
-                <Link key={course.id} href="/courses">
-                  <div className="flex items-center justify-between p-3 rounded-lg border hover:bg-gray-50 transition-colors">
-                    <div className="flex-1">
-                      <p className="font-medium text-sm">{course.name}</p>
-                      <p className="text-xs text-gray-600">{course.code}</p>
-                    </div>
-                    {courseGrade ? (
-                      <div className={`px-3 py-1 rounded-md ${getGradeBgColor(courseGrade.grade)}`}>
-                        <span className={`font-semibold ${getGradeColor(courseGrade.grade)}`}>
-                          {courseGrade.grade}%
-                        </span>
-                      </div>
-                    ) : (
-                      <span className="text-sm text-gray-400">No grade</span>
-                    )}
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Recent Announcements */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle>Recent Announcements</CardTitle>
-            <CardDescription>Latest school updates</CardDescription>
-          </div>
-          <Link href="/announcements" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
-            View all <ArrowRight className="h-4 w-4" />
-          </Link>
-        </CardHeader>
-        <CardContent>
-          {announcements.length > 0 ? (
-            <div className="space-y-4">
-              {/* First announcement - show in full */}
-              <div className="prose prose-sm max-w-none pb-4 border-b">
-                <div dangerouslySetInnerHTML={{ __html: announcements[0].body }} />
-                <p className="text-xs text-gray-500 mt-2">
-                  {announcements[0].author} • {new Date(announcements[0].created).toLocaleDateString()}
-                </p>
+      {/* Middle Row: Announcements (2/3) | Courses & Activity (1/3) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Left Column - Announcements (2/3 width) */}
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>Recent Announcements</CardTitle>
+                <CardDescription>Latest school updates</CardDescription>
               </div>
-              
-              {/* Rest - titles only */}
-              {announcements.slice(1, 5).map(announcement => (
-                <Link key={announcement.id} href="/announcements">
-                  <div className="flex items-start justify-between p-2 rounded hover:bg-gray-50 transition-colors">
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">
-                        {announcement.body.match(/<h[1-4]>(.*?)<\/h[1-4]>/)?.[1] || 
-                         announcement.body.replace(/<[^>]+>/g, '').substring(0, 60) + '...'}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {new Date(announcement.created).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-gray-400 flex-shrink-0 ml-2" />
+              <Link href="/announcements" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+                View all <ArrowRight className="h-4 w-4" />
+              </Link>
+            </CardHeader>
+            <CardContent>
+              {announcements.length > 0 ? (
+                <div className="space-y-4">
+                  {/* First announcement - show in full */}
+                  <div className="prose prose-sm max-w-none pb-4 border-b">
+                    <div dangerouslySetInnerHTML={{ __html: announcements[0].body }} />
+                    <p className="text-xs text-gray-500 mt-2">
+                      {announcements[0].author} • {new Date(announcements[0].created).toLocaleDateString()}
+                    </p>
                   </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-gray-500 italic">No announcements</p>
-          )}
-        </CardContent>
-      </Card>
+                  
+                  {/* Rest - titles only */}
+                  {announcements.slice(1, 5).map(announcement => (
+                    <Link key={announcement.id} href="/announcements">
+                      <div className="flex items-start justify-between p-2 rounded hover:bg-gray-50 transition-colors">
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">
+                            {announcement.body.match(/<h[1-4]>(.*?)<\/h[1-4]>/)?.[1] || 
+                             announcement.body.replace(/<[^>]+>/g, '').substring(0, 60) + '...'}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {new Date(announcement.created).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <ArrowRight className="h-4 w-4 text-gray-400 flex-shrink-0 ml-2" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500 italic">No announcements</p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
 
-      {/* Recent Activity */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-          <CardDescription>Recently submitted work</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-500 italic">Coming soon - will show recent submissions</p>
-          {/* TODO: Show recent assignment submissions */}
-        </CardContent>
-      </Card>
+        {/* Right Column - Courses & Activity (1/3 width stacked) */}
+        <div className="space-y-4">
+          {/* Courses Card */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle>Courses</CardTitle>
+                <CardDescription>Your courses</CardDescription>
+              </div>
+              <Link href="/courses" className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+                All <ArrowRight className="h-4 w-4" />
+              </Link>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {courses.slice(0, 6).map(course => {
+                  const courseGrade = grades[course.id];
+                  return (
+                    <Link key={course.id} href="/courses">
+                      <div className="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-colors">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm truncate">{course.name}</p>
+                        </div>
+                        {courseGrade ? (
+                          <div className={`px-2 py-1 rounded text-xs font-semibold ${getGradeBgColor(courseGrade.grade)} ${getGradeColor(courseGrade.grade)}`}>
+                            {courseGrade.grade}%
+                          </div>
+                        ) : (
+                          <span className="text-xs text-gray-400">—</span>
+                        )}
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Recent Activity Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Activity</CardTitle>
+              <CardDescription>Recent submissions</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-500 italic">Coming soon</p>
+              {/* TODO: Show recent assignment submissions */}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

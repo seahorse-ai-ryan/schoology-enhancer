@@ -13,8 +13,6 @@ export function MainNav({ className, ...props }: HTMLAttributes<HTMLElement>) {
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/courses', label: 'Courses' },
     { href: '/announcements', label: 'Announcements' },
-    { href: '/planning', label: 'Planning' },
-    { href: '/incentives', label: 'Incentives' },
   ];
 
   return (
