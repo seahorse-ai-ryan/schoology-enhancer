@@ -19,6 +19,16 @@ interface Grade {
   period_id: string;
 }
 
+interface Assignment {
+  id: string;
+  title: string;
+  due: string;
+  maxPoints: number;
+  grade: number | null;
+  comment: string | null;
+  categoryName: string;
+}
+
 export function UserDashboard() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [grades, setGrades] = useState<Record<string, Grade>>({});
@@ -26,6 +36,8 @@ export function UserDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [expandedCourses, setExpandedCourses] = useState<Set<string>>(new Set());
   const [expandAll, setExpandAll] = useState(false);
+  const [assignmentsByCourse, setAssignmentsByCourse] = useState<Record<string, any>>({});
+  const [loadingAssignments, setLoadingAssignments] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     loadData();
@@ -65,23 +77,59 @@ export function UserDashboard() {
     }
   };
 
-  const toggleCourse = (courseId: string) => {
+  const toggleCourse = async (courseId: string) => {
     const newExpanded = new Set(expandedCourses);
-    if (newExpanded.has(courseId)) {
-      newExpanded.delete(courseId);
-    } else {
+    const isExpanding = !newExpanded.has(courseId);
+    
+    if (isExpanding) {
       newExpanded.add(courseId);
+      // Fetch assignments if we don't have them yet
+      if (!assignmentsByCourse[courseId]) {
+        await fetchAssignments(courseId);
+      }
+    } else {
+      newExpanded.delete(courseId);
     }
     setExpandedCourses(newExpanded);
   };
 
-  const toggleExpandAll = () => {
+  const fetchAssignments = async (sectionId: string) => {
+    setLoadingAssignments(prev => new Set(prev).add(sectionId));
+    
+    try {
+      const res = await fetch(`/api/schoology/assignments?sectionId=${sectionId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setAssignmentsByCourse(prev => ({
+          ...prev,
+          [sectionId]: data
+        }));
+      }
+    } catch (error) {
+      console.error(`Failed to fetch assignments for section ${sectionId}:`, error);
+    } finally {
+      setLoadingAssignments(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(sectionId);
+        return newSet;
+      });
+    }
+  };
+
+  const toggleExpandAll = async () => {
     if (expandAll) {
       setExpandedCourses(new Set());
+      setExpandAll(false);
     } else {
       setExpandedCourses(new Set(courses.map(c => c.id)));
+      setExpandAll(true);
+      // Fetch assignments for all courses that don't have them yet
+      for (const course of courses) {
+        if (!assignmentsByCourse[course.id]) {
+          await fetchAssignments(course.id);
+        }
+      }
     }
-    setExpandAll(!expandAll);
   };
 
   const getGradeColor = (grade: number) => {
@@ -242,10 +290,47 @@ export function UserDashboard() {
                   {/* Expanded Content - Assignments */}
                   {isExpanded && (
                     <div className="border-t bg-gray-50 p-4">
-                      <p className="text-sm text-gray-600 italic">
-                        Assignment details coming soon...
-                      </p>
-                      {/* TODO: Fetch and display assignments for this course */}
+                      {loadingAssignments.has(course.id) ? (
+                        <div className="text-center py-4">
+                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+                          <p className="text-sm text-gray-600 mt-2">Loading assignments...</p>
+                        </div>
+                      ) : assignmentsByCourse[course.id] ? (
+                        <div className="space-y-4">
+                          {Object.keys(assignmentsByCourse[course.id].assignmentsByCategory || {}).length > 0 ? (
+                            Object.entries(assignmentsByCourse[course.id].assignmentsByCategory).map(([categoryName, assignments]: [string, any]) => (
+                              <div key={categoryName} className="space-y-2">
+                                <h4 className="font-medium text-sm text-gray-700">{categoryName}</h4>
+                                <div className="space-y-1">
+                                  {(assignments as Assignment[]).map((assignment) => (
+                                    <div key={assignment.id} className="flex items-center justify-between py-2 px-3 bg-white rounded border">
+                                      <div className="flex-1">
+                                        <p className="text-sm font-medium">{assignment.title}</p>
+                                        {assignment.comment && (
+                                          <p className="text-xs text-gray-600 mt-1 italic">{assignment.comment}</p>
+                                        )}
+                                      </div>
+                                      <div className="text-sm text-right">
+                                        {assignment.grade !== null ? (
+                                          <span className={assignment.grade / assignment.maxPoints >= 0.7 ? 'text-green-700' : 'text-red-700'}>
+                                            {assignment.grade}/{assignment.maxPoints}
+                                          </span>
+                                        ) : (
+                                          <span className="text-gray-400">Not graded</span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-sm text-gray-600 text-center py-4">No assignments found</p>
+                          )}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-600 text-center py-4">Click to load assignments</p>
+                      )}
                     </div>
                   )}
                 </div>

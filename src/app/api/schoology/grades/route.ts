@@ -5,6 +5,7 @@ import crypto from 'crypto';
 export const runtime = 'nodejs';
 
 const SCHOOLOGY_API_URL = 'https://api.schoology.com/v1';
+const CACHE_TTL_MS = 60 * 1000; // 60 seconds
 
 async function makeSchoologyRequest(url: string, targetUserId: string) {
   const consumerKey = process.env.SCHOOLOGY_ADMIN_KEY || '';
@@ -47,6 +48,24 @@ export async function GET(request: NextRequest) {
     const activeChildId = (parentDoc.exists ? parentDoc.data()?.activeChildId : null) || null;
     const targetUserId = activeChildId || userId;
 
+    // Check cache first
+    const cacheDoc = await db.collection('cache_grades').doc(String(targetUserId)).get();
+    if (cacheDoc.exists) {
+      const cacheData = cacheDoc.data();
+      const cacheAge = Date.now() - (cacheData?.cachedAt || 0);
+      
+      if (cacheAge < CACHE_TTL_MS) {
+        console.log(`[grades] Returning cached data for ${targetUserId} (age: ${Math.round(cacheAge / 1000)}s)`);
+        return NextResponse.json({
+          grades: cacheData?.grades || {},
+          targetUserId: String(targetUserId),
+          source: 'cached',
+          cachedAt: cacheData?.cachedAt
+        });
+      }
+      console.log(`[grades] Cache stale for ${targetUserId} (age: ${Math.round(cacheAge / 1000)}s), fetching fresh data`);
+    }
+
     const sectionsResponse = await makeSchoologyRequest(`${SCHOOLOGY_API_URL}/users/${targetUserId}/sections`, targetUserId);
     const sections = sectionsResponse.section || [];
     
@@ -70,9 +89,24 @@ export async function GET(request: NextRequest) {
       }
     }
     
+    // Cache the result in Firestore
+    try {
+      await db.collection('cache_grades').doc(String(targetUserId)).set({
+        grades: gradesMap,
+        cachedAt: Date.now(),
+        targetUserId: String(targetUserId),
+      });
+      console.log(`[grades] Cached ${Object.keys(gradesMap).length} grades for ${targetUserId}`);
+    } catch (cacheError) {
+      console.error('[grades] Failed to cache data:', cacheError);
+      // Continue even if caching fails
+    }
+
     return NextResponse.json({ 
       grades: gradesMap,
-      targetUserId: String(targetUserId)
+      targetUserId: String(targetUserId),
+      source: 'live',
+      cachedAt: Date.now()
     });
 
   } catch (error) {

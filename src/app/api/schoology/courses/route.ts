@@ -3,10 +3,17 @@ import { NextRequest, NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 
 const SCHOOLOGY_API_URL = 'https://api.schoology.com/v1';
+const CACHE_TTL_MS = 60 * 1000; // 60 seconds
 
 /**
  * Fetch courses (sections) for the authenticated user or active child
  * GET /api/schoology/courses
+ * 
+ * Implements caching with 60-second TTL:
+ * 1. Check Firestore cache
+ * 2. If fresh (< 60s old), return cached data
+ * 3. If stale or missing, fetch from Schoology API
+ * 4. Update cache and return
  */
 export async function GET(request: NextRequest) {
   try {
@@ -28,6 +35,24 @@ export async function GET(request: NextRequest) {
     
     // If active child, fetch their courses; otherwise fetch parent's courses
     const targetUserId = activeChildId || userId;
+
+    // Check cache first
+    const cacheDoc = await db.collection('cache_courses').doc(String(targetUserId)).get();
+    if (cacheDoc.exists) {
+      const cacheData = cacheDoc.data();
+      const cacheAge = Date.now() - (cacheData?.cachedAt || 0);
+      
+      if (cacheAge < CACHE_TTL_MS) {
+        console.log(`[courses] Returning cached data for ${targetUserId} (age: ${Math.round(cacheAge / 1000)}s)`);
+        return NextResponse.json({
+          courses: cacheData?.courses || [],
+          total: cacheData?.courses?.length || 0,
+          source: 'cached',
+          cachedAt: cacheData?.cachedAt
+        });
+      }
+      console.log(`[courses] Cache stale for ${targetUserId} (age: ${Math.round(cacheAge / 1000)}s), fetching fresh data`);
+    }
     
     // Get user's OAuth tokens
     const userDoc = await db.collection('users').doc(String(userId)).get();
@@ -186,10 +211,24 @@ export async function GET(request: NextRequest) {
 
     console.log('[schoology/courses] Returning', courses.length, 'courses');
 
+    // Cache the result in Firestore
+    try {
+      await db.collection('cache_courses').doc(String(targetUserId)).set({
+        courses,
+        cachedAt: Date.now(),
+        targetUserId: String(targetUserId),
+      });
+      console.log(`[courses] Cached ${courses.length} courses for ${targetUserId}`);
+    } catch (cacheError) {
+      console.error('[courses] Failed to cache data:', cacheError);
+      // Continue even if caching fails
+    }
+
     return NextResponse.json({
       courses,
       total: courses.length,
-      source: useAdminCredentials ? 'admin:live' : 'live'
+      source: 'live',
+      cachedAt: Date.now()
     });
 
   } catch (error) {
