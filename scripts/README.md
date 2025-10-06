@@ -44,10 +44,8 @@ Displays final course grades for all 4 mock students in a clean format.
 
 ### Check Specific Student
 ```bash
-node scripts/check-assignments-grades.js 140834636  # Carter
-node scripts/check-assignments-grades.js 140834637  # Tazio
-node scripts/check-assignments-grades.js 140834638  # Livio
-node scripts/check-assignments-grades.js 140834639  # Lily
+# Use the numeric IDs from your .schoology-instance.json
+node scripts/check-assignments-grades.js {student_id}
 ```
 
 Shows detailed breakdown: assignments, individual grades, and final course grade.
@@ -138,24 +136,22 @@ Lists all sections for a specific teacher.
 
 ## 📝 Important Notes
 
-### Super Teacher Account
+### Instance-Specific IDs
 
-**ID:** `140836120`  
-**school_uid:** `super_teacher_20250930`
+User IDs (school_uid → Schoology numeric ID) are specific to each Schoology instance.
 
-This account is enrolled in all courses and is used for API impersonation when creating/updating content.
+After uploading CSVs, use this script to get your IDs:
+```bash
+node scripts/show-all-student-grades.js
+```
 
-### Student IDs
+Or query the API:
+```bash
+# Get user ID from school_uid
+curl 'https://api.schoology.com/v1/users?school_uids=carter_mock'
+```
 
-- Carter Mock: `140834636`
-- Tazio Mock: `140834637`
-- Livio Mock: `140834638`
-- Lily Mock: `140834639`
-
-### Parent IDs
-
-- Christina Mock: `140834634`
-- Ryan Mock: `140834635`
+**Note:** IDs are stored in `seed/.schoology-instance.json` (gitignored)
 
 ---
 
