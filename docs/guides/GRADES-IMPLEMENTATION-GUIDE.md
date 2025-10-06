@@ -354,12 +354,34 @@ curl http://localhost:9000/api/schoology/grades \
 ❌ Creating grading categories (UI only)  
 ❌ Creating submissions (403 Forbidden)  
 
-### Critical Parameters
+### Critical Parameters & API Quirks
 
+**Assignment Fields:**
 - `allow_dropbox: 0` - Makes grades visible without submissions
-- `grading_category_id` - Links assignment to weighted category
 - `X-Schoology-Run-As` - Enables admin impersonation
-- OAuth signature must NOT include POST body (Schoology quirk)
+
+**⚠️ Category Field Naming Inconsistency:**
+
+Schoology uses DIFFERENT field names for the same data:
+
+| Context | Field Name | Type | Example |
+|---------|------------|------|---------|
+| GET /assignments (reading) | `grading_category` | STRING | `"90423914"` |
+| POST/PUT /assignments (writing) | `grading_category_id` | NUMBER/STRING | `90423914` |
+
+**Code Example:**
+```typescript
+// When reading from GET /assignments
+const categoryId = assignment.grading_category || assignment.grading_category_id;
+
+// When writing via POST/PUT
+const assignmentData = {
+  grading_category_id: 90423914  // Use _id suffix
+};
+```
+
+**Other API Quirks:**
+- OAuth signature must NOT include POST body (Schoology-specific)
 
 ---
 

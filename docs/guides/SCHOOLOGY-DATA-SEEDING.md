@@ -251,6 +251,35 @@ node scripts/assign-categories-to-assignments.js
 | `/sections/{id}/grades` | GET/PUT | Manage grades |
 | `/sections/{id}/enrollments` | GET | Get enrollment IDs |
 
+### Critical API Field Names
+
+⚠️ **Assignment Category Field Naming**
+
+Schoology's API uses **inconsistent field names** for grading categories:
+
+**When READING assignments (GET):**
+- Field name: `grading_category` (NOT `grading_category_id`)
+- Type: STRING (e.g., `"90423914"`)
+- Example: `assignment.grading_category = "90423914"`
+
+**When WRITING assignments (POST/PUT):**
+- Field name: `grading_category_id`
+- Type: NUMBER or STRING
+- Example: `{ grading_category_id: 90423914 }`
+
+**In your code:**
+```javascript
+// Reading
+const categoryId = assignment.grading_category || assignment.grading_category_id;
+
+// Writing
+const updateData = {
+  grading_category_id: 90423914
+};
+```
+
+This inconsistency is a Schoology API quirk that must be handled correctly.
+
 ### Critical Parameters
 
 **Assignment Creation:**
