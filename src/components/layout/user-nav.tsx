@@ -81,33 +81,51 @@ export function UserNav() {
 
   async function handleChildSelect(childId: string) {
     try {
-      console.log('active_child_set', { childId });
-      await fetch('/api/parent/active', { 
+      console.log('[user-nav] Switching to child:', childId);
+      
+      const response = await fetch('/api/parent/active', { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify({ childId }) 
       });
-      // Navigate to dashboard to show new child's data
-      // Using push with current path would preserve scroll, but dashboard is better UX
-      router.push('/dashboard');
-      router.refresh(); // Force refetch
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('[user-nav] Failed to set active child:', response.status, errorText);
+        return;
+      }
+      
+      console.log('[user-nav] Active child set, navigating to dashboard...');
+      
+      // Force a full page reload to ensure all components get new data
+      // router.refresh() doesn't work reliably with client components
+      window.location.href = '/dashboard';
+      
     } catch (error) {
-      console.error('[user-nav] Failed to set active child:', error);
+      console.error('[user-nav] Exception setting active child:', error);
     }
   }
 
   async function handleViewAsParent() {
     try {
-      await fetch('/api/parent/active', { 
+      console.log('[user-nav] Switching to parent view');
+      
+      const response = await fetch('/api/parent/active', { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify({ childId: '' }) 
       });
-      // Navigate to dashboard
-      router.push('/dashboard');
-      router.refresh();
+      
+      if (!response.ok) {
+        console.error('[user-nav] Failed to clear active child:', response.status);
+        return;
+      }
+      
+      console.log('[user-nav] Parent view set, navigating to dashboard...');
+      window.location.href = '/dashboard';
+      
     } catch (error) {
-      console.error('[user-nav] Failed to clear active child:', error);
+      console.error('[user-nav] Exception clearing active child:', error);
     }
   }
 

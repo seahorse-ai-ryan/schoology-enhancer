@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
 
 interface Assignment {
@@ -59,15 +58,14 @@ export function UpcomingWidget() {
             <CardTitle>Upcoming</CardTitle>
             <CardDescription>Next 7 days</CardDescription>
           </div>
-          <Select value={filter} onValueChange={setFilter}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="important">Important</SelectItem>
-              <SelectItem value="all">All</SelectItem>
-            </SelectContent>
-          </Select>
+          <select 
+            value={filter} 
+            onChange={(e) => setFilter(e.target.value)}
+            className="text-sm border rounded px-2 py-1"
+          >
+            <option value="important">Important</option>
+            <option value="all">All</option>
+          </select>
         </div>
       </CardHeader>
       <CardContent>
