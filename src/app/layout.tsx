@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { DataModeProvider } from '@/components/providers/DataModeProvider';
 
 export const metadata: Metadata = {
   title: 'Schoology Planner',
@@ -24,10 +23,8 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <DataModeProvider>
-          {children}
-          <Toaster />
-        </DataModeProvider>
+        {children}
+        <Toaster />
       </body>
     </html>
   );

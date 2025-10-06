@@ -2,35 +2,32 @@
 
 **Environment:** Native macOS Development
 
-## Startup Sequence
+---
 
-### Startup Principle: Clean Before You Start
+## 🚀 Startup & Verification
 
-When starting the development environment, always assume the environment might be in an unknown or "borked" state. The default procedure is to **clean up before starting**.
+This project uses a simple, robust workflow based on three core slash commands.
 
-The `startup.js` hook is the source of truth for detecting conflicts. If this script reports any running processes, the **immediate next step** is to run the provided `pkill` or `kill` command to ensure a completely clean slate before attempting to start any services.
+### 1. `/start` - To Start All Services
 
-### Automated Startup with Cursor Hooks
+-   **What it does:** Cleans the environment and starts `ngrok`, Firebase emulators, and the Next.js dev server in the background.
+-   **When to use:** Use this at the beginning of a development session to bring up the entire environment.
+-   **Note:** After starting services, you must manually log in via the browser to authenticate.
 
-The preferred method is to use the built-in startup hook, which automates port checking and service startup in the correct order within named, persistent terminals.
+---
 
-**To Start All Services:**
-Open a new chat and use the following slash command:
+## 🔐 Authentication Workflow
 
-`/start-dev`
+**Automated browser authentication is not feasible** due to hCaptcha on Schoology's login page.
 
-The agent will then execute the logic defined in that command, which includes running the startup hooks, cleaning up zombie processes, starting services in the correct named terminals, and verifying the final state.
+**Manual login process:**
+1. Start services with `/start` command
+2. Navigate to `https://modernteaching.ngrok.dev` in your browser
+3. Click "Sign In with Schoology"
+4. Complete the login process manually
+5. You will be redirected to the dashboard
 
-### Manual Startup (If Needed)
-
-If you need to start services manually, follow the same sequence and use the same named terminals to maintain consistency.
-
-1.  **Check for conflicts:** `node .cursor/hooks/startup.js`
-2.  **Clean up if needed:** `pkill -9 -f "next dev|firebase emulators|ngrok"`
-3.  **Start services** in the three separate terminals as listed above, ensuring you wait for Firebase to be ready before starting Next.js.
-4.  **Verify:** `node .cursor/hooks/verify.js`
-
-**Static Domain:** `https://modernteaching.ngrok.dev` (eliminates manual URL updates)
+**Session persistence:** Browser cookies maintain your session across page refreshes.
 
 ---
 
@@ -58,38 +55,34 @@ This command contains all the necessary instructions to prevent the new agent fr
 To ensure stability and prevent resource conflicts, all AI agents **must** adhere to the following protocol for managing terminals.
 
 1.  **Always Use Named Terminals:** Agents must not create unnamed terminals for long-running services. Use the established names: `/dev/ngrok`, `/dev/firebase`, `/dev/nextjs`.
-2.  **Check Before Starting:** Before launching a service, the agent must check if a terminal with that name already exists and if the correct process is running. The `startup.js` hook handles this.
-3.  **Reuse, Don't Recreate:** If a service is already running correctly in its named terminal, the agent must reuse it.
-4.  **Graceful Shutdown:** When stopping services, agents should use the `stop-dev-env.md` slash command (to be created) which will gracefully stop processes rather than killing terminals.
+2.  **Clean Before Starting:** The `/start` command handles all cleanup. Agents should not attempt to manage processes individually.
 
-This protocol, enforced by our hooks and agent rules, is the "Named Persistent Terminals" strategy.
+This protocol, enforced by our slash commands, is the "Named Persistent Terminals" strategy.
 
 ---
 
 ## Agent Tool Call Protocol
 
-**Attention Agents:** To ensure a stable development environment, you **MUST** use the following parameters when calling the `run_terminal_cmd` tool to start services. Do not deviate from this pattern.
+**Attention Agents:** The slash commands (`/start`, `/verify`) now contain all necessary logic. You do not need to call `run_terminal_cmd` with specific parameters for services. Simply execute the slash commands as requested by the user.
 
-### 1. To Start Ngrok
-- **Tool:** `run_terminal_cmd`
-- **Parameters:**
-  - `command`: `"ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout"`
-  - `terminalName`: `"/dev/ngrok"`
-  - `is_background`: `true`
+---
 
-### 2. To Start Firebase Emulators
-- **Tool:** `run_terminal_cmd`
-- **Parameters:**
-  - `command`: `"export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH" && firebase emulators:start --import=./.firebase/emulator-data --export-on-exit=./.firebase/emulator-data"`
-  - `terminalName`: `"/dev/firebase"`
-  - `is_background`: `true`
+## ✅ Final Startup Verification
 
-### 3. To Start Next.js Dev Server
-- **Tool:** `run_terminal_cmd`
-- **Parameters:**
-  - `command`: `"export FIRESTORE_EMULATOR_HOST="localhost:8080" && npm run dev"`
-  - `terminalName`: `"/dev/nextjs"`
-  - `is_background`: `true`
+After all services are running:
+
+1.  **Check Service Health:**
+    - ngrok should show "started tunnel" message
+    - Firebase should show "All emulators ready!"
+    - Next.js should show "Ready in Xms"
+
+2.  **Manual Authentication:**
+    - User must log in via browser
+    - No automated verification available due to hCaptcha
+
+3.  **Verify in Browser:**
+    - Navigate to `https://modernteaching.ngrok.dev`
+    - Confirm login works and dashboard loads
 
 ---
 
@@ -140,6 +133,17 @@ This protocol, enforced by our hooks and agent rules, is the "Named Persistent T
 - `/api/auth/status` returns 401 when user not logged in
 - Landing page and dashboard handle this gracefully
 - These are intentional security checks, not failures
+
+---
+
+## Prerequisites
+
+The Firebase Emulators are Java-based. You must have a Java Runtime Environment (JRE) installed on your system for them to function.
+
+- **Verification:** You can check if Java is installed by running `java -version` in your terminal.
+- **Installation:** If it is not installed, you can download it from [java.com](https://www.java.com/en/download/).
+
+Our automated `startup.js` hook will check for this and provide an error if Java is missing.
 
 ---
 
@@ -258,3 +262,51 @@ firebase deploy --only hosting
 - `docs/ARCHITECTURE.md` - Technical architecture
 - `docs/guides/STARTUP.md` - Detailed setup guide (to be deprecated by this doc)
 - `docs/CURRENT-TASKS.md` - Active work and TODOs
+
+---
+
+## 🧪 UI Verification Protocol (Mandatory)
+
+**CRITICAL:** After making ANY change that could affect the UI, you **MUST** run the verification command:
+
+1.  **Run the Command:**
+    `/verify`
+2.  **Analyze:** The agent will display the resulting `verification-screenshot.png` and report the status. Confirm the changes look correct.
+
+This is the final gate check for all UI-related work.
+
+---
+
+## ⚠️ Handling Verification Failures
+
+If the browser tools fail or are blocked (e.g., by hCaptcha), **DO NOT** ask the user for manual help. Instead, follow these debugging steps:
+
+1.  **Check for hCaptcha/Authentication Blocks:**
+    -   Examine the inline screenshot. If you see a CAPTCHA or login screen, the persistent authentication session is likely invalid.
+
+2.  **Consult the Architecture Decision:**
+    -   The solution for this is documented in `docs/roadmaps/TECHNICAL-ARCHITECTURE-DECISIONS.md` under **TAD-002**. This document explains our strategy for persistent browser context.
+
+3.  **Attempt to Fix the Script:**
+    -   Ensure the `chromium.launchPersistentContext` call in `scripts/browser-screenshot-test.js` includes the necessary arguments to appear as a normal browser (e.g., disabling automation features).
+
+4.  **Manually Re-Authenticate if Necessary:**
+    -   If the script is correct but the session has expired, you may need to guide the user through a one-time manual login to refresh the `.auth/chrome-profile/` directory. Propose this as a solution only after verifying the script itself is not the issue.
+
+Only after following these steps should you report a persistent, unresolvable blocker.
+
+---
+
+## 🚨 Safety Protocols & Command Usage
+
+**CRITICAL:** Your primary goal is to assist without causing disruption to the user's environment.
+
+-   **NEVER Use Broad Process Killing Commands:** You are strictly forbidden from using overly broad commands like `pkill -f "Google Chrome"`, `killall chrome`, or similar commands that could affect the user's personal applications.
+-   **Targeted Process Management Only:** If a process needs to be stopped, it must be targeted specifically. For issues like a locked browser profile, the correct and safe procedure is to delete the specific profile directory (e.g., `rm -rf .auth/some-test-profile/`) to clean the state, not to kill the parent application.
+-   **Ask Before Destructive Operations:** For any file or process operation that could be considered destructive and is outside of the project directory (e.g., system-level changes), you must explain the command and ask for confirmation before running it.
+
+Violation of these safety protocols is a critical failure.
+
+---
+
+## 📂 Quick Navigation

@@ -214,7 +214,28 @@ export async function GET(request: NextRequest) {
       children.push({ id: idStr, name: u?.name_display || u?.name || null });
     }
 
-    return NextResponse.json(debugEnabled ? { children, debug } : { children });
+    // Persist childrenIds to Firestore for security checks
+    if (children.length > 0) {
+      const childrenIds = children.map(c => c.id);
+      await db.collection('parents').doc(String(userId)).set(
+        { childrenIds, updatedAt: Date.now() },
+        { merge: true }
+      );
+    }
+
+    // Get active child from Firestore
+    const parentDoc = await db.collection('parents').doc(String(userId)).get();
+    const activeChildId = parentDoc.exists ? parentDoc.data()?.activeChildId : null;
+    const activeChild = children.find(c => c.id === activeChildId) || null;
+
+    // Build user object
+    const user = {
+      id: String(userId),
+      name: me?.name_display || me?.name || 'User',
+      email: me?.primary_email || '',
+    };
+
+    return NextResponse.json(debugEnabled ? { user, children, activeChild, debug } : { user, children, activeChild });
   } catch (error) {
     console.error('[parent/children] Error', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

@@ -45,7 +45,17 @@
 → `guides/TESTING-QUICK-START.md` + `guides/TEST-COVERAGE-PLAN.md`
 
 **Q: What data should I use for testing?**  
-→ `guides/SEED-DATA-REFERENCE.md` (2 parents, 4 students, courses, assignments)
+→ `../seed/README.md` (2 parents, 4 students, all expected grades)
+
+**Q: How do I seed data into Schoology?**  
+→ `guides/SCHOOLOGY-DATA-SEEDING.md` (Complete CSV + API workflow)  
+→ `SEEDING-QUICK-START.md` (Quick reference)
+
+**Q: How do grades work in the app?**  
+→ `guides/GRADES-IMPLEMENTATION-GUIDE.md` (Schoology API → Our API → UI)
+
+**Q: How do I fix grade issues?**  
+→ `guides/GRADES-TROUBLESHOOTING.md` (Diagnostic and fixes)
 
 **Q: How should I implement state management?**  
 → `guides/STATE-MANAGEMENT.md`
@@ -115,11 +125,11 @@
 - `I18N-STRATEGY.md` ⭐ - Internationalization
 - `THIRD-PARTY-INTEGRATIONS.md` ⭐ - ClassLink, Infinite Campus
 - `TEST-COVERAGE-PLAN.md` - Coverage goals
-- `SEED-DATA-REFERENCE.md` ⭐ - Test personas (2 parents, 4 students)
-- `SCHOOLOGY-SEED-DATA-GUIDE.md` - Seeding Schoology sandbox
-- `SCHOOLOGY-CSV-IMPORT.md` - CSV import procedures
-- `API-USER-IMPERSONATION.md` - Guide to using API impersonation
-- `BULK-ASSIGNMENT-IMPORT.md` - Guide for bulk data imports
+- `SCHOOLOGY-DATA-SEEDING.md` ⭐ - Complete seeding workflow (CSV + API)
+- `GRADES-IMPLEMENTATION-GUIDE.md` ⭐ - How grades work (API to UI)
+- `GRADES-TROUBLESHOOTING.md` ⭐ - Fix grade issues
+- `API-USER-IMPERSONATION.md` - X-Schoology-Run-As technical details
+- `EXPECTED-GRADES-REFERENCE.md` - Verification reference
 
 ### Future Planning (Not Yet Built)
 

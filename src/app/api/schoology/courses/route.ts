@@ -99,6 +99,10 @@ export async function GET(request: NextRequest) {
     headers.append('Accept', 'application/json');
     headers.append('Cache-Control', 'no-cache');
 
+    if (useAdminCredentials) {
+      headers.append('X-Schoology-Run-As', String(targetUserId));
+    }
+
     let res = await fetch(requestData.url, { headers, redirect: 'manual' as any });
     
     // Handle redirects
@@ -113,6 +117,9 @@ export async function GET(request: NextRequest) {
         for (const k in redirectHeader) redirectHeaders.append(k, (redirectHeader as any)[k]);
         redirectHeaders.append('Accept', 'application/json');
         redirectHeaders.append('Cache-Control', 'no-cache');
+        if (useAdminCredentials) {
+          redirectHeaders.append('X-Schoology-Run-As', String(targetUserId));
+        }
         res = await fetch(location, { headers: redirectHeaders });
       }
     }

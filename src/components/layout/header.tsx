@@ -4,14 +4,11 @@ import { MainNav } from './main-nav';
 import { UserNav } from './user-nav';
 import { BookOpenCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useDataMode } from '@/components/providers/DataModeProvider';
 
 export function Header() {
   const router = useRouter();
-  const { showingSampleData, exitSampleMode } = useDataMode();
 
   const handleLogoClick = () => {
-    exitSampleMode();
     router.push('/');
   };
 

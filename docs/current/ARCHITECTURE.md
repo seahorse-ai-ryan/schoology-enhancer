@@ -79,12 +79,59 @@ Modern Teaching is a Next.js application that enhances the Schoology learning ma
 └─────────────────────────┘
 ```
 
+### Grades Data Flow (Added Oct 2025)
+
+```
+┌─────────────────┐
+│   Dashboard UI  │
+│  (UserDashboard)│
+└────────┬────────┘
+         │ fetch('/api/schoology/grades')
+         ▼
+┌─────────────────────────────────┐
+│ Next.js API Route               │
+│ /api/schoology/grades           │
+│ - Checks active child           │
+│ - Uses admin credentials        │
+│ - Impersonates target user      │
+└────────┬────────────────────────┘
+         │ For each section:
+         │ GET /v1/sections/{id}/grades
+         │ X-Schoology-Run-As: {userId}
+         ▼
+┌─────────────────────────┐
+│   Schoology REST API    │
+│ - Returns grade data    │
+│ - Includes final_grade  │
+└────────┬────────────────┘
+         │ Extract: final_grade[0].period[0].grade
+         ▼
+┌─────────────────────────────────┐
+│ API Response                    │
+│ {                               │
+│   grades: {                     │
+│     "8067479367": {             │
+│       grade: 79,                │
+│       period_id: "p1141932"     │
+│     }                           │
+│   }                             │
+│ }                               │
+└────────┬────────────────────────┘
+         │ Display in UI
+         ▼
+┌─────────────────────────┐
+│   Grade Badge           │
+│   [79%] (color-coded)   │
+└─────────────────────────┘
+```
+
 **Key Points:**
 
 - ✅ **API-First:** Always tries to fetch fresh data from Schoology
 - ✅ **Cache-Second:** Falls back to Firestore if API fails
 - ✅ **Offline Support:** Cached data available when offline
 - ⏳ **No Staleness Check (Yet):** Currently fetches on every page load
+- ✅ **Grades:** Fetched separately and matched to courses by section ID
 
 ---
 
@@ -223,6 +270,7 @@ if (cacheAge < TTL) {
 | `/api/schoology/me`      | GET      | Get current user profile           |
 | `/api/schoology/child`   | GET      | Get active child profile (parents) |
 | `/api/schoology/courses` | GET      | Get user's enrolled courses        |
+| `/api/schoology/grades`  | GET      | Get final course grades            |
 | `/api/parent/children`   | GET      | Get parent's children list         |
 | `/api/parent/active`     | GET/POST | Get/set active child               |
 
@@ -486,9 +534,9 @@ npm run test:simple  # Playwright (only when MCP unavailable)
 **Project Docs:**
 
 - `README.md` - Setup and quick start
-- `docs/STARTUP.md` - Detailed dev environment guide
-- `docs/SCHOOLOGY-CSV-IMPORT.md` - Bulk import procedures
-- `docs/SCHOOLOGY-SEED-DATA-GUIDE.md` - Mock data best practices
+- `.cursor/rules/workflow.md` - Dev environment and startup
+- `docs/guides/SCHOOLOGY-DATA-SEEDING.md` - Seeding workflow
+- `seed/README.md` - Seed data reference and test accounts
 
 **External Docs:**
 

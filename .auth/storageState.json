@@ -1,0 +1,125 @@
+{
+  "cookies": [
+    {
+      "name": "s-js-login-selected-school",
+      "value": "{\"school\":\"Seahorse AI\",\"school_nid\":\"7742428476\",\"data\":{\"id\":7742428476,\"title\":\"Seahorse AI\",\"location\":\",  \",\"login_type\":\"schoology\",\"use_browser_login_flow\":0}}",
+      "domain": "app.schoology.com",
+      "path": "/login",
+      "expires": 1762290203,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "has_js",
+      "value": "1",
+      "domain": "app.schoology.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "SESSa4c564b873aecda55b12a530bf2ece51",
+      "value": "d61516986e5372f96f9622f756119738",
+      "domain": ".app.schoology.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "__cf_bm",
+      "value": "KyNnyhxMfuL7E9EDeILwLCembuGRnCWcIN8QzqLWm5Q-1759698205-1.0.1.1-nhnKlKFQW5v0nTN5B8uA9cw.J0M8rlJdeH2ARUOPIaQqJ_uHhPjVxFmWtgV9iY3coUyIb382r2l.bqrTy..5yTjrmnhitn.hMv9gXfiSejw",
+      "domain": ".hcaptcha.com",
+      "path": "/",
+      "expires": 1759700005.020782,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "s_stats_browser_info",
+      "value": "%7B%22pluginInfo%22%3A%7B%22pdf%22%3A%5B%22pdf%22%2C%22application/pdf%22%2C%221%22%5D%2C%22quicktime%22%3A%5B%22qt%22%2C%22video/quicktime%22%2C%220%22%5D%2C%22realplayer%22%3A%5B%22realp%22%2C%22audio/x-pn-realaudio-plugin%22%2C%220%22%5D%2C%22wma%22%3A%5B%22wma%22%2C%22application/x-mplayer2%22%2C%220%22%5D%2C%22director%22%3A%5B%22dir%22%2C%22application/x-director%22%2C%220%22%5D%2C%22flash%22%3A%5B%22fla%22%2C%22application/x-shockwave-flash%22%2C%220%22%5D%2C%22java%22%3A%5B%22java%22%2C%22application/x-java-vm%22%2C%220%22%5D%2C%22gears%22%3A%5B%22gears%22%2C%22application/x-googlegears%22%2C%220%22%5D%2C%22silverlight%22%3A%5B%22ag%22%2C%22application/x-silverlight%22%2C%220%22%5D%7D%2C%22res%22%3A%221280x720%22%7D",
+      "domain": "app.schoology.com",
+      "path": "/",
+      "expires": 1760303005,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "apt.sid",
+      "value": "AP-IBYB1G3SIPA6-2-1759698205554-41361189",
+      "domain": ".app.schoology.com",
+      "path": "/",
+      "expires": 1759700008,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "apt.uid",
+      "value": "AP-IBYB1G3SIPA6-2-1759698205554-22435892.0.2.04a0d2a8-652c-48b6-a9b5-56d50a7723e8",
+      "domain": ".app.schoology.com",
+      "path": "/",
+      "expires": 1791234205,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "hmt_id",
+      "value": "6a17091b-5b66-43cf-964c-d6a93e2d0ef2",
+      "domain": "api.hcaptcha.com",
+      "path": "/",
+      "expires": 1762290207.044484,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://schoology.com",
+      "_crHasCrossSiteAncestor": true
+    },
+    {
+      "name": "schoology_user_id",
+      "value": "140834635",
+      "domain": "modernteaching.ngrok.dev",
+      "path": "/",
+      "expires": 1760303008.970726,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://modernteaching.ngrok.dev",
+      "localStorage": [
+        {
+          "name": "schoology-planner-persona",
+          "value": "jane-smith"
+        }
+      ]
+    },
+    {
+      "origin": "https://app.schoology.com",
+      "localStorage": [
+        {
+          "name": "pds-app-switcher-iframe-switch",
+          "value": "production"
+        }
+      ]
+    },
+    {
+      "origin": "https://asset-cdn.schoology.com",
+      "localStorage": [
+        {
+          "name": "sessionTrackerId",
+          "value": "140834635"
+        }
+      ]
+    }
+  ]
+}

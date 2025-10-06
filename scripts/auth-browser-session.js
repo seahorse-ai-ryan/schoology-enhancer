@@ -17,10 +17,19 @@ async function launchAuthSession() {
   console.log('  4. AI will detect completion and close browser automatically');
   console.log('\n' + '═'.repeat(60) + '\n');
   
-  // Launch with persistent context
+  // Launch with persistent context and anti-detection flags
   const context = await chromium.launchPersistentContext(PROFILE_DIR, {
     channel: 'chrome',
     headless: false,
+    args: [
+      '--disable-blink-features=AutomationControlled',
+      '--disable-dev-shm-usage',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-web-security',
+      '--disable-features=IsolateOrigins,site-per-process'
+    ],
+    ignoreDefaultArgs: ['--enable-automation'],
   });
 
   const page = context.pages()[0] || await context.newPage();

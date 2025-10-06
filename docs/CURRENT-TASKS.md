@@ -187,12 +187,30 @@
 
 ## ✅ RECENTLY COMPLETED (Oct 5)
 
+### Grades Feature Implementation ✅
+- [x] Fixed Schoology seeding process end-to-end
+- [x] Updated grading category weights for all 28 courses
+- [x] Assigned proper categories to 93 assignments
+- [x] Uploaded 80 grades for all mock students
+- [x] Verified final course grades calculating correctly in Schoology
+- [x] Fixed `/api/schoology/grades` endpoint to fetch final grades
+- [x] Fixed `/api/parent/children` to persist childrenIds for security
+- [x] Created master seeding script (`scripts/seed-all.sh`)
+- [x] Consolidated all seeding docs into single guide
+- [x] Cleaned up redundant seed data files
+- [x] Moved session-specific docs to .journal/
+- [x] Updated all cross-references in docs
+
+**Result:** All 4 students have proper course grades. Single source of truth for seeding established.
+
+### Documentation & Cleanup ✅
 - [x] Documentation consolidation complete - single source of truth established
 - [x] Removed outdated START-HERE.md, INDEX.md, QUICK-START.md
 - [x] Updated .cursorrules to prioritize CURRENT-TASKS.md
 - [x] Fixed all documentation cross-references
 - [x] Removed demo mode from landing page
-- [x] Identified requestToken regression (needs fix)
+- [x] Removed failed browser automation workflow (auth issues)
+- [x] Created task-kickoff.md protocol for efficient AI workflows
 
 ---
 

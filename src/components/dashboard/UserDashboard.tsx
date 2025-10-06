@@ -39,6 +39,24 @@ export function UserDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [liveProfile, setLiveProfile] = useState<LiveProfile | null>(null);
   const [activeChildProfile, setActiveChildProfile] = useState<LiveProfile | null>(null);
+  const [grades, setGrades] = useState<Record<string, { grade: number; period_id: string }>>({});
+
+  // Helper function to get grade color styling
+  const getGradeColor = (grade: number) => {
+    if (grade >= 90) return 'text-green-800';
+    if (grade >= 80) return 'text-blue-800';
+    if (grade >= 70) return 'text-yellow-800';
+    if (grade >= 60) return 'text-orange-800';
+    return 'text-red-800';
+  };
+
+  const getGradeBgColor = (grade: number) => {
+    if (grade >= 90) return 'bg-green-100';
+    if (grade >= 80) return 'bg-blue-100';
+    if (grade >= 70) return 'bg-yellow-100';
+    if (grade >= 60) return 'bg-orange-100';
+    return 'bg-red-100';
+  };
 
   useEffect(() => {
     loadUserData();
@@ -75,6 +93,17 @@ export function UserDashboard() {
             setActiveChildProfile(null);
           }
         } catch {}
+
+        // Fetch grades for the user/child
+        try {
+          const gradesRes = await fetch('/api/schoology/grades');
+          if (gradesRes.ok) {
+            const gradesData = await gradesRes.json();
+            setGrades(gradesData.grades || {});
+          }
+        } catch (err) {
+          console.error('Failed to fetch grades:', err);
+        }
       } else {
         // If not authenticated, still show mock data for testing
         setError('Not authenticated');
@@ -238,20 +267,31 @@ export function UserDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {courses.map((course) => (
-                <div key={course.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex-1">
-                    <h3 className="font-medium">{course.name}</h3>
-                    <p className="text-sm text-gray-600">{course.code} • {typeof (course as any).teacher === 'string' ? (course as any).teacher : (course as any).teacher?.name || 'Teacher'}</p>
-                    {course.description && (
-                      <p className="text-xs text-gray-500 mt-1">{course.description}</p>
-                    )}
+              {courses.map((course) => {
+                const courseGrade = grades[course.id];
+                return (
+                  <div key={course.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex-1">
+                      <h3 className="font-medium">{course.name}</h3>
+                      <p className="text-sm text-gray-600">{course.code} • {typeof (course as any).teacher === 'string' ? (course as any).teacher : (course as any).teacher?.name || 'Teacher'}</p>
+                      {course.description && (
+                        <p className="text-xs text-gray-500 mt-1">{course.description}</p>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {courseGrade && courseGrade.grade !== null && courseGrade.grade !== undefined ? (
+                        <div className={`px-3 py-1 rounded-md ${getGradeBgColor(courseGrade.grade)}`}>
+                          <span className={`text-lg font-semibold ${getGradeColor(courseGrade.grade)}`}>
+                            {courseGrade.grade}%
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-sm text-gray-400">No grade</span>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary">Active</Badge>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>

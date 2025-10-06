@@ -93,6 +93,30 @@ const context = await chromium.launchPersistentContext('.auth/chrome-profile', {
 
 ---
 
+### Implementation Nuances & Collaboration
+
+**1. Defeating Bot Detection:**
+
+Schoology's login employs bot detection that is triggered by standard Playwright/Chromium automation flags. To bypass this, we must launch Chromium with specific arguments that make it appear like a regular, user-driven browser. The key arguments are:
+- `--disable-blink-features=AutomationControlled`: This removes the `navigator.webdriver` flag that test automation software uses.
+- `--disable-infobars`: This hides the "Chrome is being controlled by automated test software" banner.
+- **A Standard User Agent:** We set a common user agent string to avoid standing out.
+
+Without these flags, hCaptcha will block the login attempt, and the authentication will fail.
+
+**2. Security & `.gitignore`:**
+
+The persistent context is saved to the `.auth/chrome-profile/` directory. This directory contains sensitive session cookies and tokens. **It is critical that this directory is never committed to source control.** The project's `.gitignore` file is already configured to exclude the entire `.auth/` directory, ensuring this data remains local.
+
+**3. Local and Machine-Specific Profiles:**
+
+The `.auth/chrome-profile/` is entirely local to your machine. It is not shared and will not exist when a new developer clones the repository.
+
+-   **For New Developers:** Upon running a verification script for the first time, Playwright will create a new, empty profile directory. The developer (or an agent on their behalf) will need to perform a one-time manual login to Schoology to populate this directory with valid authentication tokens.
+-   **Isolation:** This profile is completely separate from any personal Google Chrome profiles you may have on your machine. It does not share history, bookmarks, or cookies, ensuring that our testing environment is isolated and does not interfere with your personal browsing.
+
+---
+
 ## TAD-003: User vs Account Data Separation
 
 **Date:** September 30, 2025  

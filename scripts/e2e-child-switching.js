@@ -1,60 +1,49 @@
-// E2E Test: Parent Child Switching
 const { chromium } = require('playwright');
 const path = require('path');
 
-const PROFILE_DIR = path.join(__dirname, '..', '.auth', 'chrome-profile');
-const APP_URL = 'https://modernteaching.ngrok.dev';
+const STORAGE_STATE_PATH = path.join(__dirname, '..', '.auth', 'storageState.json');
+const APP_URL = 'https://modernteaching.ngrok.dev/dashboard';
+const SCREENSHOT_PATH = path.join(__dirname, '..', 'test-results', 'child-dashboard-screenshot.png');
 
 async function testChildSwitching() {
-  console.log('🧪 E2E Test: Child Switching\n');
+  console.log('🚀 Launching browser to test child switching...');
   
-  const context = await chromium.launchPersistentContext(PROFILE_DIR, {
-    channel: 'chrome',
-    headless: false,
-  });
-
-  const page = context.pages()[0] || await context.newPage();
+  const browser = await chromium.launch({ headless: false }); // Must be headed for clicks to work reliably
+  const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+  const page = await context.newPage();
   
   try {
-    // Navigate to dashboard
-    console.log('1️⃣ Loading dashboard...');
-    await page.goto(`${APP_URL}/dashboard`);
-    await page.waitForTimeout(3000);
+    console.log('Navigating to the parent dashboard...');
+    await page.goto(APP_URL, { timeout: 30000 });
+    await page.waitForTimeout(3000); // Allow time for components to hydrate
+
+    console.log('Clicking user avatar to open profile menu...');
+    await page.click('[data-testid="user-avatar-trigger"]');
+    await page.waitForTimeout(1000); // Allow menu to animate open
+
+    console.log('Clicking on a student to switch view...');
+    // We'll click the first available student in the "Switch Student" group.
+    // This is more robust than relying on a specific name.
+    await page.locator('text=Switch Student').locator('xpath=following-sibling::div[1]').click();
     
-    // Test: Check for profile/child selector
-    console.log('2️⃣ Looking for child selector...');
-    
-    // Look for profile menu or child selector button
-    const profileButtons = await page.locator('button').count();
-    console.log(`   Found ${profileButtons} buttons on page`);
-    
-    // Take screenshot
+    console.log('Waiting for page to reload with child data...');
+    await page.waitForURL('**/dashboard', { timeout: 30000 });
+    await page.waitForTimeout(5000); // Allow extra time for data to load after reload
+
+    console.log('📸 Taking final screenshot of the child dashboard...');
     await page.screenshot({ 
-      path: 'test-results/e2e-child-selector.png',
+      path: SCREENSHOT_PATH,
       fullPage: true 
     });
-    console.log('   📸 Screenshot: test-results/e2e-child-selector.png');
-    
-    // Check for courses
-    const courseCards = await page.locator('[data-testid="course-item"]').count().catch(() => 0);
-    if (courseCards > 0) {
-      console.log(`   ✅ Found ${courseCards} courses`);
-    } else {
-      // Alternative: look for any course-related text
-      const hasCourses = await page.locator('text=course').count().catch(() => 0);
-      console.log(`   ℹ️  Found ${hasCourses} course references`);
-    }
-    
-    console.log('\n✅ Child Switching Test Complete!');
-    console.log('📝 Note: Full child switching test requires UI implementation');
-    
+
+    console.log(`\n✅ Child switching test complete!`);
+    console.log(`🖼️ Screenshot saved to: ${SCREENSHOT_PATH}`);
+
   } catch (error) {
-    console.error('\n❌ Test Failed:', error.message);
+    console.error('❌ Failed during child switching test.', error);
   } finally {
-    await context.close();
-    console.log('🚪 Browser closed');
+    await browser.close();
   }
 }
 
-testChildSwitching().catch(console.error);
-
+testChildSwitching();

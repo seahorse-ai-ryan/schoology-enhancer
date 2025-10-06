@@ -1,4 +1,8 @@
-# Modern Teaching - Core Context
+# Modern Teaching - Core AI Rules
+
+**⭐⭐ START HERE: Read `.cursor/rules/task-kickoff.md` before starting any new task! ⭐⭐**
+
+## 🎯 Primary Goal
 
 **Project Name:** Modern Teaching (formerly Schoology Enhancer)  
 **Repository:** https://github.com/seahorse-ai-ryan/schoology-enhancer  
@@ -131,3 +135,34 @@ Testing coverage must be complete first to prevent regressions.
 
 ⭐ = Updated Oct 2025 - Essential reading  
 ⭐⭐ = **START HERE** - Immediate action items
+
+## 🎯 Current Priority
+
+**Check:** `docs/CURRENT-TASKS.md` for today's priorities
+
+**Testing-First Development:**
+1. Fix any regressions (test first!)
+2. Add test coverage for existing features
+3. ONLY THEN consider new features or refactoring
+
+**DO NOT proceed to code refactoring without explicit approval.**
+
+---
+
+## 🔗 External Documentation & APIs
+
+**Critical:** Before implementing features or troubleshooting issues related to Schoology, YOU MUST consult these resources first. Do not rely solely on the existing codebase, as it may be incomplete.
+
+1.  **Developer API Documentation (Source of Truth for Data)**
+    -   **URL:** `https://developers.schoology.com/api-documentation/rest-api-v1/`
+    -   **Use For:** Understanding API endpoints, data structures, authentication, and available parameters. This is the primary reference for any backend or data-fetching task.
+
+2.  **User-Facing Help Center (Source of Truth for Features)**
+    -   **URL:** `https://uc.powerschool-docs.com/en/schoology/latest/`
+    -   **Use For:** Understanding how features *should* work from a user's perspective. This provides essential context for UI/UX design and feature implementation.
+
+---
+
+## 📂 Quick Navigation
+
+- **TODOs:** `docs/CURRENT-TASKS.md` ⭐⭐ **START HERE**
