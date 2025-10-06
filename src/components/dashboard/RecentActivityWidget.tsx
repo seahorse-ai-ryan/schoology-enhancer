@@ -27,9 +27,17 @@ export function RecentActivityWidget() {
   }, []);
 
   const loadActivity = async () => {
-    // TODO: Create API endpoint that aggregates recent submissions
-    // For now, placeholder
-    setLoading(false);
+    try {
+      const res = await fetch('/api/schoology/recent-activity?days=14');
+      if (res.ok) {
+        const data = await res.json();
+        setAllActivity(data.activity || []);
+      }
+    } catch (error) {
+      console.error('Failed to load activity:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const isImportant = (categoryName: string) => {

@@ -26,9 +26,17 @@ export function UpcomingWidget() {
   }, []);
 
   const loadUpcoming = async () => {
-    // TODO: Create API endpoint that aggregates upcoming assignments across all courses
-    // For now, placeholder
-    setLoading(false);
+    try {
+      const res = await fetch('/api/schoology/upcoming?days=7');
+      if (res.ok) {
+        const data = await res.json();
+        setAllUpcoming(data.upcoming || []);
+      }
+    } catch (error) {
+      console.error('Failed to load upcoming:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const isImportant = (categoryName: string) => {
