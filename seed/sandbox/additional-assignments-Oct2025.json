@@ -1,0 +1,220 @@
+{
+  "metadata": {
+    "description": "Additional assignments for realistic overdue and upcoming scenarios",
+    "created": "2025-10-06",
+    "purpose": "Add overdue ungraded items and upcoming tests/quizzes"
+  },
+  "assignments": [
+    {
+      "section_school_code": "AP-BIO-3120-S1",
+      "student_school_uid": "carter_mock",
+      "title": "Cellular Respiration Lab Report",
+      "category": "Full AP Labs",
+      "due": "2025-09-28",
+      "max_points": 100,
+      "grade": null,
+      "comment": "Last makeup day is October 12th - see me during tutorial"
+    },
+    {
+      "section_school_code": "US-GOV-1845-S1",
+      "student_school_uid": "carter_mock",
+      "title": "Constitution Quiz",
+      "category": "Assessments",
+      "due": "2025-10-01",
+      "max_points": 50,
+      "grade": 0,
+      "comment": "Cannot be made up - quiz was in class only"
+    },
+    {
+      "section_school_code": "AP-BIO-3120-S1",
+      "student_school_uid": "carter_mock",
+      "title": "Unit 2 Exam",
+      "category": "Unit Exam + AP Like Final exam",
+      "due": "2025-10-14",
+      "max_points": 100,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "AP-ENG-LIT-1410-S1",
+      "student_school_uid": "carter_mock",
+      "title": "Midterm Poetry Analysis",
+      "category": "All Essays/Presentations",
+      "due": "2025-10-18",
+      "max_points": 100,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "AP-STATS-2460-S1",
+      "student_school_uid": "carter_mock",
+      "title": "Unit 2 Test",
+      "category": "Tests",
+      "due": "2025-10-11",
+      "max_points": 100,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "PE-WT-TRAIN-2470-S1",
+      "student_school_uid": "carter_mock",
+      "title": "Fitness Assessment Quiz",
+      "category": "Participation",
+      "due": "2025-10-15",
+      "max_points": 25,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "US-HIST-16869-S1",
+      "student_school_uid": "tazio_mock",
+      "title": "Civil War Reading Questions",
+      "category": "Assignments",
+      "due": "2025-09-30",
+      "max_points": 20,
+      "grade": null,
+      "comment": "Turn in by October 15th for partial credit (max 50%)"
+    },
+    {
+      "section_school_code": "AMERLIT-11-1261-S1",
+      "student_school_uid": "tazio_mock",
+      "title": "Literary Analysis Essay Draft",
+      "category": "Writing",
+      "due": "2025-10-01",
+      "max_points": 50,
+      "grade": null,
+      "comment": "Conference with me by October 10th to discuss revision"
+    },
+    {
+      "section_school_code": "PHYS-3820-S1",
+      "student_school_uid": "tazio_mock",
+      "title": "Lab Safety Quiz",
+      "category": "Test/Quiz",
+      "due": "2025-09-25",
+      "max_points": 20,
+      "grade": 0,
+      "comment": "Cannot be made up - was administered in class only"
+    },
+    {
+      "section_school_code": "PRECALC-2371-S1",
+      "student_school_uid": "tazio_mock",
+      "title": "Chapter 3 Homework Packet",
+      "category": "DM/BR",
+      "due": "2025-10-02",
+      "max_points": 15,
+      "grade": null,
+      "comment": "Will accept late until October 9th - 10% penalty per day"
+    },
+    {
+      "section_school_code": "PHYS-3820-S1",
+      "student_school_uid": "tazio_mock",
+      "title": "Unit 3 Test",
+      "category": "Test/Quiz",
+      "due": "2025-10-16",
+      "max_points": 100,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "PRECALC-2371-S1",
+      "student_school_uid": "tazio_mock",
+      "title": "Trigonometry Quiz",
+      "category": "TESTS",
+      "due": "2025-10-09",
+      "max_points": 50,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "AP-CS-PRINC-8635-S1",
+      "student_school_uid": "tazio_mock",
+      "title": "Midterm Coding Project",
+      "category": "Standards Assignments",
+      "due": "2025-10-20",
+      "max_points": 150,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "AUTO-3-5053-S1",
+      "student_school_uid": "tazio_mock",
+      "title": "Safety Test",
+      "category": "Quizzes",
+      "due": "2025-10-13",
+      "max_points": 30,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "ALG-1-6008-S1",
+      "student_school_uid": "livio_mock",
+      "title": "Equations Homework",
+      "category": "Practice",
+      "due": "2025-10-03",
+      "max_points": 10,
+      "grade": null,
+      "comment": "Please turn in by October 10th"
+    },
+    {
+      "section_school_code": "SCI-8-6953-S1",
+      "student_school_uid": "livio_mock",
+      "title": "Scientific Method Worksheet",
+      "category": "Skill 3: Communication",
+      "due": "2025-10-04",
+      "max_points": 15,
+      "grade": null,
+      "comment": "Late work accepted until October 11th"
+    },
+    {
+      "section_school_code": "ALG-1-6008-S1",
+      "student_school_uid": "livio_mock",
+      "title": "Unit 2 Quiz",
+      "category": "Tests",
+      "due": "2025-10-12",
+      "max_points": 50,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "SCI-8-6953-S1",
+      "student_school_uid": "livio_mock",
+      "title": "Unit 3 Test",
+      "category": "Skill 1: Analysis and Interpretation",
+      "due": "2025-10-17",
+      "max_points": 100,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "ENG-8-6538-S1",
+      "student_school_uid": "livio_mock",
+      "title": "Grammar Quiz",
+      "category": "Performance (Summative)",
+      "due": "2025-10-14",
+      "max_points": 20,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "DRAMA-101-S1",
+      "student_school_uid": "lily_mock",
+      "title": "Scene Study Quiz",
+      "category": "Classwork",
+      "due": "2025-10-13",
+      "max_points": 25,
+      "grade": null,
+      "comment": null
+    },
+    {
+      "section_school_code": "LA-8-101-S1",
+      "student_school_uid": "lily_mock",
+      "title": "Vocabulary Test Unit 4",
+      "category": "Essays",
+      "due": "2025-10-16",
+      "max_points": 30,
+      "grade": null,
+      "comment": null
+    }
+  ]
+}
+
