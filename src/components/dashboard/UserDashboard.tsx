@@ -193,62 +193,44 @@ export function UserDashboard() {
     );
   }
 
+  const avgGrade = Object.keys(grades).length > 0
+    ? Math.round(Object.values(grades).reduce((sum, g) => sum + g.grade, 0) / Object.keys(grades).length)
+    : null;
+
   return (
-    <div className="space-y-6" data-testid="dashboard-content">
-      {/* Course Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Active Courses</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{courses.length}</div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Courses with Grades</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{Object.keys(grades).length}</div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Average Grade</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {Object.keys(grades).length > 0
-                ? Math.round(Object.values(grades).reduce((sum, g) => sum + g.grade, 0) / Object.keys(grades).length) + '%'
-                : '—'}
-            </div>
-          </CardContent>
-        </Card>
+    <div className="space-y-4" data-testid="dashboard-content">
+      {/* Compact Stats Bar */}
+      <div className="bg-white border rounded-lg px-4 py-3">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-600">
+            {courses.length} courses
+            {avgGrade !== null && (
+              <>
+                {' • '}
+                <span className="font-medium">Average: </span>
+                <span className={`font-semibold ${avgGrade >= 70 ? 'text-green-700' : 'text-red-700'}`}>
+                  {avgGrade}%
+                </span>
+                <span className="text-gray-500 ml-1">
+                  ({Object.keys(grades).length} graded)
+                </span>
+              </>
+            )}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={toggleExpandAll}
+            className="flex items-center gap-1"
+          >
+            {expandAll ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+            {expandAll ? 'Collapse' : 'Expand'} All
+          </Button>
+        </div>
       </div>
 
       {/* Courses List */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Courses</CardTitle>
-              <CardDescription>Active courses this semester</CardDescription>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={toggleExpandAll}
-              className="flex items-center gap-2"
-            >
-              {expandAll ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-              {expandAll ? 'Collapse All' : 'Expand All'}
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
+      <div>
           <div className="space-y-2">
             {courses.map((course) => {
               const courseGrade = grades[course.id];
@@ -337,8 +319,7 @@ export function UserDashboard() {
               );
             })}
           </div>
-        </CardContent>
-      </Card>
+      </div>
     </div>
   );
 }

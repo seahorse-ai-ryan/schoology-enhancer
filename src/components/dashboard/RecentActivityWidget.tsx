@@ -40,15 +40,15 @@ export function RecentActivityWidget() {
     }
   };
 
-  const isImportant = (categoryName: string) => {
-    return IMPORTANT_CATEGORIES.some(cat => 
-      categoryName.toLowerCase().includes(cat.toLowerCase())
-    );
+  const isImportant = (activity: Activity) => {
+    // Check both category name and assignment title for keywords
+    const text = `${activity.categoryName} ${activity.title}`.toLowerCase();
+    return IMPORTANT_CATEGORIES.some(cat => text.includes(cat.toLowerCase()));
   };
 
   const filteredActivity = allActivity.filter(a => {
     if (filter === 'all') return true;
-    if (filter === 'important') return isImportant(a.categoryName);
+    if (filter === 'important') return isImportant(a);
     return a.categoryName === filter;
   });
 

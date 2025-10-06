@@ -14,7 +14,7 @@ interface Assignment {
   courseId: string;
 }
 
-const IMPORTANT_CATEGORIES = ['Tests', 'Test', 'Quiz', 'Quizzes', 'Exam', 'Exams', 'Assessment', 'Assessments'];
+const IMPORTANT_CATEGORIES = ['Test', 'Quiz', 'Exam', 'Assessment', 'Practical'];
 
 export function UpcomingWidget() {
   const [allUpcoming, setAllUpcoming] = useState<Assignment[]>([]);
@@ -39,15 +39,15 @@ export function UpcomingWidget() {
     }
   };
 
-  const isImportant = (categoryName: string) => {
-    return IMPORTANT_CATEGORIES.some(cat => 
-      categoryName.toLowerCase().includes(cat.toLowerCase())
-    );
+  const isImportant = (assignment: Assignment) => {
+    // Check both category name and assignment title for keywords
+    const text = `${assignment.categoryName} ${assignment.title}`.toLowerCase();
+    return IMPORTANT_CATEGORIES.some(cat => text.includes(cat.toLowerCase()));
   };
 
   const filteredAssignments = allUpcoming.filter(a => {
     if (filter === 'all') return true;
-    if (filter === 'important') return isImportant(a.categoryName);
+    if (filter === 'important') return isImportant(a);
     return a.categoryName === filter;
   });
 
