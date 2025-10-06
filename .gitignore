@@ -47,3 +47,4 @@ out/
 # Local development history and logs
 # Note: .journal/ is tracked in git - only session logs and archives
 # The archive subfolder contains historical AI opinions and planning artifacts
+seed/.schoology-instance.json

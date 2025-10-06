@@ -7,9 +7,10 @@
 
 ## 📁 Data Files
 
-### Primary Source (Use This)
+### Source Data (`data/` directory)
 
-**`sandbox/seed-data-master.json`** - Complete seed data for all mock users
+**`data/master.json`** - Complete seed data for all mock users
+**`data/assignments-additional.json`** - Additional assignments (overdue, upcoming tests)
 
 **Contains:**
 - 2 Parents (Ryan Mock, Christina Mock)
@@ -26,11 +27,10 @@
 
 ### Parent 1: Ryan Mock
 **Email:** `ryan.mock@example.com`  
-**School UID:** `ryan_mock`  
-**Schoology ID:** `140834635`
+**School UID:** `ryan_mock`
 
 **Children:**
-- **Carter Mock** (12th grade, 2026 grad) - ID: `140834636`
+- **Carter Mock** (12th grade, 2026 grad)
   - 10 courses (AP Biology, AP English Lit, AP Statistics, US Gov, PE, etc.)
   - 6 courses with grades (79%, 84%, 73%, 100%, 49%, 25%)
   - Profile: Senior with AP courses, athlete, some missing assignments
@@ -44,11 +44,10 @@
 
 ### Parent 2: Christina Mock
 **Email:** `christina.mock@example.com`  
-**School UID:** `christina_mock`  
-**Schoology ID:** `140834634`
+**School UID:** `christina_mock`
 
 **Children:**
-- **Tazio Mock** (11th grade, 2027 grad) - ID: `140834637`
+- **Tazio Mock** (11th grade, 2027 grad)
   - 7 courses (US History, American Lit, Physics, Pre-Calc, AP CS, Auto, Planning)
   - All 7 courses have grades (75%, 73%, 67%, 60%, 59%, 56%, 0%)
   - Profile: Diverse interests (tech + automotive), B/C student
@@ -176,19 +175,21 @@ For final grades to calculate:
 ```
 seed/
 ├── README.md (this file)
-└── sandbox/
-    ├── seed-data-master.json          # Primary data source
-    ├── category-mappings.json          # Category ID mappings (generated)
-    ├── category-mappings-complete.json # Full mappings (generated)
-    └── csv-exports/                    # CSV files for Schoology import
-        ├── users.csv
-        ├── courses.csv
-        ├── enrollments.csv
-        ├── parent_associations.csv
-        ├── assignments.csv (reference only - use API)
-        ├── grades.csv (reference only - use API)
-        └── UPLOAD-INSTRUCTIONS.md
+├── .schoology-instance.json (gitignored - your instance-specific IDs)
+├── data/                              # Source JSON data
+│   ├── master.json                    # Primary seed data
+│   └── assignments-additional.json    # Additional assignments
+└── csv-exports/                       # Generated CSVs for bulk upload
+    ├── users.csv
+    ├── courses.csv
+    ├── enrollments.csv
+    ├── parent_associations.csv
+    ├── assignments.csv (reference - use API)
+    ├── grades.csv (reference - use API)
+    └── UPLOAD-INSTRUCTIONS.md
 ```
+
+**Note:** After uploading CSVs, query Schoology API to get numeric IDs and save to `.schoology-instance.json`
 
 ---
 
@@ -199,7 +200,7 @@ seed/
 1. **Upload CSVs to Schoology** (one-time):
    ```bash
    # Follow instructions in:
-   cd seed/sandbox/csv-exports
+   cd seed/csv-exports
    cat UPLOAD-INSTRUCTIONS.md
    ```
 
