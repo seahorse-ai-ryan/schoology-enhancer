@@ -9,7 +9,8 @@ export function Header() {
   const router = useRouter();
 
   const handleLogoClick = () => {
-    router.push('/');
+    // Navigate to dashboard (users in this layout are already authenticated)
+    router.push('/dashboard');
   };
 
   return (
