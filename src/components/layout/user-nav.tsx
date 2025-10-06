@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -29,6 +30,7 @@ interface Child {
 }
 
 export function UserNav() {
+  const router = useRouter();
   const [liveProfile, setLiveProfile] = useState<LiveProfile | null>(null);
   const [activeChild, setActiveChild] = useState<Child | null>(null);
   const [children, setChildren] = useState<Child[]>([]);
@@ -85,8 +87,8 @@ export function UserNav() {
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify({ childId }) 
       });
-      // Refresh page to load child's data
-      location.reload();
+      // Use Next.js router refresh to reload data without losing scroll position
+      router.refresh();
     } catch (error) {
       console.error('[user-nav] Failed to set active child:', error);
     }
@@ -99,7 +101,8 @@ export function UserNav() {
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify({ childId: '' }) 
       });
-      location.reload();
+      // Use Next.js router refresh
+      router.refresh();
     } catch (error) {
       console.error('[user-nav] Failed to clear active child:', error);
     }

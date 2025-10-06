@@ -22,6 +22,24 @@ export function AnnouncementsFeed() {
     loadAnnouncements();
   }, []);
 
+  useEffect(() => {
+    // Check for hash in URL (e.g., #announcement-123)
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hashId = window.location.hash.replace('#announcement-', '');
+      if (hashId && announcements.length > 0) {
+        // Expand this announcement
+        setExpandedIds(new Set([hashId]));
+        // Scroll to it
+        setTimeout(() => {
+          const element = document.getElementById(`announcement-${hashId}`);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
+      }
+    }
+  }, [announcements]);
+
   const loadAnnouncements = async () => {
     setLoading(true);
     try {
@@ -94,7 +112,11 @@ export function AnnouncementsFeed() {
         const shouldTruncate = !isExpanded && isLongContent(announcement.body);
         
         return (
-          <Card key={announcement.id} className={index === 0 ? 'border-blue-500 border-2' : ''}>
+          <Card 
+            key={announcement.id} 
+            id={`announcement-${announcement.id}`}
+            className={index === 0 ? 'border-blue-500 border-2' : ''}
+          >
             <CardContent className="pt-6">
               <div className="space-y-3">
                 {/* Header */}

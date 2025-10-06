@@ -170,7 +170,7 @@ export function DashboardHome() {
                   
                   {/* Rest - titles only */}
                   {announcements.slice(1, 5).map(announcement => (
-                    <Link key={announcement.id} href="/announcements">
+                    <Link key={announcement.id} href={`/announcements#announcement-${announcement.id}`}>
                       <div className="flex items-start justify-between p-2 rounded hover:bg-gray-50 transition-colors">
                         <div className="flex-1">
                           <p className="text-sm font-medium">
