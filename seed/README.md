@@ -273,7 +273,7 @@ node scripts/assign-categories-to-assignments.js
 ## 📖 Related Documentation
 
 **Essential Guides:**
-- `docs/SEEDING-QUICK-START.md` - Quick reference card
+- `docs/guides/SEEDING-QUICK-START.md` - Quick reference card
 - `docs/guides/GRADES-IMPLEMENTATION-GUIDE.md` - How grades work in our app
 - `docs/guides/GRADES-TROUBLESHOOTING.md` - Fix common issues
 

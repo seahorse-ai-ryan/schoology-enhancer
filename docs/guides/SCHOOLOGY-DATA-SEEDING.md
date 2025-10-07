@@ -382,7 +382,7 @@ Total: 82.5% → Displayed as 82%
 
 **For Users:**
 - `seed/README.md` - Complete seed data reference
-- `docs/SEEDING-QUICK-START.md` - Quick reference card
+- `docs/guides/SEEDING-QUICK-START.md` - Quick reference card
 - `scripts/README.md` - All seeding scripts explained
 
 **For Developers:**

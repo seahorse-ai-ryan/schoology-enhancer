@@ -37,13 +37,14 @@ Not allowed without approval:
 
 ## 🧪 Testing Strategy
 
-**Browser-First Approach:**
+**Automated Browser Testing (✅ PROVEN):**
 
-1. **Chrome DevTools MCP** (Primary)
-   - AI-driven browser automation
-   - Best for E2E user journeys
-   - Real-time debugging
-   - See: https://github.com/ChromeDevTools/chrome-devtools-mcp/
+1. **Puppeteer with Auth Injection** (Primary)
+   - Fully automated authenticated E2E testing
+   - No manual login required
+   - Full navigation, interaction, data extraction
+   - Command: `node scripts/inject-auth-state.js`
+   - Guide: `docs/guides/BROWSER-AUTOMATION.md`
 
 2. **Jest** (Backend/Unit Only)
    - Data transformations
@@ -51,9 +52,9 @@ Not allowed without approval:
    - Firebase integration
    - Command: `npm run test:emu`
 
-3. **Playwright** (Minimal)
-   - Special cases only
-   - Command: `npm run test:simple`
+3. **Cursor Playwright MCP** (Public Pages Only)
+   - Quick unauthenticated page testing
+   - Cannot authenticate (hCaptcha blocks)
 
 ---
 
@@ -75,8 +76,22 @@ Not allowed without approval:
 - **TODOs:** `docs/CURRENT-TASKS.md` ⭐⭐ **START HERE**
 - **Status:** `.cursor/rules/core.md`
 - **Workflow:** `.cursor/rules/workflow.md`
+- **Testing:** `docs/guides/BROWSER-AUTOMATION.md` 🧪 **Automated browser testing**
+- **AI Protocol:** `scripts/AI-AGENT-PROTOCOL.md` 🤖 **Auth expiration handling**
 - **Architecture:** `docs/current/ARCHITECTURE.md`
 - **Features:** `docs/current/USER-JOURNEYS.md`
+
+---
+
+## ⚠️ Important for AI Agents
+
+**Authentication expiration is NORMAL, not a bug!**
+
+When you see "AUTHENTICATION EXPIRED" messages:
+- ✅ DO: Instruct user to re-authenticate following the script's instructions
+- ❌ DON'T: Try to debug or "fix" the auth code
+
+**See:** `scripts/AI-AGENT-PROTOCOL.md` for complete protocol.
 
 ---
 

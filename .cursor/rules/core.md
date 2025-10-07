@@ -35,6 +35,8 @@
 
 ⏳ **DO NOT REFACTOR CODE** until testing coverage is complete.
 
+⏳ **DO NOT ESTIMATE TIMEFRAMES** - This is vibe coding, not waterfall planning. No "Weeks 3-6" or arbitrary dates.
+
 **Current Focus:**
 1. ✅ Switched to native Mac for full browser automation support
 2. Configure Chrome DevTools MCP in Cursor (user action)

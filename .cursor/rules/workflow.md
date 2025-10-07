@@ -16,18 +16,28 @@ This project uses a simple, robust workflow based on three core slash commands.
 
 ---
 
-## 🔐 Authentication Workflow
+## 🔐 Authentication & Testing Workflow
 
-**Automated browser authentication is not feasible** due to hCaptcha on Schoology's login page.
+**✅ Automated browser testing is fully supported!**
 
-**Manual login process:**
-1. Start services with `/start` command
-2. Navigate to `https://modernteaching.ngrok.dev` in your browser
-3. Click "Sign In with Schoology"
-4. Complete the login process manually
-5. You will be redirected to the dashboard
+### For Automated Testing (Recommended)
 
-**Session persistence:** Browser cookies maintain your session across page refreshes.
+**One-time setup:**
+1. Launch persistent Chrome: `npm run chrome:test`
+2. Manually complete OAuth login (bypasses hCaptcha via anti-automation flags)
+3. Capture auth state: `node scripts/capture-auth-state.js`
+
+**Every test run:**
+```bash
+node scripts/inject-auth-state.js
+```
+This launches a fresh, **automatically authenticated** browser without manual login!
+
+### Manual Browser Testing
+
+Simply navigate to `https://modernteaching.ngrok.dev` in your regular browser and log in normally.
+
+**See:** `docs/guides/BROWSER-AUTOMATION.md` for complete automation guide.
 
 ---
 
@@ -88,29 +98,46 @@ After all services are running:
 
 ## Testing Strategy
 
-### Browser-First Approach
+### Primary: Puppeteer with Auth Injection (✅ PROVEN)
 
-**Priority 1: Chrome DevTools MCP**
-- AI agent controls Chrome directly via MCP
-- Best for E2E user journeys
-- Interactive debugging and verification
-- Can inspect network, console, DOM
-- Can take screenshots for verification
-- See: https://github.com/ChromeDevTools/chrome-devtools-mcp/
+**Recommended approach for all authenticated E2E testing:**
 
-**Priority 2: Jest (Backend/Unit Only)**
+```bash
+# One-time setup
+npm run chrome:test                    # Manual auth
+node scripts/capture-auth-state.js     # Capture cookie
+
+# Every test
+node scripts/inject-auth-state.js      # Automated!
+```
+
+**Proven capabilities:**
+- ✅ Open/close browser programmatically
+- ✅ Authenticate without manual login
+- ✅ Navigate, scroll, click, hover
+- ✅ Extract data from pages
+- ✅ Take screenshots
+- ✅ No hCaptcha blocking
+
+**Scripts:**
+- `scripts/inject-auth-state.js` - Full automation
+- `scripts/prove-automation.js` - Comprehensive demo
+- `scripts/quick-test-authenticated.js` - Quick test
+
+### Alternative: Jest (Backend/Unit Only)
+
 - Unit tests for data transformations
 - API route logic testing
 - Firebase integration tests
-- Server-side utilities
 - Command: `npm run test:emu`
 
-**Priority 3: Playwright (Minimal Use)**
-- Only when browser automation isn't suitable
-- Headless testing for CI/CD (future)
-- Command: `npm run test:simple`
+### Alternative: Cursor Playwright MCP (Public Pages Only)
 
-**Rationale:** Vibe coding requires interactive browser testing. Chrome MCP enables AI agents to see what's happening, debug issues, and verify changes in real-time.
+- Quick exploration of unauthenticated pages
+- Visual regression on landing page
+- ❌ Cannot authenticate (hCaptcha blocks)
+
+**See:** `docs/guides/BROWSER-AUTOMATION.md` for complete guide.
 
 ---
 
@@ -120,12 +147,16 @@ After all services are running:
 
 1. **Save files** - Next.js auto-reloads
 2. **Watch terminal** for "✓ Compiled" message
-3. **Use Chrome DevTools MCP** to verify changes:
-   - Navigate to page
-   - Check console for errors
-   - Verify network requests
-   - Take screenshot if needed
-4. **Report findings** with evidence
+3. **Verify with automated browser testing:**
+   ```bash
+   node scripts/inject-auth-state.js
+   ```
+   Then navigate to changed pages and verify behavior
+4. **Take screenshots** for evidence:
+   ```javascript
+   await page.screenshot({ path: 'test-results/my-change.png' });
+   ```
+5. **Report findings** with evidence
 
 ### Expected Console Behavior
 
@@ -155,9 +186,14 @@ npm run dev          # Next.js dev server (port 9000)
 npm run typecheck    # TypeScript type checking
 npm run lint         # ESLint code quality
 
-# Testing
+# Browser Testing (Primary)
+npm run chrome:test  # Launch persistent Chrome (one-time auth)
+node scripts/capture-auth-state.js     # Capture auth (after login)
+node scripts/inject-auth-state.js      # Automated testing
+node scripts/prove-automation.js       # Demo all capabilities
+
+# Backend Testing
 npm run test:emu     # Jest backend tests
-npm run test:simple  # Playwright (use sparingly)
 
 # Deployment
 firebase deploy      # Deploy to production

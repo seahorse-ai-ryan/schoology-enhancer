@@ -1,8 +1,20 @@
 # Current Tasks - Modern Teaching
 
-**Last Updated:** October 5, 2025  
+**Last Updated:** October 6, 2025  
 **Purpose:** Atomic action items for current development session  
 **Use:** Start every new AI chat by reading this file
+
+---
+
+## 🚨 AI AGENT RULES
+
+1. **DO NOT estimate timeframes** - No "Weeks 3-6", no "Oct 5-10", no arbitrary dates
+   - This is vibe coding, not waterfall planning
+   - Tasks get done when they get done
+   - Priorities are relative (HIGH/MEDIUM/LOW), not time-based
+
+2. **DO NOT refactor code** until testing coverage is complete
+   - See `.cursor/rules/core.md` for details
 
 ---
 
@@ -104,7 +116,7 @@
 
 ---
 
-## 📅 THIS WEEK (Oct 5-10)
+## 📅 UP NEXT
 
 ### 5. Add E2E Test Coverage
 **Priority:** 🟡 HIGH - Prevents regressions
@@ -153,9 +165,9 @@
 
 ---
 
-## 🔮 NEXT WEEK (Oct 10-17)
+## 🔮 SOON
 
-### 6. Dashboard Widgets (Per MVP-PLAN Week 3-4)
+### 6. Dashboard Widgets
 - [ ] Upcoming Assignments widget
 - [ ] Grades At-a-Glance widget
 - [ ] Workload Summary widget
@@ -170,19 +182,31 @@
 
 ## 📋 BACKLOG (Prioritized)
 
-### HIGH Priority (Weeks 3-6)
+### HIGH Priority
+- [ ] **Re-evaluate API Caching & Rate Limiting Strategy**
+  - **Context:** Hitting Schoology's 429 rate limit (50 requests per 5 seconds) during automated testing
+  - **Current:** 60s TTL on all cached endpoints
+  - **Problem:** Rapid page navigation triggers multiple parallel API calls (grades, courses, announcements, etc.)
+  - **Options to Explore:**
+    - Increase TTL for less-frequently-changing data (courses: 5min, grades: 2min)
+    - Implement request batching/queuing to stay under rate limit
+    - Add exponential backoff retry logic for 429 responses
+    - Pre-fetch all data on login and cache more aggressively
+    - Deduplicate simultaneous requests for same resource
+  - **Success Criteria:** No 429 errors during normal navigation, test suite runs cleanly
+  - **Notes:** This is NOT a bug in our code, but an optimization opportunity. App currently handles 429s gracefully with 502 responses.
 - [ ] Assignments cross-course view with filters
 - [ ] Grades overview page
 - [ ] Grade normalization (points → percentages → letters)
 - [ ] School year picker (schema support, UI post-MVP)
 
-### MEDIUM Priority (Weeks 7-10)
+### MEDIUM Priority
 - [ ] AI chat interface (text)
 - [ ] AI chat (voice input)
 - [ ] Settings page
 - [ ] School information page
 
-### LOW Priority (Weeks 11-12)
+### LOW Priority
 - [ ] Performance optimization (<2s loads)
 - [ ] Accessibility audit
 - [ ] Mobile responsiveness polish

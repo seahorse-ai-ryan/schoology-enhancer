@@ -10,7 +10,9 @@
     "clean": "pkill -f \"ngrok|firebase|next\"",
     "emu": "node scripts/start-emulators.js",
     "ngrok": "ngrok http --url=modernteaching.ngrok.dev 9000 --log stdout",
-    "test:emu": "jest --testPathIgnorePatterns=src/test/schoology-auth.integration.spec.ts --runInBand"
+    "test:emu": "jest --testPathIgnorePatterns=src/test/schoology-auth.integration.spec.ts --runInBand",
+    "chrome:test": "node scripts/launch-persistent-chrome.js",
+    "chrome:interact": "node scripts/test-authenticated-session.js"
   },
   "dependencies": {
     "@genkit-ai/googleai": "^1.14.1",
@@ -77,6 +79,7 @@
     "msw": "^2.10.4",
     "npm-run-all": "^4.1.5",
     "postcss": "^8",
+    "puppeteer-core": "^24.23.0",
     "tailwindcss": "^3.4.1",
     "ts-jest": "^29.4.0",
     "typescript": "^5"

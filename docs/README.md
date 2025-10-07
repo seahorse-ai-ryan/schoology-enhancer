@@ -49,7 +49,7 @@
 
 **Q: How do I seed data into Schoology?**  
 → `guides/SCHOOLOGY-DATA-SEEDING.md` (Complete CSV + API workflow)  
-→ `SEEDING-QUICK-START.md` (Quick reference)
+→ `guides/SEEDING-QUICK-START.md` (Quick reference)
 
 **Q: How do grades work in the app?**  
 → `guides/GRADES-IMPLEMENTATION-GUIDE.md` (Schoology API → Our API → UI)
