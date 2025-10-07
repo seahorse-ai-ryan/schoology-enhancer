@@ -17,6 +17,18 @@ const path = require('path');
 
 const AUTH_STATE_FILE = path.join(__dirname, '..', '.auth-state', 'session.json');
 
+let browser = null;
+
+// Cleanup handler for Ctrl+C
+process.on('SIGINT', async () => {
+  console.log('\n\n🛑 Interrupted! Cleaning up...');
+  if (browser) {
+    await browser.close();
+    console.log('✅ Browser closed');
+  }
+  process.exit(0);
+});
+
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -33,8 +45,6 @@ async function main() {
   
   const authState = JSON.parse(fs.readFileSync(AUTH_STATE_FILE, 'utf8'));
   console.log(`✅ Auth state loaded (captured: ${authState.captured})\n`);
-  
-  let browser;
   
   try {
     // TEST 1: Open Browser

@@ -18,6 +18,18 @@ const path = require('path');
 const AUTH_STATE_FILE = path.join(__dirname, '..', '.auth-state', 'session.json');
 const APP_URL = 'https://modernteaching.ngrok.dev';
 
+let browser = null;
+
+// Cleanup handler for Ctrl+C
+process.on('SIGINT', async () => {
+  console.log('\n\n🛑 Interrupted! Cleaning up...');
+  if (browser) {
+    await browser.close();
+    console.log('✅ Browser closed');
+  }
+  process.exit(0);
+});
+
 async function main() {
   console.log('🚀 Launching fresh browser with injected auth...\n');
   
@@ -44,7 +56,7 @@ async function main() {
     // Launch a fresh browser instance
     // Note: This requires Chrome/Chromium to be installed
     console.log('🌐 Launching browser...');
-    const browser = await puppeteer.launch({
+    browser = await puppeteer.launch({
       headless: false,
       executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       args: [
